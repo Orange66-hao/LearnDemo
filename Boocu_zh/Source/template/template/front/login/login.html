@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>登录 - 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" href="/statics/front/css/login.css">
+<link rel="stylesheet"
+	href="/statics/front/css/postbirdAlertBox.min.css" />
+[#include '/template/front/include/jslist.html' /]
+
+</head>
+<body>
+<!--top-->
+<div class="toplogind">
+  <div class="main">
+    <div class="logod"><a href="index.html"><img src="statics/front/images/logo.png"></a></div>
+    <div class="titd">用户登录</div>
+  </div>
+</div>
+<!--./top--> 
+
+<!--content-->
+<div class="mainloginpd">
+  <div class="mainlogind">
+    <div class="main"> 
+      <!--loginwd-->
+      <div class="loginwd" style="height: 400px;">
+        <div class="loginnav">
+          <ul>
+            <li class="on"><a href="javascript:;" class="ia">用户登录</a></li>
+            
+			<li><a href="javascript:;">手机号快速登录</a></li>
+			<!-- <li><a href="javascript:;">QQ快速登录</a></li>
+            <li><a href="javascript:;">新浪微博登录</a></li>  -->
+			
+          </ul>
+           
+        </div>
+        <!--./loginnav-->
+        
+        <div class="logincontd loginformd">
+          <form name="n_loginForm" id="n_loginForm">
+            <div class="row">
+              <p class="l">用户名：</p>
+              <p class="r">
+                <input type="text" name="username" id="txtUsername" class="txt" placeholder="请输入用户名/邮箱/已验证手机号">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">密　码：</p>
+              <p class="r">
+                <input type="password" name="password" id="txtPassword" class="txt" placeholder="请输入登录密码">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">验证码：</p>
+              <div class="r">
+                <p class="fl">
+                  <input type="text" name="captcha" id="captcha" class="txt">
+                </p>
+                <p class="fl"><a href="javascript:;"><img id="captchaImg" src="statics/front/images/temp/p8.jpg"></a></p>
+              </div>
+              <p  class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r"><input type="submit" value="登 录"  class="btn" id="normalBtn"></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r linkd">
+                <a href="javascript:void(0)"><input type="checkbox" name="remember" id="remember" >二周内免登录</a>
+                <a href="/userForgetPass.jspx" class="wjmm">忘记密码</a>
+              <a href="/register.jhtml">注册新账号</a>
+              <!-- <a href="/help/${help.id}.jhtml">联系我们</a></p> -->
+            </div>
+             <div class="row">
+            	<p style="float: left;">其他帐号登录：</p><!-- wxa0632cc324ec17a5     d9ae6e9d7a21f1c9f5d1cd0e9f9572fa -->
+             			<a class="weixin-login" style="float: left;" title="微信账号登录" href="https://open.weixin.qq.com/connect/qrconnect?appid=wxa0632cc324ec17a5&redirect_uri=http://www.wl95.com&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"><img class="lazy" src="/statics/images/weixin.png"></a>
+            			<a class="qq-login" style="float: left;" title="QQ账号登录" href="#" onclick="qqlogin();"><img class="lazy" src="/statics/images/qq_images.png"></a>
+            			<a class="weibo-login" title="新浪微博账号登录" href="https://api.weibo.com/oauth2/authorize?client_id=482040646&amp;response_type=code&amp;with_offical_account=1&amp;redirect_uri=https%3A%2F%2Fpassport.tianya.cn%2Flogin%2Fsinaweibo.do%3Fclient%3Dpc%26fowardURL%3Dhttp%3A%2F%2Fbbs.tianya.cn%2F"></a>
+            </div>
+            
+          </form>
+        </div>
+        
+         <div class="logincontd loginformd" style="display:none;">
+          <form name="loginForm" id="loginForm" method="post" action="">
+            <div class="row">
+              <p class="l">手机号：</p>
+              <p class="r">
+                <input type="text" name="phonename" id="phonename" class="txt" placeholder="请输入已经注册的手机号">
+              </p>
+              <p class="annotate"></p>
+            </div>
+               <div class="row">
+          <p class="l">验证码：</p>
+          <div class="r">
+            <p class="fl">
+              <input type="text" name="text" id="yanzhengma" class="txt" placeholder="请输入验证码">
+            </p>
+            &nbsp;&nbsp;
+            <p class="fl w1">
+              <input type="button" class="sendText" name="sendText" id="sendText" value="发送验证码">
+            </p>
+             <p class="rr"></p>
+          </div>
+        </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r"><a href="#" class="btn" onclick="phonelogin();">登 录</a></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r linkd"><a href="/userForgetPass.jspx" class="wjmm">忘记密码</a>
+              <a href="/register.jhtml">还没有注册?手机快捷注册</a>
+              <!-- <a href="/help/${help.id}.jhtml">联系我们</a></p> -->
+            </div>
+          </form>
+        </div>
+        <!--./logincontd-->
+        
+        <div class="logincontd loginformd" style="display:none;">
+          <form name="loginForm" id="loginForm" method="post" action="" >
+            <div class="row">
+              <p class="l">QQ号：</p>
+              <p class="r">
+                <input type="text" name="txtUsername" id="txtUsername" class="txt">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">密　码：</p>
+              <p class="r">
+                <input type="password" name="txtPassword" id="txtPassword" class="txt">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r"><a href="user.html" class="btn">登 录</a></p>
+            </div>
+            <div class="row">
+            	<p style="float: left;">其他帐号登录：</p>
+             			<a class="weixin-login" style="float: left;" title="微信账号登录" href="https://open.weixin.qq.com/connect/qrconnect?appid=wxa0632cc324ec17a5&amp;response_type=code&amp;redirect_uri=https%3A%2F%2Fwww.wl95.com%2Flogin%2Fweixin.do%3Fclient%3Dpc%26fowardURL%3Dhttp%3A%2F%2Fwww.wl95.com%2F&amp;scope=snsapi_login#wechat_redirect"><img class="lazy" src="/statics/images/weixin.png"></a>
+            			<a class="qq-login" style="float: left;" title="QQ账号登录" href="#" onclick="qqlogin();"><img class="lazy" src="/statics/images/qq_images.png"></a>
+            			<a class="weibo-login" title="新浪微博账号登录" href="https://api.weibo.com/oauth2/authorize?client_id=482040646&amp;response_type=code&amp;with_offical_account=1&amp;redirect_uri=https%3A%2F%2Fpassport.tianya.cn%2Flogin%2Fsinaweibo.do%3Fclient%3Dpc%26fowardURL%3Dhttp%3A%2F%2Fbbs.tianya.cn%2F"></a>
+            </div>
+          </form>
+        </div>
+        <!--./logincontd-->
+        
+        <div class="logincontd loginformd" style="display:none;">
+          <form name="loginForm" id="loginForm" method="post" action="">
+            <div class="row">
+              <p class="l">新浪账号：</p>
+              <p class="r">
+                <input type="text" name="txtUsername" id="txtUsername" class="txt">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">密　码：</p>
+              <p class="r">
+                <input type="password" name="txtPassword" id="txtPassword" class="txt">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r"><a href="user.html" class="btn">登 录</a></p>
+            </div>
+          </form>
+        </div>
+        
+       
+        <!--./logincontd--> 
+        
+      </div>
+      <!--./loginwd--> 
+    </div>
+  </div>
+</div>
+<!--./content--> 
+
+<!--foot-->
+<div class="footd">
+  <div class="main">
+    <div class="fcontd">
+      <p>Copyright &copy; 2007 All Rights Reserved. 深圳市晧辰电子科技有限公司 版权所有&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn/" target="_blank">[粤ICP备14101712号-1]</a>&nbsp;<a href="#" target="_blank">[法律顾问]</a></p>
+      <p>公司地址：广东省深圳市南山区西丽街道牛成路221号8楼&nbsp;&nbsp;邮编：518055</p>
+      <p>在线QQ服务：<a href="#"><img src="statics/front/images/fico0.png"></a>&nbsp;&nbsp;服务热线：0755－86016691&nbsp;&nbsp;电话：13715327187&nbsp;&nbsp;传真：0755-86641139-816</p>
+      <p>E-mail：info@wl95.com</p>
+      <!-- <p style="font-size:15px;color:red;">光通信项目业务负责人：&nbsp;&nbsp;&nbsp;&nbsp;王海涛13715327187&nbsp;&nbsp;&nbsp;&nbsp;赖&nbsp;&nbsp;旭13715283397&nbsp;&nbsp;&nbsp;&nbsp;卫庆利18123986106</p> -->
+    </div>
+    <div class="fimgd"><a href="#" target="_blank"><img src="statics/front/images/fico1.png"></a><a href="#" target="_blank"><img src="statics/front/images/fico2.png"></a><a href="#" target="_blank"><img src="statics/front/images/fico3.png"></a><a href="#" target="_blank"><img src="statics/front/images/fico4.png"></a></div>
+  </div>
+</div>
+<!--./foot--> 
+[#-- RSA加密 --]
+<script type="text/javascript" src="${base}/adminthemes/js/tools/rsa/jsbn.min.js?version=${setting.basic.siteVersion}"></script>
+<script type="text/javascript" src="${base}/adminthemes/js/tools/rsa/prng4.min.js?version=${setting.basic.siteVersion}"></script>
+<script type="text/javascript" src="${base}/adminthemes/js/tools/rsa/rng.min.js?version=${setting.basic.siteVersion}"></script>
+<script type="text/javascript" src="${base}/adminthemes/js/tools/rsa/rsa.min.js?version=${setting.basic.siteVersion}"></script>
+<script type="text/javascript" src="${base}/adminthemes/js/tools/base/base64.min.js?version=${setting.basic.siteVersion}"></script>
+[#-- validate 验证器 --]
+<script type="text/javascript" src="${base}/statics/validate/jquery.validate.min.js?version=${setting.basic.siteVersion}"></script>
+<script type="text/javascript" src="${base}/statics/validate/jquery.validate.method.min.js?version=${setting.basic.siteVersion}"></script>
+[#-- 登录 --]
+<script type="text/javascript"></script>
+<script type="text/javascript"
+	src="/statics/front/js/postbirdAlertBox.min.js"></script>
+<script type="text/javascript">
+    var redirectUrl = "[#if redirectUrl??]${redirectUrl}[#else]${base}[/#if]";var modulus ="${modulus}", exponent ="${exponent}",captchaId="${captchaId}";
+var username=GetQueryString('username');
+var username2="${username}";
+ if(username2 != null && username2 != ''){
+	username=username2;
+} 
+//qq快速登录，如果用户上次已经登陆过，本次直接登录，不需注册
+ if(username != null && username != ''){//使用if else将qq快速登录与常规登录区分开，保证两者不同时执行，防止出现登录不跳转和登录后点击功能模块重新登录问题
+	$.ajax({
+		url:"/login/loginqq",
+		data:{
+			username: username
+		},
+		cache:false,
+		type:"post",
+		dataType:"json",
+		beforeSend:function(request,settings){
+			//request.setRequestHeader("token", $.cookie("token"));
+			//$nForm.find(".btn").val(" 登 录 中 ... ");
+		},
+		success:function(msg){
+			if(msg.type=="success"){
+				window.location = "/user/user";
+			}else{
+				alert(msg.cont);
+				$nBtn.val("登录");
+				$captchaImg.click();
+				$nBtn.prop("disabled", false);
+			}
+		},
+		error:function(){
+			alert("登录失败");
+		}
+	});
+} else {
+//切换登录方式
+$(".loginnav li").click(function(){
+	$(".loginnav li").removeClass("on");
+	$(this).addClass("on");
+	$(".logincontd").hide();
+	$(".logincontd").eq($(this).index()).fadeIn(200);
+});
+
+var $captchaImg = $("#captchaImg"), $captchaText =$("#txtPassword"),
+$nForm =$("#n_loginForm"), $nBtn = $nForm.find(":submit") ,
+rsaKey = new RSAKey();
+rsaKey.setPublic(b64tohex(modulus), b64tohex(exponent));
+$(function(){
+    $("#remember").click(function (e) {
+        e.stopPropagation()
+    })
+    $("#remember").parent().click(function () {
+        if( $("#remember").is(':checked')){
+            $("#remember").prop("checked",false)
+        }else{
+            $("#remember").prop("checked",true)
+        }
+
+    })
+	$nBtn.prop("disabled", false);
+	//验证码
+	$captchaImg.click(function(){
+		//$captchaImg.prop("src","/captcha?captchaId="+captchaId);
+        $captchaImg[0].src="/captcha?captchaId="+captchaId+"&date="+new Date();
+	});
+	$captchaImg.click();
+
+	$nForm.validate({
+		rules:{
+			username:"required",
+			password:"required",
+			captcha:"required"
+		},
+		messages:{
+			username:"请输入您的用户名",
+			password:"请输入密码",
+			captcha:"请输入验证码"
+		},
+		errorPlacement:function(error,element){
+			element.closest("div.row").find(".annotate").text(error.text());
+		},
+		unhighlight: function(element){
+			$(element).closest("div.row").find(".annotate").text("");
+		},
+		submitHandler:function(form){
+			$nBtn.prop("disabled", true);
+			$.ajax({
+				url:"/login/login",
+                data:{
+                    username: $nForm.find("#txtUsername").val(),
+                    password: hex2b64(rsaKey.encrypt($nForm.find("#txtPassword").val())),
+                    captcha: $nForm.find("#captcha").val(),
+                    captchaId:captchaId,
+                    remember:$("#remember").is(':checked')?1:0
+                },
+				cache:false,
+				type:"post",
+				dataType:"json",
+				beforeSend:function(request,settings){
+					//request.setRequestHeader("token", $.cookie("token"));
+					$nForm.find(".btn").val(" 登 录 中 ... ");
+				},
+				success:function(msg){
+					$nForm.find("#txtPassword").val("");
+					if(msg.type=="success" && msg.cont !="0"){
+						window.location = "/user/user";
+					}
+					else if(msg.type=="success" && msg.cont=="0"){
+						window.location = "/user/userfirst";
+					} 
+					else{
+						PostbirdAlertBox.alert({
+						    'title': '提示',
+						    'content': msg.cont,
+						    'okBtn': '好的',
+						    'contentColor': 'red',
+						    'onConfirm': function() {
+						    	$nBtn.val("登录");
+								$captchaImg.click();
+								$nBtn.prop("disabled", false);
+								window.location = "/login";
+						    }
+						});
+					}
+				},
+				error:function(){
+					alert("登录失败");
+					window.location = "/login";
+				}
+			});
+			return;
+		}
+		
+	});
+	
+	
+	$("#sendText").on("click",function(){
+			var phone = $(this).closest("form").find("input[name='phonename']").val();
+			if(phone != null && phone != ''&&checkMobile(phone)){
+                sendPhoneText(phone);
+			    $("#sendText").prop("disabled",true)
+                $("#sendText").css("backgroundColor","#ccc");
+                $("#sendText").css("background-image","url('')");
+			    var time=59;
+			    var timeid=setInterval(function () {
+                    var  str=time+"秒后重新获取";
+                    $("#sendText").val(str);
+                    if(time<=0){
+                        $("#sendText").css("background-image","url('/statics/front/images/ico21.png')");
+                        $("#sendText").val("重新获取");
+                        $("#sendText").prop("disabled",false)
+                        clearInterval(timeid)
+                    }
+                    time--;
+                },1000)
+				console.log(phone);
+
+			}else{
+				PostbirdAlertBox.alert({
+				    'title': '提示',
+				    'content': "请输入正确的电话号码",
+				    'okBtn': '好的',
+				    'contentColor': 'red',
+				    'onConfirm': function() {
+				    	
+				    }
+				});
+			}
+	})
+	function checkMobile(str) {
+		var re = /^1\d{10}$/
+		if (re.test(str)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	
+})
+	
+}
+
+ function sendPhoneText(phone){
+ 	$.ajax({
+ 		url:"/text/sendLoginTwo",
+ 		data:{username:phone,validate:'login'},
+ 		dataType:"json",
+ 		type:"post",
+ 		success:function(){
+ 			/*PostbirdAlertBox.alert({
+			    'title': '提示',
+			    'content': "发送成功!",
+			    'okBtn': '好的',
+			    'contentColor': 'red',
+			    'onConfirm': function() {
+			    }
+			});*/
+ 		},
+ 		error:function(){
+ 			PostbirdAlertBox.alert({
+			    'title': '提示',
+			    'content': "网络异常,请重试!",
+			    'okBtn': '好的',
+			    'contentColor': 'red',
+			    'onConfirm': function() {
+			    }
+			});
+ 		}
+ 	});
+ }
+
+function qqlogin()
+{
+   var path = 'https://graph.qq.com/oauth2.0/authorize?';
+   var queryParams = ['client_id=101400542',
+                      'redirect_uri=http://www.wl95.com',
+                      'scope=' + 'get_user_info,list_album,upload_pic,add_feeds,do_like','response_type=token'];
+
+   var query = queryParams.join('&');
+   var url = path + query;
+   window.location.href= url;
+}
+
+/**
+ * 手机号快捷登录
+ */
+function phonelogin()
+{
+	$.ajax({
+		url:"/login/loginphone",
+		data:{
+			username: $("#phonename").val(),
+			text: $("#yanzhengma").val()
+		},
+		cache:false,
+		type:"post",
+		dataType:"json",
+		beforeSend:function(request,settings){
+			//request.setRequestHeader("token", $.cookie("token"));
+			$nForm.find(".btn").val(" 登 录 中 ... ");
+		},
+		success:function(msg){
+			$nForm.find("#txtPassword").val("");
+			if(msg.type=="success"){
+				window.location = "/user/user";
+			}else{
+				alert(msg.cont);
+				$nBtn.val("登录");
+				$captchaImg.click();
+				$nBtn.prop("disabled", false);
+			}
+		},
+		error:function(){
+			alert("登录失败");
+		}
+	});
+}
+
+
+
+ //获取url参数
+function GetQueryString(name){
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  decodeURI(r[2]); return null;
+} 
+</script>
+</body>
+</html>

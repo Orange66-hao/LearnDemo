@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>晧辰仪联网-后台管理</title>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+ [#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+<style>
+.regna_v1{ clear:both; width:210px; height:50px; line-height:50px; font-size:18px; background-color:#C2E4FF; }
+.regna_v1 li{ float:left; width:100%; text-align:center; }
+.regna_v1 li a{ height:50px; color:#00a1fc; display:block; }
+.regna_v1 li.on a{ background-color:#fff; box-shadow:0 0 2px 2px #bbb; -webkit-box-shadow:0 0 2px 2px #bbb; -moz-box-shadow:0 0 2px 2px #bbb;  }
+.regna_v1 li a:hover{ text-decoration:none; }
+</style>
+</head>
+<body>
+  <!--umainr-->
+  <div style="top:-30px;">
+    <div class="mainregd" style="top:-20px;">
+    <!--./regnav--> 
+    <div class="regna_v1">
+      <ul>
+        <li class="on"><a href="javascript:;">仪器品牌型号编辑</a></li>
+      </ul>
+    </div>
+    <div class="regformd">
+      <form  id="enRegist" action="/" method="post"  name="regForm" id="regForm">
+        <input type="text" name="memberShip" id="itemId" value="${item.id}" style="display:none;">
+        <div class="row" style="">
+          <p class="l"><i class="x">*</i>公司名：</p>
+          <p class="r">
+            <select style="width: 250px; height: 36px;"
+                    class="easyui-combobox"
+                    url="${company_url}"  data-options="valueField:'id',textField:'text',editable:true,value:${item.mc_company}"
+                    id="mc_company" name="mc_company" required="required" readonly="readonly"> </select>
+          </p>
+          <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>仪器品牌：</p>
+          <p class="r">
+            <select style="width: 250px; height: 36px;"
+                            class="easyui-combobox"
+                            url="/admin/basedata/brand/get_brand_names.jspx"  data-options="valueField:'id',textField:'text',editable:true,value:${item.mc_brand}"
+                            id="brand" name="brand" required="required"> </select>
+          </p>
+          <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>仪器型号：</p>
+          <p class="r">
+            <input class="input_text easyui-validatebox" style="width: 250px;height: 18px" type="text"
+                   id="model" name="model" data-options="required:false" value="${item.mc_model}"/>
+          </p>
+          <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>仪器数量：</p>
+          <p class="r">
+            <input class="input_text easyui-validatebox" style="width: 250px;height: 18px;" type="number" value="${item.mc_productclass_number}"
+                   id="number" name="number" data-options="required:false" />
+          </p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>仪器名称：</p>
+          <p class="r">
+            <select style="width: 250px; height: 30px;"
+                    data-options="valueField:'id',textField:'text',editable:true,value:${item.mc_productclass_name}"
+                    id="mc_productclass_name" name="mc_productclass_name"> </select>
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">备注：</p>
+          <p class="r"style="width: 250px;height: 30px">
+            <input type="text" name="remark" id="remark" value="${item.remark}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="btnd">
+				<!-- <button  style="width: 80px; height: 35px;margin:0 100 0 100;" >提   交</button> -->
+				<a href="javascript:void(0)"  style="width:100px;margin:10px 160px;display:block;" class="button blue bigrounded" id="subbtn">保存</a>
+		</div>
+      </form>
+    </div>
+    <!--./regformd--> 
+    
+  </div>
+    <!--./userd4--> 
+  </div>
+<script>
+    $("#mc_productclass_name").combotree({
+        required:true,
+        valueField:'id',
+        textField:'text',
+        editable:false,
+        url:'/productClass/combotreeData.json',
+        onBeforeSelect:function (node) {//只可选择子节点
+            if (!$("#mc_productclass_name").combotree("tree").tree('isLeaf', node.target)) {//如果不是子节点，返回false
+                return false;
+            }
+        }
+    });
+  function isIntNum(val){
+      var regPos = /^\d+$/; // 非负整数
+      if(regPos.test(val)){
+          return true;
+      }else{
+          return false;
+      }
+  }
+  $(function(){
+    $("#subbtn").click(function(){
+         if(isIntNum($("#number").val())){
+            $.ajax (
+            {
+                url : '/admin/mcBrandAndModel/doEdit_memberGrade.jspx',
+                data :
+                {
+                    "id":$("#itemId").val(),
+                    "mc_brand":$("#brand").combobox('getValue').toString(),
+                    "mc_model":$("#model").val(),
+                    "mc_productclass_number":$("#number").val(),
+                    "mc_productclass_name":$("#mc_productclass_name").combotree('getValue').toString(),
+                    "mc_company":$("#mc_company").combobox('getValue').toString(),
+                    "remark":$("#remark").val()
+                },
+                type : 'POST',
+                traditional : true,
+                success : function (r)
+                {
+                    if(r.result==1){
+                        alert(r.message)
+                    }else{
+                        alert("服务器出错了...")
+                    }
+                }
+            });
+        }else{
+            alert("仪器数量只能为正整数，请重新输入！！！")
+        }
+    })
+  })
+</script>
+</body>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>发票管理 - ${currentMember.realName}</title>
+[#include '/template/front/include/csslist.html' /]
+<style type="text/css">
+#w1 {
+	display:none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/statics/front/css/xcConfirm.css"/>
+<link rel="stylesheet" type="text/css" href="/statics/css/daterangepicker.css"/>
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+[#include '/template/front/include/jslist.html' /]
+<!--loading-->
+<div class="listloadingd" id="indexLoading" ></div>
+<!--content-->
+<div id="w1"></div>
+<div id="w3" style="display:none;">
+	<div id="w" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true," style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'center'" style="padding:10px;background:#fff;">
+				您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+				<p style="padding-top:80px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_submit()" style="width:80px">确  认</a></p>
+			</div>
+		</div>
+	</div>
+    <div id="w2" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false" style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'center'" style="padding:10px;background:#fff">
+				您的账号未激活，请先登录注册邮箱激活，如果您是手机快捷注册用户，请在右下角对话框联系管理员给您审核激活
+				<p style="padding-top:105px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_close()" style="width:80px">确  认</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+<!--content-->
+<div class="main userd">
+	<div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">
+	  		会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>发票管理</span></a></div>
+  <!--usernav-->
+  [#include '/template/front/include/usernav.html' /]
+  
+  <!--umainr-->
+  <div class="umainr">
+    <div class="umainrtitd"><span>发票管理</span></div>
+    
+    <!--uinvd-->
+    <div class="uinvd">
+      <div class="uinvd1">
+        <div class="vtitd">
+          <h3>申请发票</h3>
+		  <form id="searchForm" action="/invoice/invoice.jspx" method="post">          
+          <div class="rfromd sel">
+            <p>订购时间</p>
+            <p><input id="payTime" class="input_text" value="${payTime}" size="30" name="payTime">
+            <a href="javascript:submit_form();" class="btn on" style="background:url(/statics/images/ico36.png);color: white;">查询</a>
+            </p>
+          </div>
+          </form>
+        </div>
+        <div class="uinvtabd1">
+          <table width="100%" border="0" cellspacing="0" class="uinvtab1">
+            <tr>
+              <th>订单号</th>
+              <th>品牌</th>
+              <th>型号</th>
+              <th>名称</th>
+              <th>发票项目</th>
+              <th>开票金额</th>
+              <th>订购时间</th>
+              <th>申请时间</th>
+              <th>发票状态</th>
+            </tr>
+            [#list invoice.cont as inv]
+            <tr>
+              <td>${inv.orderNumber}</td>
+              
+              <td>${inv.brandName}</td>
+              <td>${inv.proNo}</td>
+              <td>${inv.proName}</td>
+              
+              <td>${inv.item}</td>
+              <td>${inv.invoiceAmount}</td>
+              <td>${inv.payCompleteTime}</td>
+              <td>${inv.applyTime}</td>
+              <td>[#if inv.status ==0]<a href="javascript:apply_invoice(${inv.id},${inv.type},'${currentMember.username}');" class="btn">申请发票</a>
+              [#elseif inv.status ==1]审核中[#elseif inv.status ==2]开票中[#elseif inv.status ==3]
+                                  邮寄中[#elseif inv.status ==4]开票完成[#elseif inv.status ==5]审核未通过[/#if]</td>
+            </tr>
+            [/#list]
+          </table>
+	       <!--uexepaged-->
+	        <div class="uexepaged">
+	          <div class="upagfr"> 
+	           <!--pagd-->
+	 			<div class="upagd" id="upagd">
+	 			[#if (invoice.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${invoice.pageNumber-1}">上一页</a>[/#if][#list -2..2 as item]
+				[#if (invoice.pageNumber+item) gte 1 & (invoice.pageNumber+item) lte invoice.totalPages]<a href="javascript:void(0);" s_val="${invoice.pageNumber+item}" class="${(item ==0)?string('on','')}">${invoice.pageNumber+item}</a>[/#if]
+	 			[/#list][#if invoice.pageNumber lt invoice.totalPages]<a class="next" href="javascript:void(0);" s_val="${invoice.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${invoice.totalPages}页</span><span class="txtd">到
+	            <input type="text" name="txtPnum" id="txtPnum" class="txt">页</span><input type="button" class="btn" id="btn" href="javascript:;" value="确认" /></div>
+	 			<!--./pagd--> 
+	 			</div>
+		    </div>
+        </div>
+      </div>
+      <div id="invoice_info" class="uinvd1"></div>
+      <div class="uinvd3"> 备注：<br>
+        1、您的首笔付款记录不显示在该列表中，无需自行审请，本网站会为你开具，详情可联系您的客服专员。<br>
+        2、只允许顺序选择。<br>
+        3、系统自动选择指定行记录前的所有记录。 </div>
+    </div>
+  </div>
+</div>
+
+[#include '/template/front/include/footer2.html' /]
+<!--./foot-->
+<script type="text/javascript" src="/statics/js/moment.min.js"></script>
+<script type="text/javascript" src="/statics/js/jquery.daterangepicker.js"></script>
+<script type="text/javascript" src="/statics/front/js/xcConfirm.js"></script>
+
+<script type="text/javascript">
+	document.ready = function(){
+		//加载时间插件
+		$("#payTime").dateRangePicker();
+	}
+	
+	function submit_form(){
+		$('#searchForm').submit();
+	}
+	
+	function submit_apply(voice_id,type,code,addr_id){
+		var info_id = $("#info_id").val();
+		var unit_name = $("#unit_name").val();
+		var record_code = $("#record_code").val();
+		var reg_address = $("#reg_address").val();
+		var reg_phone = $("#reg_phone").val();
+		var bank = $("#bank").val();
+		var bank_code = $("#bank_code").val();
+		
+		var txt=  "同一个订单下的所有含税的商品都会提交申请，如有特殊需要请于客服沟通！";
+		var option = {
+			title: "提示",
+			btn: parseInt("0011",2),
+			onOk: function(){
+				$.post("/invoice/addInvoiceInfo.jspx",{"voice_id":voice_id,
+				"info_id":info_id,"unit_name":unit_name,"record_code":record_code,
+				"reg_address":reg_address,"reg_phone":reg_phone,"bank":bank,
+				"bank_code":bank_code,"addr_id":addr_id,"type":type,"code":code},
+				function(data){
+					if(data&&data=="ok"){
+						window.wxc.xcConfirm("申请提交成功！", window.wxc.xcConfirm.typeEnum.success
+						,{onOk:function(){
+							window.location.href="/invoice/invoice.jspx";
+						}});
+					}else{
+						window.wxc.xcConfirm("申请失败，请稍候再试！", window.wxc.xcConfirm.typeEnum.error);
+					}
+				});
+			}
+		}
+		window.wxc.xcConfirm(txt, "custom", option);
+	}
+	
+	function apply_invoice(id,type,userName){
+		var pHtml;
+		//type 发票类型
+		$.post("/invoice/invoiceInfo.jspx",{"type":type},
+		function(data){
+			if(type == 0){
+				//普通发票
+				if(data.code ==1){
+					//存在普通发票
+					pHtml = "<div class='vtitd'>"
+			          +"<h3>发票信息</h3>"
+			        +"</div>"
+			        +"<div class='uinvtabd2'>"
+			          +"<table width='100%' border='0' cellspacing='0' class='uinvtab2'>"
+			            +"<tr>"
+			              +"<th width='20%'>发票信息</th>"
+			              +"<th width='45%>用户名："+userName+"</th>"
+			              +"<th width='20%'>&nbsp;</th>"
+			              +"<th width='25%'>&nbsp;</th>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>发票抬头：</td>"
+			              +"<td>"+data.unitName+"</td>"
+			              +"<td>发票内容：</td>"
+			              +"<td>明细</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>收票人省份：</td>"
+			              +"<td>"+data.addr_pcd+"</td>"
+			              +"<td>详细地址：</td>"
+			              +"<td>"+addr_detail+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td colspan='4'><div class='btnd'><a href='javascript:submit_apply("+id+","+type+","+data.code+","+data.addr_id+");' class='btn'>提 交</a>"
+			              +"<input id='info_id' type='hidden' value='"+data.info_id+"'/><a href='/addressManage/toAddressPage.jhtml' class='up'>修改邮寄地址信息<span style='color:red'>(邮寄地址是默认收货地址)</a></div></td>"
+			            +"</tr>"
+			          +"</table>"
+			        +"</div>"
+				}else{
+					//不存在普通发票，新增
+					pHtml = "<div class='vtitd'>"
+			          +"<h3>发票信息</h3>"
+			        +"</div>"
+			        +"<div class='uinvtabd2'>"
+			          +"<table width='100%' border='0' cellspacing='0' class='uinvtab2'>"
+			            +"<tr>"
+			              +"<th width='20%'>发票信息</th>"
+			              +"<th width='45%'>用户名："+userName+"</th>"
+			              +"<th width='20%'>&nbsp;</th>"
+			              +"<th width='25%'>&nbsp;</th>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>发票抬头：</td>"
+			              +"<td><input id='unit_name' type='text' name='unitName'  value='' size='40'/></td>"
+			              +"<td>发票内容：</td>"
+			              +"<td>明细</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>收票人省份：</td>"
+			              +"<td>"+data.addr_pcd+"</td>"
+			              +"<td>详细地址：</td>"
+			              +"<td>"+data.addr_detail+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td colspan='4'><div class='btnd'><a href='javascript:submit_apply("+id+","+type+","+data.code+","+data.addr_id+");' class='btn'>提 交</a>"
+			              +"<a href='/addressManage/toAddressPage.jhtml' class='up'>修改邮寄地址信息<span style='color:red'>(邮寄地址是默认收货地址)</a></div></td>"
+			            +"</tr>"
+			          +"</table>"
+			        +"</div>"
+				}
+			}else if(type == 1){
+				if(data.code ==1){
+					//存在增值发票
+					pHtml = "<div class='vtitd'><h3>公司信息</h3></div>"
+			        +"<div class='uinvtabd2'>"
+			          +"<table width='100%' border='0' cellspacing='0' class='uinvtab2'>"
+			            +"<tr>"
+			              +"<th width='20%'>申请公司信息</th>"
+			              +"<th width='45%'>用户名："+userName+"</th>"
+			              +"<th width='20%'>&nbsp;</th>"
+			              +"<th width='25%'>&nbsp;</th>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>单位名称：</td>"
+			              +"<td>"+data.unitName+"</td>"
+			              +"<td>纳税人识别码：</td>"
+			              +"<td>"+data.recordCode+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>注册地址：</td>"
+			              +"<td>"+data.regAddress+"</td>"
+			              +"<td>注册电话：</td>"
+			              +"<td>"+data.regPhone+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>开户银行：</td>"
+			              +"<td>"+data.bank+"</td>"
+			              +"<td>银行账号：</td>"
+			              +"<td>"+data.bankCode+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>收票人省份：</td>"
+						  +"<td>"+data.addr_pcd+"</td>"
+			              +"<td>详细地址：</td>"
+			              +"<td>"+data.addr_detail+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td colspan='4'><div class='btnd'><a href='javascript:submit_apply("+id+","+type+","+data.code+","+data.addr_id+");' class='btn'>提 交</a>"
+			              +"<input id='info_id' type='hidden' value='"+data.info_id+"'/><a href='/addressManage/toAddressPage.jhtml' class='up'>修改邮寄地址信息<span style='color:red'>(邮寄地址是默认收货地址)</span></a></div></td>"
+			            +"</tr>"
+			          +"</table>"
+			        +"</div>"
+				}else{
+					//不存在增值发票
+					pHtml = "<div class='vtitd'><h3>公司信息</h3></div>"
+			        +"<div class='uinvtabd2'>"
+			          +"<table width='100%' border='0' cellspacing='0' class='uinvtab2'>"
+			            +"<tr>"
+			              +"<th width='20%'>申请公司信息</th>"
+			              +"<th width='45%'>用户名：userName</th>"
+			              +"<th width='25%'>&nbsp;</th>"
+			              +"<th width='20%'>&nbsp;</th>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>*单位名称：</td>"
+			              +"<td><input id='unit_name' type='text' name='unitName'  value='' size='40'/></td>"
+			              +"<td>*纳税人识别码：</td>"
+			              +"<td><input id='record_code' type='text' name='recordCode' size='40' value=''/></td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>*注册地址：</td>"
+			              +"<td><input id='reg_address' type='text' name='regAddress' value='' size='40'/></td>"
+			              +"<td>*注册电话：</td>"
+			              +"<td><input id='reg_phone' type='text' name='regPhone' size='40' value=''/></td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>*开户银行：</td>"
+			              +"<td><input id='bank' type='text' name='bank' value='' size='40'></td>"
+			              +"<td>*银行账号：</td>"
+			              +"<td><input id='bank_code' type='text' name='bankCode' size='40' value=''></td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td>收票人省份：</td>"
+						  +"<td>"+data.addr_pcd+"</td>"
+			              +"<td>详细地址：</td>"
+			              +"<td>"+data.addr_detail+"</td>"
+			            +"</tr>"
+			            +"<tr>"
+			              +"<td colspan='4'><div class='btnd'><a href='javascript:submit_apply("+id+","+type+","+data.code+","+data.addr_id+");' class='btn'>提 交</a>"
+			              +"<a href='/addressManage/toAddressPage.jhtml' class='up'>修改邮寄地址信息(邮寄地址是默认收货地址)</a></div></td>"
+			            +"</tr>"
+			          "</table>"
+			        +"</div>"
+				}
+			}
+			$("#invoice_info").html(pHtml);
+		});
+	}
+</script>
+</body>
+</html>

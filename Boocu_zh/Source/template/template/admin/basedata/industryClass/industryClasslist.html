@@ -1,0 +1,225 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body{
+	margin:0px;
+	font-family:Arial,"宋体",Verdana,sans-serif;
+	font-size:12px;
+}
+html,body {padding: 0;margin: 0; overflow-x:hidden; overflow-y:auto;}
+dl,dd{margin:0px}
+ul{
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+}
+</style>
+
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+ 
+<div id="bookinfo" style="display: none;"></div>
+<div id="loading"></div>
+<div class="main">
+	<form id="memberform">
+		<div id="tb" style="height: auto">
+		    <a href="javascript:append()" class="button blueButton" 
+				data-options="iconCls:'icon-add',plain:true" onclick="append(0,map)" >添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton"
+				data-options="plain:true" onclick="del()">删除</a>
+				
+			<span style="float: right;"> 
+				<span id="simpleSearch">
+					<input id="searchKeyword" class="input_text" type="text" value="" size="30" style="width: 300px;"
+					placeholder="请输入名称" name="searchKeyWord"> 
+					<a href="javascript:void(0)" class="easyui-linkbutton" 
+					data-options="plain:true" onclick="searchIndustryClass();">搜索</a>
+				</span>
+			</span>
+		</div>
+		
+		<div class="clear height10"></div>
+		<!--<div class="content">
+		 <div class="content-left">
+			<div>行业分类<img class="slide"/></div>
+			<div> 
+				<ul id="industries" class="easyui-tree" url="/admin/industyClass/getData.json" >
+				
+				</ul>
+			</div>
+		</div> -->
+		<div class=" shadowBoxWhite tableDiv">
+		<table class="easyui-treegrid" id="dataList"
+			data-options="url:'/admin/industyClass/getData.json',fitColumns:'true' "
+			 idField="id" treeField="name" checkbox="true">
+			<thead>
+				<tr>
+					<th data-options="field:'name',width:$(this).width()*0.3">名称</th>
+					<th data-options="field:'parentName',width:$(this).width()*0.3" >上层产品分类</th>
+					<th data-options="field:'sort',width:$(this).width()*0.1" >排序</th>
+					<th data-options="field:'itemStatus',width:$(this).width()*0.1" formatter = "formatStatus">状态</th>
+					<th data-options="field:'action',width:$(this).width()*0.1,align:'center'" formatter="formatOperation">操作</th>
+					<th data-options="field:'delete',width:$(this).width()*0.1,align:'center'" formatter="formatDel">删除</th>
+				</tr>
+			</thead>
+		</table>
+		</div>
+		<!-- </div>  -->
+	</form>
+	<div id="divdia" style="display: none;"></div>
+
+</div>
+<script type="text/javascript">
+/* $(window).resize(function(){
+		$("#dataList").treegrid("reload");
+	}) */
+
+	function submitForm(map) {
+		var formflag = $(map["formId"]).form().form('validate');
+		if (formflag) {
+			$.Loading.show(map["loadshow"]);
+			var options = {
+				url : map["url"],
+				type : "POST",
+				dataType : 'json',
+				success : function(result) {
+					if (result.result == 1) {
+						$.Loading.show(result.message);
+						$(map["divDialog"]).dialog('close');
+						$(map["gridreload"]).treegrid('reload');
+					}
+					if (result.result == 0) {
+						$.Loading.error(result.message);
+					}
+					$.Loading.hide();
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			};
+			$(map["formId"]).ajaxSubmit(options);
+		}
+	}
+	
+	
+	function append(id) {
+		var map = {}; // Map map = new HashMap();
+		if (!id) {
+			map["href"] = "/admin/industyClass/add_industryClass.jspx";
+			map["formId"] = "#addForm";
+			map["url"] = "/admin/industyClass/save_industryClass.jspx?ajax=yes";
+			map["title"] = "添加产品";
+			map["loadshow"] = "正在添加......";
+		} else {
+			map["href"] = "/admin/industyClass/edit_industryClass.jspx?id=" + id;
+			map["formId"] = "#editForm";
+			map["url"] = "/admin/industyClass/save_edit_industryClass.jspx?ajax=yes";
+			map["title"] = "修改产品";
+			map["loadshow"] = "正在修改......";
+		}
+		map["divDialog"] = "#divdia";
+		map["gridreload"] = "#dataList";
+		addDialog(map);
+	}
+	
+	function addDialog(map) {
+		$(map["divDialog"]).show();
+		$(map["divDialog"]).dialog({
+			title : map["title"],
+			width : 600,
+			height : 300,
+			closed : false,
+			cache : false,
+			href : map["href"],
+			modal : true,
+			buttons : [ {
+				text : '保存',
+				iconCls : 'icon-ok',
+				handler : function() {
+					var savebtn = $(this);
+	　　				var disabled=savebtn.hasClass("l-btn-disabled");
+	　　				if(!disabled){
+						 submitForm(map,savebtn);
+					}
+				}
+			}, {
+				text : '清空',
+				handler : function() {
+					clearForm(map);
+				}
+			} ]
+		});
+	}
+	
+	function clearForm(map) {
+		$(map["formId"]).form('clear');
+	}
+	
+	function formatOperation(value, row, basedata) {
+		var val = "<a class='edit' title='修改' href='javascript:void(0);' onclick='append("+row.id+")' ></a>";
+		return val;
+	}
+	function formatDel(value, row, index) {
+		var val = "<a class='delete' title='删除' href='javascript:void(0);' onclick='delItem("+row.id+")' ></a>";
+		return val;
+	}
+	function formatStatus(value, row, basedata) {
+		return value==1?"启用":"禁用";
+	}
+	
+	function delItem(id) {
+		if (!confirm("确认删除选中的产品及其下的所有子产品？")) {
+			return;
+		}
+		$.ajax({
+			url : "/admin/industyClass/delete_industryClass.jspx",
+			type : "POST",
+			data:{
+				id:id
+			},
+			dataType : 'json',
+			success : function(result) {
+				$.Loading.success(result.message);
+				if (result.result == 1) {
+					$("#dataList").treegrid("reload");
+				}
+			},
+			error : function(e) {
+				$.Loading.error("出现错误 ，请重试");
+			}
+		});
+	}
+	
+	function searchIndustryClass(){
+		var keyword = $("#searchKeyword").val();
+		$("#dataList").treegrid("load",{
+			keyword:keyword
+		});
+	}
+	
+</script>
+</body>
+</html>

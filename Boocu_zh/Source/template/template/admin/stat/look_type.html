@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body{
+	margin:0px;
+	font-family:Arial,"宋体",Verdana,sans-serif;
+	font-size:12px;
+}
+html,body {padding: 0;margin: 0; overflow-x:hidden; overflow-y:auto;}
+dl,dd{margin:0px}
+ul{
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+	
+}
+</style>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/statics/css/daterangepicker.css" rel="stylesheet" type="text/css" />
+<script src="/statics/js/moment.min.js"></script>
+<script src="/statics/js/jquery.daterangepicker.js"></script>
+<script src="/statics/js/highcharts.js"></script>
+<script src="/statics/js/exporting.js"></script>
+<script type="text/javascript">
+$(function () {
+	//加载时间插件
+	$('#time1').dateRangePicker();
+	$('#time2').dateRangePicker();
+	$('#time3').dateRangePicker();
+	$('#time4').dateRangePicker();
+	$('#time5').dateRangePicker();
+	$('#time6').dateRangePicker();
+	
+	loadData("",1,"container1");
+	loadData("",2,"container2");
+	loadData("",3,"container3");
+	loadData("",4,"container4");
+	loadData("",5,"container5");
+	loadData("",6,"container6");
+});
+
+function loadData(time,type,container,fl){
+	$.ajax({
+		url : "/stat/lvTypeData.json",
+		type : "POST",
+		dataType : "JSON",
+		data : {"time":time,"type":type},
+		async: true,
+		success:function(data){
+			var proNo= data.typeName.split(",");
+			var proVal = data.typeVal.split(",");
+			
+			var val = new Array();
+			for(var i = 0;i < proVal.length;i++){
+				val[i] = parseInt(proVal[i]);
+			}
+			var charts;
+			charts = new Highcharts.Chart({
+			//$(container).highcharts({
+		        chart: {
+		        	renderTo: container,
+		            zoomType: 'xy'
+		        },
+		        title: {
+		        	text: '最热门分类'
+		        },
+		        xAxis: [{
+		            categories: proNo,
+		            crosshair: true
+		        }],
+		        yAxis: [{ // Primary yAxis
+		            title: {
+		                text: '数量',
+		                style: {
+		                    color: Highcharts.getOptions().colors[1]
+		                }
+		            }
+		        }, { // Secondary yAxis
+		        }],
+		        tooltip: {
+		            shared: true
+		        },
+		        credits: {enabled: false},
+		        series: [{
+		            name: '浏览次数',
+		            type: 'column',
+		            yAxis: 1,
+		            data: val,
+		            tooltip: {
+		                valueSuffix: '次'
+		            }
+		        }]
+			});
+		}
+	});
+}
+</script>
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+<div id="loading"></div>
+<div class="main">
+	<div class="easyui-tabs">
+		<div title="销售" style="padding:10px;">
+			<div class="clear height10"></div>
+			<form id="memberform1">
+				<div id="tb" style="height: auto">
+					<span style="float: left;"> 
+						<span id="simpleSearch">
+							统计时间：<input id="time1" class="input_text" value="" size="30" name="statTime">
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="chTime('#time1',1,'container1','#saleList')">搜索</a>
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="downLoadExcel('#time1',1)">下载</a>
+						</span>
+					</span>
+				</div>
+				
+				<div class="clear height10"></div>
+				<div class="shadowBoxWhite tableDiv"></div>
+			</form>
+			<div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto;width: 100%"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<table class="easyui-datagrid"
+					data-options="url:'/stat/loadTypeData.json?type=1'" pagination="false" id="saleList">
+					<thead>
+						<tr>
+							<th data-options="field:'proInfo',width:300,align:'center'" >品牌和型号</th>
+						 	<th data-options="field:'typeName',width:150,align:'center'" >分类名称</th>
+						 	<th data-options="field:'userName',width:150,align:'center'" >发布人</th>
+						 	<th data-options="field:'lookDate',width:150,align:'center'" >最新浏览时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div title="求购" style="padding:10px;">
+			<div class="clear height10"></div>
+			<form id="memberform1">
+				<div id="tb" style="height: auto">
+					<span style="float: left;"> 
+						<span id="simpleSearch">
+							统计时间：<input id="time2" class="input_text" value="" size="30" name="statTime">
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="chTime('#time2',2,'container2','#buyList')">搜索</a>
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="downLoadExcel('#time2',2)">下载</a>
+						</span>
+					</span>
+				</div>
+				
+				<div class="clear height10"></div>
+				<div class="shadowBoxWhite tableDiv"></div>
+			</form>
+			<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto;width: 100%"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<table class="easyui-datagrid"
+					data-options="url:'/stat/loadTypeData.json?type=2'" pagination="false" id="buyList">
+					<thead>
+						<tr>
+							<th data-options="field:'proInfo',width:300,align:'center'" >品牌和型号</th>
+						 	<th data-options="field:'typeName',width:150,align:'center'" >分类名称</th>
+						 	<th data-options="field:'userName',width:150,align:'center'" >发布人</th>
+						 	<th data-options="field:'lookDate',width:150,align:'center'" >最新浏览时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div title="出租" style="padding:10px;">
+			<div class="clear height10"></div>
+			<form id="memberform1">
+				<div id="tb" style="height: auto">
+					<span style="float: left;"> 
+						<span id="simpleSearch">
+							统计时间：<input id="time3" class="input_text" value="" size="30" name="statTime">
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="chTime('#time3',3,'container3','#rentList')">搜索</a>
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="downLoadExcel('#time3',3)">下载</a>
+						</span>
+					</span>
+				</div>
+				
+				<div class="clear height10"></div>
+				<div class="shadowBoxWhite tableDiv"></div>
+			</form>
+			<div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto;width: 100%"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<table class="easyui-datagrid"
+					data-options="url:'/stat/loadTypeData.json?type=3'" pagination="false" id="rentList">
+					<thead>
+						<tr>
+							<th data-options="field:'proInfo',width:300,align:'center'" >品牌和型号</th>
+						 	<th data-options="field:'typeName',width:150,align:'center'" >分类名称</th>
+						 	<th data-options="field:'userName',width:150,align:'center'" >发布人</th>
+						 	<th data-options="field:'lookDate',width:150,align:'center'" >最新浏览时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div title="求租" style="padding:10px;">
+			<div class="clear height10"></div>
+			<form id="memberform1">
+				<div id="tb" style="height: auto">
+					<span style="float: left;"> 
+						<span id="simpleSearch">
+							统计时间：<input id="time4" class="input_text" value="" size="30" name="statTime">
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="chTime('#time4',4,'container4','#wantRentList')">搜索</a>
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="downLoadExcel('#time4',4)">下载</a>
+						</span>
+					</span>
+				</div>
+				
+				<div class="clear height10"></div>
+				<div class="shadowBoxWhite tableDiv"></div>
+			</form>
+			<div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto;width: 100%"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<table class="easyui-datagrid"
+					data-options="url:'/stat/loadTypeData.json?type=4'" pagination="false" id="wantRentList">
+					<thead>
+						<tr>
+							<th data-options="field:'proInfo',width:300,align:'center'" >品牌和型号</th>
+						 	<th data-options="field:'typeName',width:150,align:'center'" >分类名称</th>
+						 	<th data-options="field:'userName',width:150,align:'center'" >发布人</th>
+						 	<th data-options="field:'lookDate',width:150,align:'center'" >最新浏览时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div title="维修" style="padding:10px;">
+			<div class="clear height10"></div>
+			<form id="memberform1">
+				<div id="tb" style="height: auto">
+					<span style="float: left;"> 
+						<span id="simpleSearch">
+							统计时间：<input id="time5" class="input_text" value="" size="30" name="statTime">
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="chTime('#time5',5,'container5','#repairList')">搜索</a>
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="downLoadExcel('#time5',5)">下载</a>
+						</span>
+					</span>
+				</div>
+				
+				<div class="clear height10"></div>
+				<div class="shadowBoxWhite tableDiv"></div>
+			</form>
+			<div id="container5" style="min-width: 310px; height: 400px; margin: 0 auto;width: 100%"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<table class="easyui-datagrid"
+					data-options="url:'/stat/loadTypeData.json?type=5'" pagination="false" id="repairList">
+					<thead>
+						<tr>
+							<th data-options="field:'proInfo',width:300,align:'center'" >品牌和型号</th>
+						 	<th data-options="field:'typeName',width:150,align:'center'" >分类名称</th>
+						 	<th data-options="field:'userName',width:150,align:'center'" >发布人</th>
+						 	<th data-options="field:'lookDate',width:150,align:'center'" >最新浏览时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div title="求修" style="padding:10px;">
+			<div class="clear height10"></div>
+			<form id="memberform1">
+				<div id="tb" style="height: auto">
+					<span style="float: left;"> 
+						<span id="simpleSearch">
+							统计时间：<input id="time6" class="input_text" value="" size="30" name="statTime">
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="chTime('#time6',6,'container6','#wantRepairList')">搜索</a>
+							<a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" onclick="downLoadExcel('#time6',6)">下载</a>
+						</span>
+					</span>
+				</div>
+				
+				<div class="clear height10"></div>
+				<div class="shadowBoxWhite tableDiv"></div>
+			</form>
+			<div id="container6" style="min-width: 310px; height: 400px; margin: 0 auto;width: 100%"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<table class="easyui-datagrid"
+					data-options="url:'/stat/loadTypeData.json?type=6'" pagination="false" id="wantRepairList">
+					<thead>
+						<tr>
+							<th data-options="field:'proInfo',width:300,align:'center'" >品牌和型号</th>
+						 	<th data-options="field:'typeName',width:150,align:'center'" >分类名称</th>
+						 	<th data-options="field:'userName',width:150,align:'center'" >发布人</th>
+						 	<th data-options="field:'lookDate',width:150,align:'center'" >最新浏览时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div id="divdia" style="display: none;"></div>
+</div>
+
+<script type="text/javascript">
+function chTime(id,type,container){
+	var time = $(id).val();
+	loadData(time,type,container,1);
+	
+	$(grid).datagrid("load",{
+		time:time
+	});
+}
+
+function downLoadExcel(id,type){
+	var time = $(id).val();
+	
+	window.location.href="/stat/exportTypeExcel.jspx?time="+time+"&type="+type;
+}
+</script>
+</body>
+</html>

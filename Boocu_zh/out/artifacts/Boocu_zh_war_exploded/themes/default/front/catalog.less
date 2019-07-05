@@ -1,0 +1,37 @@
+@import "main";
+
+@cover-width: 200px;
+
+.wrapper-catalog{
+  padding: 30px 0;
+}
+#middleleft {
+  clear: left;
+  float: left;
+  width: 250px;
+  vertical-align: top;
+  & img {
+    height: @cover-width * 4 / 3;
+    width: @cover-width;
+  }
+}
+
+#middleright {
+  clear: right;
+  float: left;
+  width: 650px;
+  vertical-align: top;
+  & .book-name{
+    font-size:18px;
+    font-weight: bold;
+    line-height: 50px;
+  }
+  & ul{
+    margin-left: 20px;
+    & li{
+      line-height: 1.8;
+    }
+  }
+  font-size: 14px;
+  line-height: 1.8;
+}

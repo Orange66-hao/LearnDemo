@@ -1,0 +1,225 @@
+<!--topd-->
+<div class="topd">
+    <input type="text" name="memberId" id="memberId"
+           value="${currentMember.id}" style="display: none;">
+    <div class="main">
+        <div class="l">
+            您好 <strong><a href="/user/user">${currentMember.username}</a></strong> 欢迎来到晧辰科技! &nbsp;
+            [#if currentMember??]
+            <a href="/logout">[退出]</a><a href="/user/user">会员中心</a>
+            <span>
+                <img src="/statics/images/email-icon.png" style="display: inline-block; vertical-align: middle; margin-top: -8px; width: 23px; margin-left: 10px; margin-right: 3px;" onclick="javascript:$('#message').show();"/>${Sysmessage.total}
+            </span>
+            [#else]
+            &nbsp;<a href="/login">[登录]</a>&nbsp;<a href="/register">[注册]</a>
+            [/#if]
+        </div>
+        <div class="r">
+            <div class="linkd">
+                [#if currentMember??] <a href="/subscribeInfo/infoManage.jspx" target="_blank">订阅</a>[#else]<a href="/login">订阅</a>
+                <!-- <a href="javaScript:alert('请登录!');">订阅</a> -->[/#if]<!-- <a -->
+                <!--href="javascript:;">设为首页</a><a href="javascript:;">加入收藏</a>-->
+            </div>
+            <div class="gzd">
+                <a href="javascript:;"></a>
+            </div>
+            <div class="langd">
+                <a class="cn"
+                   href="javascript:window.location.href='http://www.wl95.com';">中文</a><a
+                    class="en"
+                    href="javascript:window.location.href='http://en.wl95.com';">English</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="logolinkd main">
+    <div id="message" hidden="true"
+         style="width: 200px; height: 50px; line-height: 50px; position: absolute; top: 0px; left: 270px; z-index: 999; background: #fff9e1; box-shadow: 0px 2px 5px #666; padding-left: 20px;">
+        <div style="position: relative;">
+            <img src="/statics/images/close-icon.png"
+                 style="position: absolute; right: 5px; top: 5px; width: 15px;"
+                 onclick="javascript:$('#message').hide();"/> <span>${Sysmessage.total}
+			</span>封新站内信 <a href="/memberMessage/toMessageList.jspx"
+                            style="color: orange;" id="selectMessage">查看站内信</a>
+        </div>
+    </div>
+    <div class="logod">
+        <a href="/"><img src="/statics/images/logo.png"></a>
+    </div>
+    <div class="cbanner">
+        <a href="#"><img class="lazy"
+                         src="/statics/front/images/temp/p1_2.png"></a>
+    </div>
+    <div class="linkd">
+        <a href="/news/list.jspx">新闻动态</a><i>｜</i><a
+            href="/product/listAll.jspx">全新仪器</a><i>｜</i><a href="#">资讯论坛</a><br>
+        <a href="/FastPubLogin">快捷发布</a><i>｜</i><a href="/sales/list.jspx">产品促销</a><i>｜</i><a
+            href="/dataCenter/list.jspx">资料中心</a>
+    </div>
+</div>
+<!--./logolinkd-->
+<div class="navpd">
+    <div class="main">
+        <!--navd-->
+        <div class="navd">
+            <ul id="navlid">
+                <li class="on"><a class="la" href="/">首页</a></li>
+                <li><a class="la" href="">销售</a>
+                    <div class="listd">
+                        <div class="list">
+                            <p>
+                                <a href="/productSale/list.jspx">销售</a>
+                            </p>
+                            <p>
+                                <a href="/productBuy/list.jspx">求购</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li><a class="la" href="/productRent/list.jspx">租赁</a>
+                    <div class="listd">
+                        <div class="list">
+                            <p>
+                                <a href="/productRent/list.jspx">租赁</a>
+                            </p>
+                            <p>
+                                <a href="/productWantRent/list.jspx">求租</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li><a class="la" href="/productRepair/list.jspx">维修</a>
+                    <div class="listd">
+                        <div class="list">
+                            <p>
+                                <a href="/productRepair/list.jspx">维修</a>
+                            </p>
+                            <p>
+                                <a href="/productWantRepair/list.jspx">求修</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li><a class="la" href="/productAutoTest/list.jspx">自动化测试方案</a>
+                    <div class="listd">
+                        <div class="list">
+                            <p>
+                                <a href="/productAutoTest/list.jspx">自动化测试方案</a>
+                            </p>
+                            <p>
+                                <a href="/productProjectNeed/list.jspx">方案需求</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+               <!-- <li><a class="la" href="/statics/front/images/nullherf.jpg">拍卖</a>
+                    <div class="listd">
+                        <div class="list">
+                            <p>
+                                <a href="/statics/front/images/nullherf.jpg">拍卖</a>
+                            </p>
+                            <p>
+                                &lt;!&ndash; <a href="/statics/front/images/nullherf.jpg">招标</a> &ndash;&gt;
+                            </p>
+                        </div>
+                    </div>
+                </li>-->
+                <li><a class="la" href="/productTest/list.jspx">产品测试</a>
+                    <div class="listd">
+                        <div class="list">
+                            <p>
+                                <a href="/productTest/list.jspx">产品测试</a>
+                            </p>
+                            <p>
+                                <a href="/productRequireTest/list.jspx">测试需求</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="last"><a class="la"
+                                    href="/productCalibration/list.jspx">计量校准</a></li>
+            </ul>
+        </div>
+        <!--navd-->
+        <!--searchd-->
+        <div class="nsearchd top-keyword">
+            <p class="txtd">
+                <input name="txtKey" id="keyword" type="text" id="txtKey"
+                       class="txt" maxlength="50" placeholder="请输入仪器品牌,型号,名称关键字">
+            </p>
+
+            <p class="btnd top-keywordBtn">
+                <a href="javascript:;"
+                   class="btn[#if isProductSearch!='true'] on[/#if]"
+                   data-type="device" id="device" onclick="deviceSearch();">搜索</a><!-- <a
+					class="btn [#if isProductSearch=='true']on[/#if]"
+					href="javascript:;" data-type="product" id="product"
+					onclick="productSearch();">产品搜索</a> -->
+            </p>
+
+            <!-- <p class="btnd"><a href="javascript:;" class="btn">搜一下</a></p> -->
+        </div>
+        <!--./searchd-->
+    </div>
+</div>
+<!--./top-->
+<script>
+    document.ready = function () {
+        if (${Sysmessage.total}>
+        0
+    )
+        {
+            $('#message').show();
+        }
+    else
+        {
+            $('#message').hide();
+        }
+        // 头部关键字搜索 -设备搜索
+
+
+    }
+
+    function productSearch() {
+        var it = $(".top-keywordBtn #product");
+        if (!it.hasClass("on")) {
+            $(".top-keywordBtn #device").removeClass("on");
+            it.addClass("on");
+        }
+        console.log(it.data("type"));
+        isProductSearch = ("product" == it.data("type"));
+        var keyword = $(".top-keyword").find("input").val();
+        toSeach($.trim(keyword));
+    }
+
+    function deviceSearch() {
+        var it = $(".top-keywordBtn #device");
+        if (!it.hasClass("on")) {
+            $(".top-keywordBtn #product").removeClass("on");
+            it.addClass("on");
+        }
+        console.log(it.data("type"));
+        isProductSearch = ("product" == it.data("type"));
+        var keyword = $(".top-keyword").find("input").val();
+        toSeach($.trim(keyword));//$.trim()方法为忽略值前面和后面的空格
+    }
+
+    function toSeach(keyword) {
+        $(".indexContent").hide();
+        $("#indexLoading").show();
+        $.ajax({
+            url: "/product/list.jspx?isProductSearch=" + isProductSearch,
+            dataType: "html",
+            type: "post",
+            data: {
+                keyword: keyword
+            },
+            success: function (data) {
+                $.includePath = '';
+                $(".indexContent").html(data);
+                $("#indexLoading").hide();
+                $(".indexContent").show();
+            }
+        });
+    }
+</script>

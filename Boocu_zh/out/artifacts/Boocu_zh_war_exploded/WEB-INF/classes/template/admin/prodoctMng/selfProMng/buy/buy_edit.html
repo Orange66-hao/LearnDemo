@@ -1,0 +1,355 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>嘉捷惠-后台管理</title>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+</head>
+<body>
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>品牌</th>
+					<td><input class="easyui-combobox combo" type="text" s_value="${item.productEntity.productBrandEntity.id}"
+						name="brandId" id="brandId" data-options="url:'/admin/basedata/brand/get_brand_names.jspx',method:'get',valueField:'id',
+						textField:'text', width:300, onLoadSuccess:function(){loadSec('#brandId');}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>商品型号</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.proNo}"
+						name="proNo" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>商品分类</th>
+					<td><input class="input_text" type="text" value="${item.productEntity.cid}"
+						name="cid"  ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>商品类型</th>
+					<td><input class="easyui-combobox" data-options="url:'/admin/basedata/producttype/dataJson.jspx',valueField:'id',textField:'text', width:300,[#if item.productEntity.productType??]value:'${item.productEntity.productType.id}'[/#if]"  name="producttypeId" >
+					</td>	
+				</tr>
+				<tr>
+					<th>选件</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.poption}"
+						name="poption" data-options="required:true" ></input>
+					</td>
+				</tr>
+			 	<tr>
+					<th>名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.proName}"
+						name="proName" data-options="required:true" ></input>
+					</td>
+					<th>(英文名)</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.proNameEn}"
+						name="proNameEn" data-options="required:true" ></input>
+					</td>
+				</tr>
+			 	<tr>
+					<th>是否上架</th>
+					<td><input type="radio" ${(item.productEntity.proownaudit==0)?string('checked','')}  value="0"
+						name="proownaudit"  >否
+					<input type="radio" ${(item.productEntity.proownaudit==1)?string('checked','')}  value="1"
+						name="proownaudit"  >是
+					</td>
+				</tr>
+			 	<tr>
+					<th>本信息显示在</th>
+					<td><input type="checkbox" ${(item.productEntity.webzh==1)?string('checked','')}  value="1"
+						name="webzh"  >中文网
+					<input type="checkbox" ${(item.productEntity.weben==1)?string('checked','')}  value="1"
+						name="weben"  >英文网
+					</td>
+				</tr>
+			   <tr>
+					<th>机身号码</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.prodNumber}"
+						name="prodNumber" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>数量</th>
+					<td><input class="input_text" type="text" value="${item.productEntity.proStock}"
+						name="proStock"  ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>设备价值</th>
+					<td><input class="input_text" type="text" value="${item.productEntity.procostPrice}"
+						name="procostPrice"  ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>成色</th>
+					<td>
+						<select name="qualityStatus">
+							<option ${(item.productEntity.qualityStatus == 'all')?string('selected','')} value="all">全新</option>
+							<option ${(item.productEntity.qualityStatus == 'nine')?string('selected','')} value="nine">九成新</option>
+							<option ${(item.productEntity.qualityStatus == 'eight')?string('selected','')} value="eight">八成新</option>
+							<option ${(item.productEntity.qualityStatus == 'seven')?string('selected','')} value="seven">七成新</option>
+							<option ${(item.productEntity.qualityStatus == 'six')?string('selected','')} value="six">六成新</option>
+							<option ${(item.productEntity.qualityStatus == 'five')?string('selected','')} value="five">五成新</option>
+							<option ${(item.productEntity.qualityStatus == 'belowfive')?string('selected','')} value="belowfive">五成新以下</option>
+						</select>
+					</td>
+				</tr>
+				<tr><th>全新参考价</th>
+					<td><input class="input_text" type="text" value="${item.productEntity.referencePrice}"
+						name="referencePrice"  ></input>
+						<select name="referencepricetype">
+							<option ${(item.productEntity.referencepricetype=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.productEntity.referencepricetype == 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="referencePriceLimit">
+							<option ${(item.productEntity.referencePriceLimit=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.productEntity.referencePriceLimit == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+			   <tr>
+					<th>设备状态</th>
+					<td>
+						<select name="status">
+							<option ${(item.productEntity.status=='fine')?string('selected','') } value="fine">完好</option>
+							<option ${(item.productEntity.status == 'bad')?string('selected','')} value="bad">故障</option>
+							<option ${(item.productEntity.status == 'unknown')?string('selected','')} value="unknown">未知</option>
+						</select>
+					</td>
+				</tr>
+				 <tr>
+					<th>价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proMarketPrice}"
+						name="proMarketPrice" data-options="required:true" ></input>
+						<select name="proMarketPriceLimit">
+							<option ${(item.proMarketPriceLimit=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.proMarketPriceLimit == 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="proMarketPriceType">
+							<option ${(item.proMarketPriceType=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.proMarketPriceType == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>是否含税</th>
+					<td><input type="radio" ${(item.productEntity.isTax==0)?string('checked','')}  value="0"
+						name="isTax"  >否
+					<input type="radio" ${(item.productEntity.isTax==1)?string('checked','')}  value="1"
+						name="isTax"  >是
+					</td>
+				</tr>
+				<tr><th>税率</th>
+					<td><input class="input_text" type="text" value="${item.productEntity.taxRate}"
+						name="taxRate"  ></input>
+					</td>
+				</tr>
+				 <tr>
+					<th>是否可计量</th>
+					<td id="isUnit"><input type="radio" ${(item.productEntity.isUnit==0)?string('checked','')} value="0" name="isUnit">否
+						<input type="radio" ${(item.productEntity.isUnit==1)?string('checked','')} value="1" name="isUnit">是
+					</td>
+					<th ${(item.productEntity.isUnit==0)?string('style="display:none"','')}>计量单位</th>
+					<td id="proUnit" ${(item.productEntity.isUnit==0)?string('style="display:none"','')}><input class="input_text" type="text" value="${item.productEntity.proUnit}" 
+						name="proUnit"  ></input>
+					</td>
+				</tr>
+			   <tr>
+			    <tr>
+					<th>交货周期</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.cycle}"
+						name="cycle" data-options="required:true" ></input>
+						<select name="cycleUnit">
+							<option ${(item.productEntity.cycleUnit == 'day')?string('selected','')} value="day">天</option>
+							<option ${(item.productEntity.cycleUnit == 'week')?string('selected','')} value="week">周</option>
+							<option ${(item.productEntity.cycleUnit == 'month')?string('selected','')} value="month">月</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>所在地</th>
+					<td>
+						<select name="prouseAddress">
+							<option ${(item.productEntity.prouseAddress=='inChina')?string('selected','')} value="inChina">中国</option>
+							<option ${(item.productEntity.prouseAddress == 'outofChina')?string('selected','')} value="outofChina">国外</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>保修时间</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.repairPeriod}"
+						name="repairPeriod" data-options="required:true" ></input>
+						<select name="repairPeriodUnit">
+							<option ${(item.productEntity.repairPeriodUnit == 'day')?string('selected','')} value="day">天</option>
+							<option ${(item.productEntity.repairPeriodUnit == 'week')?string('selected','')} value="week">周</option>
+							<option ${(item.productEntity.repairPeriodUnit == 'month')?string('selected','')} value="month">月</option>
+						</select>
+					</td>
+				</tr>
+				  <tr>
+					<th>图片1</th>
+					<td><input id="exap" type="hidden" name="proOriginal1" value="${item.productEntity.proOriginal1}" />
+						<img class="picImg" id="img" style="width:80px;height:80px" src="${item.productEntity.proOriginal1}" />
+						<input class="button blueButton" type="button" id="btnPreViewImg" value="上传图片" />
+					</td>
+					<th>图片2</th>
+					<td><input id="exap1" type="hidden" name="proOriginal2" value="${item.productEntity.proOriginal2}" />
+						<img class="picImg" id="img1" style="width:80px;height:80px" src="${item.productEntity.proOriginal2}" />
+						<input class="button blueButton" type="button" id="btnPreViewImg1" value="上传图片" />
+					</td>
+				</tr>
+				  <tr>
+					<th>图片3</th>
+					<td><input id="exap2" type="hidden" name="proOriginal3" value="${item.productEntity.proOriginal3}" />
+						<img class="picImg" id="img2" style="width:80px;height:80px" src="${item.productEntity.proOriginal3}" />
+						<input class="button blueButton" type="button" id="btnPreViewImg2" value="上传图片" />
+					</td>
+					<th>图片4</th>
+					<td><input id="exap3" type="hidden" name="proOriginal4" value="${item.productEntity.proOriginal4}" />
+						<img class="picImg" id="img3" style="width:80px;height:80px" src="${item.productEntity.proOriginal4}" />
+						<input class="button blueButton" type="button" id="btnPreViewImg3" value="上传图片" />
+					</td>
+				</tr>
+				<tr>
+					<th>资料下载</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.downData}"
+						name="downData" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>产品描述</th>
+					<td ><textarea id="proSynopsis" name="proSynopsis" class="ckeditor" >${item.productEntity.proSynopsis}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>英文描述</th>
+					<td ><textarea id="proSynopsisEn" name="proSynopsisEn" class="ckeditor" >${item.productEntity.proSynopsisEn}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>详细信息</th>
+					<td ><textarea id="proContent" name="proContent" class="ckeditor" >${item.productEntity.proContent}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>英文详细信息</th>
+					<td ><textarea id="proContentEn" name="proContentEn" class="ckeditor" >${item.productEntity.proContentEn}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>行业分类</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.industryclass}"
+						name="industryclass"  ></input></td>
+				</tr>
+				<tr>
+					<th>行业应用</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.apply}"
+						name="apply"  ></input></td>
+					<th>英文</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.applyEn}"
+						name="applyEn"  ></input></td>
+				</tr>
+				<tr>
+					<th>优化标题</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.prometaTitle}"
+						name="prometaTitle" data-options="required:true" ></input></td>
+				</tr>
+				<tr>
+					<th>优化关键字</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.proMetaKeywords}"
+						name="proMetaKeywords" data-options="required:true" ></input></td>
+				</tr>
+				<tr>
+					<th>优化描述</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productEntity.prometaDescription}"
+						name="prometaDescription" data-options="required:true" ></input></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div class="buttonWrap fixed">
+		<a id="searchAdvance" class="easyui-linkbutton" onclick="submitForm()"
+			href="javascript:;">修改</a>
+	</div>
+</div>
+<script>
+	initAjaxUploadImg('btnPreViewImg','exap','img');
+	initAjaxUploadImg('btnPreViewImg1','exap1','img1');
+	initAjaxUploadImg('btnPreViewImg2','exap2','img2');
+	initAjaxUploadImg('btnPreViewImg3','exap3','img3');
+	function loadSec(ele){
+		var value = $(ele).attr("s_value");
+		$(ele).combobox("select",value);
+	}
+	
+	$(function () {
+	    CKEDITOR.replace('proSynopsis', { height: '240px', width: '600px' });
+	    CKEDITOR.replace('proSynopsisEn', { height: '240px', width: '600px' });
+	    CKEDITOR.replace('proContent', { height: '240px', width: '600px' });
+	    CKEDITOR.replace('proContentEn', { height: '240px', width: '600px' });
+	    
+	});
+	$("#isUnit").find("[name=isUnit]").change(function(){
+		if($(this).val()==0){
+			$("#proUnit").hide();
+			$("#proUnit").prev().hide();
+		}else{
+			$("#proUnit").show();
+			$("#proUnit").prev().show();
+		}
+	});
+	function submitForm(){
+		var formflag = $("#editForm").form().form('validate');
+		if (formflag) {
+			for(instance in CKEDITOR.instances){
+				CKEDITOR.instances[instance].updateElement();
+			}
+			$.Loading.show("正在修改......");
+			var options = {
+				url : "/admin/prodoctMng/selfPublish/buy/save_edit_selfPubBuy.jspx?ajax=yes",
+				type : "POST",
+				dataType : 'json',
+				success : function(result) {
+					if(result.result==1){
+						$.Loading.success(result.message);
+					}
+					if(result.result==0){ 
+						$.Loading.error(result.message);
+					}
+					$.Loading.hide();
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			};
+			$("#editForm").ajaxSubmit(options);
+		}
+	}
+</script>
+</body>

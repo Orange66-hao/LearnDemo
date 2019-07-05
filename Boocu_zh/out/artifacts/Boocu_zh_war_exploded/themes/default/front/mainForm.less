@@ -1,0 +1,64 @@
+@divider-color: #e6e6e6;
+@divider-border: solid 1px @divider-color;
+@container-width: 1200px;
+
+.inner-form{
+  margin: 30px 240px;
+  font-size: 14px;
+  *width: (@container-width - 2*240px);
+}
+
+@form-left-width: 90px;
+@form-left-right-margin: 20px;
+@form-item-height: 50px;
+
+.form-item {
+  clear: both;
+  line-height: @form-item-height;
+  //  position: relative;
+  &.hasbook {
+    height: 150px;
+  }
+  & .input-wrapper {
+    line-height: 20px;
+    margin-top: (@form-item-height - 20px - 20px) / 2;
+  }
+  .form-left {
+    float: left;
+    width: @form-left-width;
+    text-align: right;
+    & label{
+      margin-bottom: 0;
+    }
+  }
+  .form-right {
+    float: left;
+    margin-left: @form-left-width + @form-left-right-margin;
+  }
+  .form-left + .form-right {
+    margin-left: @form-left-right-margin;
+  }
+}
+
+.vendor-comemnt{
+  & textarea{
+    height: 80px;
+  }
+}
+
+.input-wrapper{
+  border: @divider-border;
+  display: inline-block;
+  *display: block;
+  &.err{
+    border-color: red;
+    background-image: url('images/error.png');
+    background-repeat: no-repeat;
+    background-position: 160px center;
+  }
+  & input{
+    margin: 5px 25px 5px 5px;
+    border: none;
+
+  }
+}

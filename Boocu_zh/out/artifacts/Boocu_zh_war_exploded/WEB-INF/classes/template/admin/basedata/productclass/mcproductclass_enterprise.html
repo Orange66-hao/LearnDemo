@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    </meta>
+    <title>嘉捷惠-后台管理</title>
+    <script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+    [#include '/template/front/include/csslist.html' /]
+
+    <link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>
+    <script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+    <link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+    <script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+    <style>
+        .regna_v1 {
+            clear: both;
+            width: 210px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 18px;
+            background-color: #C2E4FF;
+        }
+
+        .regna_v1 li {
+            float: left;
+            width: 100%;
+            text-align: center;
+        }
+
+        .regna_v1 li a {
+            height: 50px;
+            color: #00a1fc;
+            display: block;
+        }
+
+        .regna_v1 li.on a {
+            background-color: #fff;
+            box-shadow: 0 0 2px 2px #bbb;
+            -webkit-box-shadow: 0 0 2px 2px #bbb;
+            -moz-box-shadow: 0 0 2px 2px #bbb;
+        }
+
+        .regna_v1 li a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<!--umainr-->
+<div style="top:-30px;">
+    <div class="mainregd" style="top:-20px;">
+        <!--./regnav-->
+        <div class="regna_v1">
+            <ul>
+                <li class="on"><a href="javascript:;">仪器信息</a></li>
+            </ul>
+        </div>
+        <div class="regformd">
+            <form id="enRegist" action="/" method="post" enctype="multipart/form-data" name="regForm" id="regForm">
+                <input type="text" name="memberShip" id="memberShip2" value="enterprise" style="display:none;">
+                <div class="row">
+                    <p class="l"><i class="x">*</i>所属产品：</p>
+                    <p class="r">
+                        <input class="txt" type="text"
+                               name="name" value="${productby}" required="required" readonly="readonly"></input>
+                    </p>
+                    <p class="rr"></p>
+                </div>
+
+                <div class="row">
+                    <p class="l"><i class="x">*</i>名称：</p>
+                    <p class="r">
+                        <input class="txt" type="text"
+                               name="name" value="${item.name}" required="required"></input>
+                    </p>
+                    <p class="rr"></p>
+                </div>
+                <!-- <div class="row">
+                   <p class="l">排序：</p>
+                   <p class="r">
+                     <input type="text" name="sort" id="sort" value="${item.sort}" class="txt">
+                   </p>
+                 </div>-->
+                <!--<div class="row">
+                  <p class="l">备注：</p>
+                  <p class="r">
+                    <textarea style="border:1px solid #ccc;" rows="8" cols="48" name="remark" id="remark">${item.remark}</textarea>
+                  </p>
+                   <p class="rr"></p>
+                </div>-->
+                <div class="row">
+                    <p class="l"><i class="x">*</i>拥有品牌型号：</p>
+                    <p class="r">
+                    <table>
+                        [#list BrandAndModelEntityList as bra]
+                        <tr>
+                        <td style="border:1px solid #ccc;width: 300px;"><a href="#">${bra.productBrandEntity.name}-${bra.model}</a> </td>
+                        </tr>
+                        [/#list]
+                    </table>
+                    </p>
+                    <p class="rr"></p>
+                </div>
+            </form>
+        </div>
+        <!--./regformd-->
+
+    </div>
+    <!--./userd4-->
+</div>
+<script>
+</script>
+</body>

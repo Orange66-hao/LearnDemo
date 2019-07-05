@@ -1,0 +1,62 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="name" value="${item.name}" ></input>
+					</td>
+				</tr>	<tr>
+					<th>英文名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="nameEn" value="${item.nameEn}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>上级仪器名称</th>
+					<td ><select style="width:309px;height:30px;" class="easyui-combotree" url="/admin/basedata/productclass/combotreeData.json" name="parentid" id="parentid" />
+					</td>
+				</tr>
+				<tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-validatebox" type="text"  
+						name="sort" value="${item.sort}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>备注</th>
+					<td><input class="input_text easyui-validatebox" type="text"  
+						name="remark" value="${item.remark}" ></input>
+					</td>
+				</tr>
+			    <tr>
+					<th>创建人</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="createuser" value="${item.createuser}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>修改人</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+						name="updateuser" value="${item.updateuser}"/>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script>
+$(function(){
+	$("#parentid").combotree({
+		onLoadSuccess:function(){
+			$("#parentid").combotree('setValue', "${parentid}");
+		}
+	});
+});
+</script>

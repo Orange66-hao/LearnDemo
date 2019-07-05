@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+</meta>
+<title>嘉捷惠-后台管理</title>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+[#include '/template/front/include/csslist.html' /]
+
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+<script type="text/javascript"
+	src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet"
+	type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript"
+	src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+<style>
+.regna_v1 {
+	clear: both;
+	width: 210px;
+	height: 50px;
+	line-height: 50px;
+	font-size: 18px;
+	background-color: #C2E4FF;
+}
+
+.regna_v1 li {
+	float: left;
+	width: 100%;
+	text-align: center;
+}
+
+.regna_v1 li a {
+	height: 50px;
+	color: #00a1fc;
+	display: block;
+}
+
+.regna_v1 li.on a {
+	background-color: #fff;
+	box-shadow: 0 0 2px 2px #bbb;
+	-webkit-box-shadow: 0 0 2px 2px #bbb;
+	-moz-box-shadow: 0 0 2px 2px #bbb;
+}
+
+.regna_v1 li a:hover {
+	text-decoration: none;
+}
+</style>
+</head>
+<body>
+	<!--umainr-->
+	<div style="top: -30px;">
+		<div class="mainregd" style="top: -20px;">
+			<!--./regnav-->
+			<div class="regformd">
+				<form id="perRegist" action="/" method="post"
+					enctype="multipart/form-data" name="regForm" id="regForm">
+					<input type="text" name="memberShip" id="memberShip1"
+						value="personal" style="display: none;">
+					<div class="row">
+						<p class="l">
+							<i class="x">*</i>登录名：
+						</p>
+						<p class="r">
+							<input type="text" name="username" id="username"
+								value="${item.username}" class="txt"
+								readonly="readonly">
+						</p>
+						<p class="rr"></p>
+					</div>
+					<div class="row">
+						<p class="l">
+							<i class="x">*</i>邮 箱：
+						</p>
+						<p class="r">
+							<input type="text" name="email" id="email"
+								value="${item.email}" class="txt"
+								readonly="readonly">
+						</p>
+						<p class="rr"></p>
+					</div>
+					<div class="row">
+						<p class="l">联系人：</p>
+						<p class="r">
+							<input type="text" name="realName" id="realName"
+								value="${item.realName}" class="txt">
+						</p>
+					</div>
+					<div class="row">
+						<p class="l">手机号码：</p>
+						<p class="r">
+							<input type="text" name="mobile" id="mobile"
+								value="${item.mobile}" class="txt">
+						</p>
+						<p class="rr"></p>
+					</div>
+					<div class="row">
+						<p class="l">身份证号码：</p>
+						<p class="r">
+							<input type="text" name="identityNo" id="identityNo"
+								value="${item.identityNo}" class="txt">
+						</p>
+						<p class="rr"></p>
+					</div>
+					<div class="row">
+						<p class="l">常用仪器：</p>
+						<div class="r">
+							<p class="fl w1">
+								<input type="text" name="brandName" id="brandName"
+									value="${item.brandName}" class="txt txt1"
+									placeholder="品牌">
+							</p>
+							<p class="fl w1">
+								<input type="text" name="productClassName" id="productClassName"
+									value="${item.productClassName}" class="txt txt1"
+									placeholder="型号">
+							</p>
+							<p class="fl w1">
+								<input type="text" name="proName" id="proName" class="txt txt1"
+									value="${item.proName}" placeholder="名称">
+							</p>
+							<p class="rr"></p>
+						</div>
+					</div>
+					<div class="row">
+						<p class="l">主营产品：</p>
+						<p class="r">
+							<input type="text" name="mainProduct" id="mainProduct"
+								value="${item.mainProduct}" class="txt">
+						</p>
+						<p class="rr"></p>
+					</div>
+				</form>
+			</div>
+			<!--./regformd-->
+
+		</div>
+		<!--./userd4-->
+	</div>
+	<script>
+		$ (".identifyImg").attr ("url", "/fileUpload/img.jspx").each (function ()
+        {
+	        $ (this).imgUpload ();
+        });
+        $ ("#identifyImgBack").find ("input").val ("${item.identifyImgBack}");
+        $ ("#identifyImgBack").find (".picImg").attr ("src", "${item.identifyImgBack}");
+        $ ("#identifyImgFront").find ("input").val ("${item.identifyImgFront}");
+        $ ("#identifyImgFront").find (".picImg").attr ("src", "${item.identifyImgFront}");
+	</script>
+</body>

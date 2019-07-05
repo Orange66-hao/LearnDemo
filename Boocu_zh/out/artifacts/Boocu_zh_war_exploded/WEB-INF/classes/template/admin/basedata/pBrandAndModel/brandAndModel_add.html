@@ -1,0 +1,201 @@
+<!--
+  ~ Copyright (c) 2018. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<div class="main" style="background-color: white;">
+    <div class="easyui-panel" style="border-style: none;">
+        <form id="addForm" method="post" class="validate">
+            <table>
+                <tr>
+                    <th>所属仪器名称</th>
+                    <td>
+                        <select style="width: 308px; height: 36px;"
+                                class="easyui-combobox"
+                                id="mc_productclass" name="mc_productclass"/> </select></td>
+                    <td><span class="rr_model" style="color: red"></span></td>
+                </tr>
+                <tr>
+                    <th>所属产品名称</th>
+                    <td>
+                        <select style="width: 308px; height: 36px;"  class="easyui-combobox" name="industryClass" id="industryClass"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>型号名称</th>
+                    <td>
+                        <input class="input_text easyui-validatebox"  type="text"
+                                  name="model" data-options="required:true"></input>
+                        <a href="javascript:void(0)" class="button blueButton"
+                           data-options="iconCls:'icon-add',plain:true" onclick="addInput()">再加一个型号</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>排序</th>
+                    <td><input class="input_text easyui-numberbox" type="text"
+                               name="sort" id="mb_sort"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注</th>
+                    <td><input class="input_text" type="text" id="mb_remark"
+                               name="remark"></input>
+                    </td>
+                </tr>
+            </table>
+            <!--<input type="button" id="model_yincang"   class="input_text2 easyui-validatebox"   value="添加仪器"  onclick="appendmcproductclass()" style="left: 400px;top: 58px;position: absolute;"/>-->
+        </form>
+
+    </div>
+</div>
+<script type="text/javascript">
+    function addInput() {
+        //添加多项的时候 先判断当前所有品牌是否填完了 填完了就检验是否存在重复的
+        var index=$(("#addForm table input[name='model']")).length;
+        var flag;
+        var repeated;
+        $.each($(("#addForm table input[name='model']")),function(index,ele){
+          if($(ele).val()==""){
+              flag= true;
+          }else{
+              //填写完整
+              console.log(brandAndModelList);
+              var thisModle=$(ele).val();
+                if(brandAndModelList){
+                    for(var i=0;i<brandAndModelList.length;i++){
+                        if(brandAndModelList[i].model==thisModle){
+                            repeated=true;
+                           if(!$("#tip")[0]){
+                               var trObj = document.createElement("tr");
+                               trObj.id="tip";
+                               trObj.style.color="red";
+                               trObj.innerHTML="<tr>\n" +
+                                   "                    <th>*</th>\n" +
+                                   "                    <td>\n" +
+                                   "                       此型号已经添加过了，不可重复添加\n" +
+                                   "                    </td>\n" +
+                                   "                </tr>";
+
+                               $(ele.parentElement.parentElement).after(trObj)
+                           }
+                        }
+                    }
+                }
+          }
+            //$(ele.parentElement.parentElement).empty()
+        });
+        //有重复的
+        if(repeated){
+            return false;
+        }else{
+            $("#tip").remove()
+        }
+        //没填写完整
+        if(flag){
+            console.log(flag)
+            alert("请填写完整")
+            return false;
+        }
+        var index=$(("#addForm table input[name='model']")).length+1;
+        var trObj = document.createElement("tr");
+        trObj.innerHTML="<th>型号名称"+index+"</th>\n" +
+            "                    <td>\n" +
+            "                        <input class=\"input_text easyui-validatebox\"  type=\"text\"\n" +
+            "                                  name=\"model\" data-options=\"required:true\"></input>\n" +
+            "\n" +
+            "                        <a href=\"javascript:void(0)\" class=\"button blueButton\"\n" +
+            "                           data-options=\"iconCls:'icon-add',plain:true\" onclick=\"deleteInput(this)\">删除此项</a>\n" +
+            "                    </td>";
+        var count=index+1;
+        $(("#addForm table tr:nth-child("+count+")")).after(trObj)
+
+    }
+    var brandAndModelList;
+    $(function () {
+        $('#mc_productclass').combobox({
+            valueField:'id',
+            textField:'text',
+            editable:true,
+            required:'true',
+            url: "/admin/basedata/productclass/combotreeData.json?getSanji=true",
+            filter: function(q, row){
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) >= 0;//这里改成>=即可在任意地方匹配
+            },
+            onSelect:function (row) {
+                console.log(row.id)
+                $('#industryClass').combobox({
+                    valueField:'id',
+                    textField:'text',
+                    editable:true,
+                    required:'true',
+                    url:'/admin/industyClass/expandByYiqiId.jspx?yiqiId='+row.id,
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) >= 0;//这里改成>=即可在任意地方匹配
+                    },
+                    onSelect:function (row1) {
+                        //重新选择产品下拉的时候清空所有的品牌和型号,只保留一个品牌和型号输入框
+                       var index=$(("#addForm table input[name='model']")).length;
+                       if(index>1){
+                           $.each($(("#addForm table input[name='model']")),function(index,ele){
+                               if(index>0){
+                                   $(ele.parentElement.parentElement).empty()
+                               }
+                           });
+                       }
+                        var $input = $("input[name='model']");
+                        for(var i=0;i<$input.length;i++){
+                           $input[i].value="";
+                        }
+                        //根据产品名称和仪器名称拿到数据库已有品牌型号
+                        var industryClass = $("#industryClass").combobox('getValue');
+                        var productclass = $("#mc_productclass").combobox('getValue');
+                        $.ajax({
+                            url: "/admin/pBrandAndModel/getBrandAndModelByInduAndPro.jspx",
+                            method:"post",
+                            data:{"industryClass":industryClass,"productclass":productclass},
+                            success: function(rs){
+                               // console.log(rs)
+                                brandAndModelList=rs;
+                            }
+                        });
+                    },
+                    onLoadSuccess:function () {
+                        if(productId!=undefined&&industryClassId!=undefined){
+                            //打开添加品牌型号窗口
+                            //根据上面的Id参数   产品和仪器下拉框自动选中
+                            $('#industryClass').combobox('select',industryClassId.toString())
+                        }
+                    }
+                })
+            },
+            onLoadSuccess:function() {
+                if(productId!=undefined&&industryClassId!=undefined){
+                    //打开添加品牌型号窗口
+                    //根据上面的Id参数   产品和仪器下拉框自动选中
+                    $('#mc_productclass').combobox("select",productId.toString())
+                }
+            }
+        })
+        $("#brand1").combobox({
+            valueField: 'id',
+            textField: 'text',
+            url: '/admin/basedata/brand/get_brand_names.jspx',
+            required: true,
+            multiple: false, //多选
+            //editable: false, //是否可编辑
+            filter: function (q, row) {
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) >= 0;//这里改成>=即可在任意地方匹配
+            }
+        })
+
+    })
+
+</script>

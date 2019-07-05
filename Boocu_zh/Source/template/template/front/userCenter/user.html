@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - 晧辰仪联网</title> [#include
+'/template/front/include/csslist.html' /]
+<style type="text/css">
+#w1 {
+	display: none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+</head>
+<body>
+	<!--top-->
+	[#include '/template/front/include/header.html' /]
+	<!--./top-->
+	<!--loading-->
+	<div class="listloadingd" id="indexLoading"></div>
+	<!--./loading-->
+	<!--content-->
+	<div class="indexContent">
+		<div class="main userd">
+			<div class="umaintitd">
+				当前位置：<a href="/" style="text-decoration: none;">首页</a> &gt; <a
+					href="/user/user" style="text-decoration: none;">会员中心 </a>&gt; <a
+					href="javascript:void;" style="text-decoration: none;"><span>会员中心首页</span></a>
+			</div>	
+			<!--usernav-->
+			[#include '/template/front/include/usernav.html' /]
+			<!--./usernav-->
+
+			<!--umainr-->
+			<div class="umainr">
+				<div class="umainrtitd">
+					<span>会员基本信息 </span>
+				</div>
+				<div class="userd1">
+					<div class="head">
+						<img class="lazy" src="/statics/images/head.jpg"
+							data-original="/statics/images/head.jpg" width="105" height="105">
+					</div>
+					<div class="infod">
+						<p>用户名：${currentMember.username}</p>
+						<p>
+							我发布的信息：<span>${allProduct.size()}</span>
+						</p>
+						<ul>
+							<li>销售：<span><a href="/saleInfor">${sale.size()}</a></span></li>
+							<li>求购：<span><a href="/buyInfor">${buy.size()}</a></span></li>
+							<li>租赁：<span><a href="/rentInfor">${rent.size()}</a></span></li>
+							<li>求租：<span><a href="/wantRentInfor">${wantRent.size()}</a></span></li>
+							<li>维修：<span><a href="/repairInfor">${repair.size()}</a></span></li>
+							<li>求修：<span><a href="/wantRepairInfor">${wantRepair.size()}</a></span></li>
+							<li>自动化测试方案：<span><a href="/autoTestInfor">${autoTest.size()}</a></span></li>
+							<li>方案需求：<span><a href="/projectNeedInfor">${projectNeed.size()}</a></span></li>
+							<!--<li>拍卖：<span><a href="#">${auction.size()}</a></span></li>-->
+							<li>招标：<span><a href="#">${invite.size()}</a></span></li>
+							<li>产品测试：<span><a href="/productTestInfor">${productTest.size()}</a></span></li>
+							<li>测试需求：<span><a href="/requireTestInfor">${requireTest.size()}</a></span></li>
+							<li>计量校准：<span><a href="/calibrationInfor">${calibration.size()}</a></span></li>
+						</ul>
+					</div>
+				</div>
+				<!--./userd1-->
+				<div class="umainrtitd">
+					<span>交易提醒</span>
+				</div>
+				<div class="userd2">
+					<ul>
+						<li>待支付订单：<span>0</span></li>
+						<li>待收款订单：<span>0</span></li>
+						<li>到货通知：<span>0</span></li>
+						<li>发货通知：<span>0</span></li>
+					</ul>
+				</div>
+				<!--./userd2-->
+
+				<div class="umainrtitd">
+					<span>猜您喜欢</span>
+				</div>
+				<div class="userd3">
+					<ul>
+						<li><a href="#" target="_blank">
+								<p>
+									<img class="lazy" src="/statics/images/temp/p3_1.jpg"
+										data-original="/statics/images/temp/p3_1.jpg" width="140"
+										height="115">
+								</p>
+								<h3>低价销售</h3>
+						</a></li>
+						<li><a href="#" target="_blank">
+								<p>
+									<img class="lazy" src="/statics/images/temp/p3_2.jpg"
+										data-original="/statics/images/temp/p3_2.jpg" width="140"
+										height="115">
+								</p>
+								<h3>高价求购</h3>
+						</a></li>
+						<li><a href="#" target="_blank">
+								<p>
+									<img class="lazy" src="images/grey.gif"
+										data-original="/statics/images/temp/p4.jpg" width="140" height="115">
+								</p>
+								<h3>低价销售</h3>
+						</a></li>
+						<li><a href="#" target="_blank">
+								<p>
+									<img class="lazy" src="images/grey.gif"
+										data-original="/statics/images/temp/p5_1.jpg" width="140" height="115">
+								</p>
+								<h3>高价求购</h3>
+						</a></li>
+						<li><a href="#" target="_blank">
+								<p>
+									<img class="lazy" src="images/grey.gif"
+										data-original="/statics/images/temp/p5_4.jpg" width="140" height="115">
+								</p>
+								<h3>低价销售</h3>
+						</a></li>
+						<li><a href="#" target="_blank">
+								<p>
+									<img class="lazy" src="images/grey.gif"
+										data-original="/statics/images/temp/p5_3.jpg" width="140" height="115">
+								</p>
+								<h3>高价求购</h3>
+						</a></li>
+					</ul>
+				</div>
+				<!--./userd3-->
+
+				<!--  <div class="umainrtitd"><span>全部订单</span></div>
+    <div class="userd4">
+      <table width="100%" cellspacing="0" class="userd4tab">
+        <tr>
+          <th width="4%">&nbsp;</th>
+          <th width="20%">订购时间</th>
+          <th width="20%">订单号</th>
+          <th width="14%">收货人</th>
+          <th width="13%">订单总金额</th>
+          <th width="14%">订单状态</th>
+          <th width="15%">操作</th>
+        </tr>
+        <tr>
+          <td><a href="javascript:;" class="zk" lang="tr_1"></a></td>
+          <td>2012-11-15 19:58:44</td>
+          <td class="blue">201211151958441652</td>
+          <td>张三</td>
+          <td class="red">￥264.00</td>
+          <td>无效</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr class="h" id="tr_1">
+          <td></td>
+          <td colspan="6" class="l"><img src="images/temp/p3_1.jpg"><img src="images/temp/p3_2.jpg"></td>
+        </tr>
+        <tr>
+          <td><a href="javascript:;" class="zk" lang="tr_2"></a></td>
+          <td>2012-11-15 19:58:44</td>
+          <td class="blue">201211151958441652</td>
+          <td>张三</td>
+          <td class="red">￥264.00</td>
+          <td>无效</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr class="h" id="tr_2">
+          <td></td>
+          <td colspan="6" class="l"><img src="images/temp/p3_1.jpg"></td>
+        </tr>
+        <tr>
+          <td><a href="javascript:;" class="zk" lang="tr_3"></a></td>
+          <td>2012-11-15 19:58:44</td>
+          <td class="blue">201211151958441652</td>
+          <td>张三</td>
+          <td class="red">￥264.00</td>
+          <td>无效</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr class="h" id="tr_3">
+          <td></td>
+          <td colspan="6" class="l"><img src="images/temp/p3_1.jpg"></td>
+        </tr>
+        <tr>
+          <td><a href="javascript:;" class="zk" lang="tr_4"></a></td>
+          <td>2012-11-15 19:58:44</td>
+          <td class="blue">201211151958441652</td>
+          <td>张三</td>
+          <td class="red">￥264.00</td>
+          <td>无效</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr class="h" id="tr_4">
+          <td></td>
+          <td colspan="6" class="l"><img src="images/temp/p3_1.jpg"></td>
+        </tr>
+        <tr>
+          <td><a href="javascript:;" class="zk" lang="tr_5"></a></td>
+          <td>2012-11-15 19:58:44</td>
+          <td class="blue">201211151958441652</td>
+          <td>张三</td>
+          <td class="red">￥264.00</td>
+          <td>无效</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr class="h" id="tr_5">
+          <td></td>
+          <td colspan="6" class="l"><img src="images/temp/p3_1.jpg"></td>
+        </tr>
+      </table>
+    </div>
+    <!--./userd4-->
+			</div>
+			<!--./umainr-->
+
+		</div>
+		<div id="w1"></div>
+		<div id="w3" style="display: none;">
+			<div id="w" class="easyui-window" title="提  示"
+				data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true,"
+				style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+				<div class="easyui-layout" data-options="fit:true">
+					<div data-options="region:'center'"
+						style="padding: 10px; background: #fff;">
+						您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核！
+						<p style="padding-top: 80px; margin-left: 110px;">
+							<a class="easyui-linkbutton" href="javascript:void(0)"
+								onclick="window_submit()" style="width: 80px">确 认</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div id="w2" class="easyui-window" title="提  示"
+				data-options="closed:true,resizable:false,minimizable:false,maximizable:false"
+				style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+				<div class="easyui-layout" data-options="fit:true">
+					<div data-options="region:'center'"
+						style="padding: 10px; background: #fff">
+						您的账号未激活，请先登录注册邮箱激活，如果您是手机快捷注册用户，请在首页对话框联系管理员给您审核激活
+						<p style="padding-top: 105px; margin-left: 110px;">
+							<a class="easyui-linkbutton" href="javascript:void(0)"
+								onclick="window_close()" style="width: 80px">确 认</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--./content-->
+	</div>
+	<!--foot-->
+	[#include '/template/front/include/footer2.html' /]
+	<!--./foot-->
+
+	[#include '/template/front/include/jslist.html' /]
+	<script type="text/javascript"
+		src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		$(".userd4tab .zk").click(function() {
+			var trID = $(this).attr("lang");
+			if ($(this).hasClass("show")) {
+				$(this).removeClass("show");
+				$("#" + trID).hide();
+			} else {
+				$(this).addClass("show");
+				$("#" + trID).show();
+			}
+		});
+		//未审核提示
+		function window_submit() {
+			window.location.href = "/editRegister.jhtml?id=" + ${currentMember.id};
+		}
+		//关闭账号未审核窗口
+		function window_close() {
+			$("#w2").window('close');
+			$("#w1").hide();
+		}
+		//账号审核
+		$(function() {
+			$("#w").window({
+				onClose : function() {
+					$("#w1").hide();
+				}
+			});
+			$("#w2").window({
+				onClose : function() {
+					$("#w1").hide();
+				}
+			});
+			$(".addprod").click(
+					function() {
+						var userClass = "${currentMember.userType}";
+						var enabled = "${currentMember.enabled}"
+						if (enabled == "1") {
+							$("#w3").show();
+							$("#w2").window('open');
+							$("#w1").show();
+						} else {
+							if (userClass == "buyer" || userClass == ""
+									|| enabled == "2") {
+								$("#w3").show();
+								$("#w").window('open');
+								$("#w1").show();
+							} else if (userClass == "seller"
+									|| userClass == "business") {
+								window.location.href = "/user_pub_sale";
+							}
+						}
+					});
+		});
+	</script>
+</body>
+</html>

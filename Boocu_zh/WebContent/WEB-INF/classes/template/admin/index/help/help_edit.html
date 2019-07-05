@@ -1,0 +1,36 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>帮助信息标题</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="title" data-options="required:true" value="${item.title}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>帮助信息标题英文</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="titleEn" data-options="required:true" value="${item.titleEn}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>帮助信息内容</th>
+					<td ><textarea rows="15" cols="50" id="content" name="content" class="ckeditor">${item.content}</textarea>
+					</td>
+				</tr>
+					<tr>
+					<th>帮助信息英文内容</th>
+					<td ><textarea rows="15" cols="50" id="contentEn" name="contentEn" class="ckeditor">${item.contentEn}</textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

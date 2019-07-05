@@ -1,0 +1,91 @@
+
+<!--loading-->
+<div class="listloadingd"></div>
+<!--./loading-->
+
+<div class="prosaleuld">
+	[#list page.cont as item]
+	<!--li-->
+	<div class="prosalelid">
+		<a href="/product/${item.id}.jhtml" target="_blank">
+			<div class="picd">
+				<img class="lazy" src="/statics/front/images/grey.gif"
+					data-original="[#if item.proOriginal1!]${item.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]"
+					width="268" height="175">
+			</div>
+			<div class="infod">
+				<h3>产品型号：[#if item.productBrandEntity.name?length gt 6 ]
+					${item.productBrandEntity.name?substring(0,6)}[#else]${item.productBrandEntity.name}
+					[/#if] [#if item.proNo?length gt 6 ]
+					${item.proNo?substring(0,6)}[#else]${item.proNo} [/#if]</h3>
+				<p>
+					促销价<span><span class="f"> [#if priceType??] [#if
+							priceType=='VIP'] [#if item.proVipPrice?? && item.proVipPrice !=
+							0]
+							${item.proVipPrice}${message("PriceUnit."+item.proVipPriceLimit)}
+							[#else] 电议 [/#if] [/#if] [#if priceType=='同行'] [#if
+							item.proPeer?? && item.proPeer != 0]
+							${item.proPeer}${message("PriceUnit."+item.proPeerLimit)} [#else]
+							电议 [/#if] [/#if] [#if priceType=='客户'] [#if item.proMemberPrice??
+							&& item.proMemberPrice != 0]
+							${item.proMemberPrice}${message("PriceUnit."+item.proMemberPriceLimit)}
+							[#else] 电议 [/#if] [/#if] [#else] [#if item.proCustomPrice?? &&
+							item.proCustomPrice != 0]
+							${item.proCustomPrice}${message("PriceUnit."+item.proCustomPriceLimit)}
+							[#else] 电议 [/#if] [/#if]</span></span>
+				</p>
+				<i></i>
+			</div>
+		</a>
+	</div>
+	[/#list]
+	<!--./li-->
+</div>
+<!--pagd-->
+<div class="pagd">
+	[#if (page.pageNumber-1) gte 1]<a class="prev"
+		href="javascript:void(0);" s_val="${page.pageNumber-1}">上一页</a>[/#if]
+	[#list -2..2 as item] [#if (page.pageNumber+item) gte 1 &
+	(page.pageNumber+item) lte page.totalPages]<a
+		href="javascript:void(0);" s_val="${page.pageNumber+item}"
+		class="${(item ==0)?string('on','')}">${page.pageNumber+item}</a>[/#if]
+	[/#list] [#if page.pageNumber lt page.totalPages]<a class="next"
+		href="javascript:void(0);" s_val="${page.pageNumber+1}">下一页</a>[/#if]
+</div>
+<!--./pagd-->
+
+<script src="/statics/front/js/jquery.min.js"></script>
+<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script>
+<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script>
+<script src="/statics/front/js/main.js"></script>
+<script src="/statics/front/js/pro.js"></script>
+<script>
+$(function(){
+	 $ (".pagd").find ("a").click(function (){
+		    $ ("#searchForm").find ("input[name='pageNum']").attr ("value", $ (this).attr ("s_val"));
+		    if (!$ (this).hasClass ("on"))
+		    {
+			    submitPost ();
+			    $ (document).scrollTop (300);
+			    $ ("#searchForm").find ("input[name='pageNum']").attr ("value", "");
+		    }
+		    
+	    });
+})
+	
+
+	//分页
+/*     $ (".pagd").find ("a").click (function ()
+    {
+	    $ ("#searchForm").find ("input[name='pageNum']").attr ("value", $ (this).attr ("s_val"));
+	    if (!$ (this).hasClass ("on"))
+	    {
+		    submitPost ();
+		    $ (document).scrollTop (300);
+		    $ ("#searchForm").find ("input[name='pageNum']").attr ("value", "");
+	    }
+	    
+    }); */
+</script>
+
+

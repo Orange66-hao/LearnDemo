@@ -1,0 +1,425 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+</meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body {
+	margin: 0px;
+	font-family: Arial, "宋体", Verdana, sans-serif;
+	font-size: 12px;
+}
+
+html, body {
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+dl, dd {
+	margin: 0px
+}
+
+ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.prosortd {
+	clear: both;
+	margin-left: 10px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.prosortd p {
+	float: left;
+	padding-right: 120px;
+	font-size: 14px;
+}
+
+.prosortd1 {
+	clear: both;
+	margin-left: 10px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.prosortd1 p {
+	float: left;
+	padding-right: 150px;
+	font-size: 14px;
+}
+
+.prosortd2 {
+	clear: both;
+	margin-left: 240px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.prosortd2 p {
+	float: left;
+	padding-right: 150px;
+	font-size: 14px;
+}
+</style>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+<script type="text/javascript"
+	src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet"
+	type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+
+
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+
+	<div id="bookinfo" style="display: none;"></div>
+	<div id="loading"></div>
+	<div class="main">
+		<div class="easyui-tabs">
+			<div title="已分组用户" style="padding: 10px;">
+				<form id="memberform1">
+					<div id="tb" style="height: auto">
+						<!-- <a href="javascript:void(0)" class="button blueButton"
+							data-options="plain:true" onclick="unInvocation1()">激活</a> <a
+							href="javascript:void(0)" class="easyui-linkbutton"
+							data-options="plain:true" onclick="del1()">删除</a> <span
+							style="float: right;"> <span id="simpleSearch"> <input
+								id="searchKeyword1" class="input_text" type="text" value=""
+								size="30" style="width: 300px;" placeholder="请输入会员名"
+								name="searchKeyWord"> <a href="javascript:void(0)"
+								class="easyui-linkbutton" data-options="plain:true"
+								onclick="searchAdvertBase1()">搜索</a>
+						</span>
+						</span> -->
+					</div>
+
+					<div class="clear height10"></div>
+					<div class="shadowBoxWhite tableDiv">
+						<table class="easyui-datagrid"
+							data-options="url:'/admin/userSubscribe/getGroupData.jspx',pageList: [5,10,15,20],pageSize:10"
+							pagination="true" id="memberdata1" sortName="id" sortOrder="desc">
+							<thead>
+								<tr>
+									<th data-options="field:'id',checkbox:true">id</th>
+									<th data-options="field:'username',width:150,sortable:'true'"
+										formatter="userOperation">会员名</th>
+									<th data-options="field:'gradename',width:100,sortable:'true'">用户组别</th>
+									<th data-options="field:'email',width:200,sortable:'true'">电子邮箱</th>
+									<th
+										data-options="field:'createDate',width:$(this).width()*0.1,sortable:'true'"
+										formatter="findSubscribe">订阅时间/订阅详情</th>
+									<th
+										data-options="field:'action',width:$(this).width()*0.1,align:'center'"
+										formatter="formatOperation1">操作</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</form>
+			</div>
+			<div title="未分组用户" style="padding: 10px;">
+				<form id="memberform2">
+					<div id="tb" style="height: auto">
+						<!-- 	<a href="javascript:void(0)" class="button blueButton"
+							data-options="plain:true" onclick="invocation2()">审核</a> <a
+							href="javascript:void(0)" class="easyui-linkbutton"
+							data-options="plain:true" onclick="forbid2()">禁用</a> <a
+							href="javascript:void(0)" class="easyui-linkbutton"
+							data-options="plain:true" onclick="del2()">删除</a> <span
+							style="float: right;"> <span id="simpleSearch"> <input
+								id="searchKeyword2" class="input_text" type="text" value=""
+								size="30" style="width: 300px;" placeholder="请输入会员名"
+								name="searchKeyWord"> <a href="javascript:void(0)"
+								class="easyui-linkbutton" data-options="plain:true"
+								onclick="searchAdvertBase2()">搜索</a>
+						</span>
+						</span> -->
+					</div>
+
+					<div class="clear height10"></div>
+					<div class="shadowBoxWhite tableDiv">
+						<table class="easyui-datagrid"
+							data-options="url:'/admin/userSubscribe/getNoGroupData.jspx',pageList: [5,10,15,20],pageSize:10"
+							pagination="true" id="memberdata2" sortName="id" sortOrder="desc">
+							<thead>
+								<tr>
+									<th data-options="field:'id',checkbox:true">id</th>
+									<th data-options="field:'username',width:150,sortable:'true'"
+										formatter="userOperation">会员名</th>
+									<th data-options="field:'email',width:200,sortable:'true'">电子邮箱</th>
+									<th
+										data-options="field:'loginDate',width:$(this).width()*0.1,sortable:'true'">最近登录日期</th>
+									<th
+										data-options="field:'action',width:$(this).width()*0.1,align:'center'"
+										formatter="formatOperation1">操作</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="divdia" style="display: none;"></div>
+
+	</div>
+	<script type="text/javascript">
+
+	$(".prosortd").find("input[type='radio']").change(function(){
+		var gride = $(".prosortd").find("input[name='memberGradeId']:checked").attr("s_val");
+		var keyword1 = $("#searchKeyword1").val();
+		var keyword2 = $("#searchKeyword2").val();
+		var keyword3 = $("#searchKeyword3").val();
+		var keyword0 = $("#searchKeyword0").val();
+		$("#memberdata1").datagrid("load",{
+			gride:gride,
+			keyword:keyword1,
+			page:1
+		});
+		$("#memberdata2").datagrid("load",{
+			gride:gride,
+			keyword:keyword2,
+			page:1
+		});
+		$("#memberdata3").datagrid("load",{
+			gride:gride,
+			keyword:keyword3,
+			page:1
+		});
+		$("#memberdata0").datagrid("load",{
+			gride:gride,
+			keyword:keyword0,
+			page:1
+		});
+	});
+
+	function submitForm(map) {
+		var formflag = $(map["formId"]).form().form('validate');
+		if (formflag) {
+			$.Loading.show(map["loadshow"]);
+			var options = {
+				url : map["url"],
+				type : "POST",
+				dataType : 'json',
+				success : function(result) {
+					if (result.result == 1) {
+						$.Loading.show(result.message);
+						$(map["divDialog"]).dialog('close');
+						$("#memberdata1").datagrid('reload');
+						$("#memberdata2").datagrid('reload');
+					}
+					if (result.result == 0) {
+						$.Loading.error(result.message);
+					}
+					$.Loading.hide();
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			};
+			$(map["formId"]).ajaxSubmit(options);
+		}
+	}
+	
+	
+	function append1(id) {
+		var map = {}; // Map map = new HashMap();
+		if (id != null) {
+			map["href"] = "/admin/userSubscribe/edit_membersub.jspx?id=" + id;
+			map["formId"] = "#editForm";
+			map["url"] = "/admin/userSubscribe/save_membersub.jspx";
+			map["title"] = "修改资料信息";
+			map["loadshow"] = "正修改......";
+		}
+		map["divDialog"] = "#divdia";
+		map["gridreload"] = "#memberdata1";
+		addDialog(map);
+	}
+	
+	function append2(id) {
+		var map = {}; // Map map = new HashMap();
+		if (id != null) {
+			map["href"] = "/admin/userGroupMng/edit_membersub.jspx?id=" + id;
+			map["formId"] = "#editForm";
+			map["url"] = "/admin/userGroupMng/save_membersub.jspx?ajax=yes";
+			map["title"] = "修改资料信息";
+			map["loadshow"] = "正修改......";
+		}
+		map["divDialog"] = "#divdia";
+		map["gridreload"] = "#memberdata2";
+		addDialog(map);
+	}
+	
+	function append3(id) {
+		var map = {}; // Map map = new HashMap();
+		if (id != null) {
+			map["href"] = "/admin/userGroupMng/edit_membersub.jspx?id=" + id;
+			map["formId"] = "#editForm";
+			map["url"] = "/admin/userGroupMng/save_membersub.jspx?ajax=yes";
+			map["title"] = "修改资料信息";
+			map["loadshow"] = "正修改......";
+		}
+		map["divDialog"] = "#divdia";
+		map["gridreload"] = "#memberdata3";
+		addDialog(map);
+	}
+	
+	function append0(id) {
+		var map = {}; // Map map = new HashMap();
+		if (id != null) {
+			map["href"] = "/admin/userGroupMng/edit_membersub.jspx?id=" + id;
+			map["formId"] = "#editForm";
+			map["url"] = "/admin/userGroupMng/save_membersub.jspx?ajax=yes";
+			map["title"] = "修改资料信息";
+			map["loadshow"] = "正修改......";
+		}
+		map["divDialog"] = "#divdia";
+		map["gridreload"] = "#memberdata0";
+		addDialog(map);
+	}
+	
+	function addDialog(map) {
+		$(map["divDialog"]).show();
+		$(map["divDialog"]).dialog({
+			title : map["title"],
+			width : 600,
+			height : 400,
+			closed : false,
+			cache : false,
+			href : map["href"],
+			modal : true,
+			buttons : [ {
+				text : '保存',
+				iconCls : 'icon-ok',
+				handler : function() {
+					var savebtn = $(this);
+	　　				var disabled=savebtn.hasClass("l-btn-disabled");
+	　　				if(!disabled){
+						 submitForm(map,savebtn);
+					}
+				}
+			}, {
+				text : '清空',
+				handler : function() {
+					clearForm(map);
+				}
+			} ]
+		});
+	}
+	
+	function clearForm(map) {
+		$(map["formId"]).form('clear');
+	}
+	
+	//已分组操作
+	function formatOperation1(value, row, index) {
+		var val = "<a class='edit' title='修改' href='javascript:void(0);' onclick='append1("+row.userId+")' ></a><a class='delete' title='删除' href='javascript:void(0);' onclick='del1("+row.userId+")' ></a>";
+		return val;
+	}
+	//查看用户的详细信息
+	function userOperation(value, row, index) {
+		 var val = "<a class='details' title='查看' href='javascript:void(0);' onclick='newTab(\""
+			+ row.username
+			+ "-信息\",\"/admin/userSubscribe/look_membersub.jspx?id="
+			+ row.userId + "\")' >"+row.username+"</a>"; 
+		return val;
+	}
+	function findSubscribe(value, row, index) {
+		 var val = row.createDate+"/<a class='details' title='查看订阅' href='javascript:void(0);' onclick='newTab(\""
+				+ row.username
+				+ "-订阅的信息\",\"/admin/userSubscribe/look_subscribe.jspx?id="
+				+ row.userId + "\")' >查看</a>"; 
+		return val;
+	}
+	
+	
+	
+	//真实删除分组订阅信息
+	function del1(id) {
+		
+		if(!confirm("确认要删除该选项?")){
+			return;
+		}
+		$.ajax({
+			url: "/admin/userSubscribe/del_membersub.jspx?ajax=yes&&id="+id,
+			type : "POST",
+			dataType: 'json',
+			success : function(result) {
+				$.Loading.success(result.message);
+				if(result.result == 1) {
+					$("#memberdata1").datagrid('reload');
+					$("#memberdata2").datagrid('reload');
+				}
+			},
+			error : function(e){
+				$.Loading.error("出现错误, 请重试");
+			}
+		})
+				
+	}
+	
+	//真实删除未分组订阅信息
+	function del2() {
+		var rows = $("#memberdata2").datagrid("getSelections");
+		if(rows.length < 1){
+			$.Loading.error("请选择要删除的选项");
+			return;
+		}
+		if(!confirm("确认要删除该选项?")){
+			return;
+		}
+		var options = {
+				url: "/admin/userGroupMng/delete_memberAudit.jspx?ajax=yes",
+				type : "POST",
+				dataType: 'json',
+				success : function(result) {
+					$.Loading.success(result.message);
+					if(result.result == 1) {
+						var rows = $('#memberdata2').datagrid("getSelections");
+						for( var i =0; i<rows.length; i++){
+							var index = $('#memberdata2').datagrid('getRowIndex', rows[i]);
+							$('#memberdata2').datagrid('deleteRow',index);
+						}
+					}
+				},
+				error : function(e){
+					$.Loading.error("出现错误, 请重试");
+				}
+				};	
+		$('#memberform2').ajaxSubmit(options);
+	}
+	
+</script>
+</body>
+</html>

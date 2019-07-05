@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>注册 - 晧辰仪联网</title>
+<link rel="stylesheet" href="css/public.css" />
+<link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+<!--top-->
+<div class="toplogind">
+  <div class="main">
+    <div class="logod"><a href="index.html"><img src="images/logo.png"></a></div>
+    <div class="titd">用户注册</div>
+  </div>
+</div>
+<!--./top--> 
+
+<!--content-->
+<div class="main">
+  <div class="mainregd">
+    <div class="regnav">
+      <ul>
+        <li class="on"><a href="javascript:;">个人用户注册</a></li>
+        <li><a href="javascript:;">企业用户注册</a></li>
+        <li><a href="javascript:;">手机号快捷注册</a></li>
+      </ul>
+    </div>
+    <!--./regnav--> 
+    
+    <!--个人注册-->
+    <div class="regformd">
+      <form action="" method="post" enctype="multipart/form-data" name="regForm" id="regForm">
+        <div class="row">
+          <p class="l"><i class="x">*</i>登陆名：</p>
+          <p class="r">
+            <input type="text" name="txtUsername" id="txtUsername" class="txt">
+          </p>
+          <p class="rr">允许中、英文录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>密 码：</p>
+          <p class="r">
+            <input type="password" name="txtPassword" id="txtPassword" class="txt">
+          </p>
+          <p class="rr">允许大小字母、数字、符号录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>再次输入密码：</p>
+          <p class="r">
+            <input type="password" name="txtPassword2" id="txtPassword2" class="txt">
+          </p>
+          <p class="rr">允许中、英文录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l">邮 箱：</p>
+          <p class="r">
+            <input type="text" name="txtEmail" id="txtEmail" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">手机号码：</p>
+          <p class="r">
+            <input type="text" name="txtMobile" id="txtMobile" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">身份证号码：</p>
+          <p class="r">
+            <input type="text" name="txtIdcard" id="txtIdcard" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">常用仪器：</p>
+          <div class="r">
+            <p class="fl w1">
+              <input type="text" name="txtBrand" id="txtBrand" class="txt txt1" placeholder="品牌">
+            </p>
+            <p class="fl w1">
+              <input type="text" name="txtModel" id="txtModel" class="txt txt1" placeholder="型号">
+            </p>
+            <p class="fl w1">
+              <input type="text" name="txtYName" id="txtYName" class="txt txt1" placeholder="名称">
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">主营产品：</p>
+          <p class="r">
+            <input type="text" name="txtProduct" id="txtProduct" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">工作单位：</p>
+          <p class="r">
+            <input type="text" name="txtCoName" id="txtCoName" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">职 位：</p>
+          <p class="r">
+            <input type="text" name="txtPosition" id="txtPosition" class="txt">
+          </p>
+        </div>
+        <div class="row sf">
+          <p class="l">身份证正面：</p>
+          <div class="r">
+            <p class="fl w2">
+              <input type="file" name="fileIdcardZ" id="fileIdcardZ" class="txt2">
+            </p>
+            <p class="fl w3"><img src="images/temp/p9_1.jpg"></p>
+          </div>
+        </div>
+        <div class="row sf">
+          <p class="l">身份证反面：</p>
+          <div class="r">
+            <p class="fl w2">
+              <input type="file" name="fileIdcardF" id="fileIdcardF" class="txt2">
+            </p>
+            <p class="fl w3"><img src="images/temp/p9_2.jpg"></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">固定电话：</p>
+          <div class="r">
+            <p class="fl w4">
+              <input type="text" name="txtAre" id="txtAre" class="txt txt1" placeholder="区号">
+            </p>
+            <p class="fl w5">
+              <input type="text" name="txtTel" id="txtTel" class="txt txt1" placeholder="电话">
+            </p>
+            <p class="fl w4">
+              <input type="text" name="txtExt" id="txtExt" class="txt txt1" placeholder="分机">
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">QQ号码：</p>
+          <p class="r">
+            <input type="text" name="txtQQ" id="txtQQ" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">微信号：</p>
+          <p class="r">
+            <input type="text" name="txtWechat" id="txtWechat" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">微博号：</p>
+          <p class="r">
+            <input type="text" name="txtWeibo" id="txtWeibo" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>验证码：</p>
+          <div class="r">
+            <p class="fl w1">
+              <input type="text" name="txtYan" id="txtYan" class="txt txt1">
+            </p>
+            <p class="fl w5" style="padding-left:15px;"><a href="javascript:;"><img src="images/temp/p10.jpg"></a></p>
+          </div>
+        </div>
+        <div class="row tkd">
+          <p class="l">&nbsp;</p>
+          <p class="r">
+            <input type="checkbox" name="ckTK" id="ckTK" checked>
+            我已阅读并同意<a href="#" class="blue" target="_blank">《晧辰仪联网服务条款》</a> </p>
+        </div>
+        <div class="row">
+          <p class="l">&nbsp;</p>
+          <p class="r"><a href="register_sub.html" class="subbtn">提 交</a></p>
+        </div>
+      </form>
+    </div>
+    <!--./regformd--> 
+    
+    <!--企业注册-->
+    <div class="regformd" style="display:none;">
+      <form action="" method="post" enctype="multipart/form-data" name="regForm" id="regForm">
+        <div class="row">
+          <p class="l"><i class="x">*</i>企业登陆名：</p>
+          <p class="r">
+            <input type="text" name="txtUsername" id="txtUsername" class="txt">
+          </p>
+          <p class="rr">允许中、英文录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>密 码：</p>
+          <p class="r">
+            <input type="password" name="txtPassword" id="txtPassword" class="txt">
+          </p>
+          <p class="rr">允许大小字母、数字、符号录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>再次输入密码：</p>
+          <p class="r">
+            <input type="password" name="txtPassword2" id="txtPassword2" class="txt">
+          </p>
+          <p class="rr">允许中、英文录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l">邮 箱：</p>
+          <p class="r">
+            <input type="text" name="txtEmail" id="txtEmail" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">手机号码：</p>
+          <p class="r">
+            <input type="text" name="txtMobile" id="txtMobile" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">身份证号码：</p>
+          <p class="r">
+            <input type="text" name="txtIdcard" id="txtIdcard" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">常用仪器：</p>
+          <div class="r">
+            <p class="fl w1">
+              <input type="text" name="txtBrand" id="txtBrand" class="txt txt1" placeholder="品牌">
+            </p>
+            <p class="fl w1">
+              <input type="text" name="txtModel" id="txtModel" class="txt txt1" placeholder="型号">
+            </p>
+            <p class="fl w1">
+              <input type="text" name="txtYName" id="txtYName" class="txt txt1" placeholder="名称">
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">主营产品：</p>
+          <p class="r">
+            <input type="text" name="txtProduct" id="txtProduct" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">工作单位：</p>
+          <p class="r">
+            <input type="text" name="txtCoName" id="txtCoName" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">职 位：</p>
+          <p class="r">
+            <input type="text" name="txtPosition" id="txtPosition" class="txt">
+          </p>
+        </div>
+        <div class="row sf">
+          <p class="l">身份证正面：</p>
+          <div class="r">
+            <p class="fl w2">
+              <input type="file" name="fileIdcardZ" id="fileIdcardZ" class="txt2">
+            </p>
+            <p class="fl w3"><img src="images/temp/p9_1.jpg"></p>
+          </div>
+        </div>
+        <div class="row sf">
+          <p class="l">身份证反面：</p>
+          <div class="r">
+            <p class="fl w2">
+              <input type="file" name="fileIdcardF" id="fileIdcardF" class="txt2">
+            </p>
+            <p class="fl w3"><img src="images/temp/p9_2.jpg"></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">固定电话：</p>
+          <div class="r">
+            <p class="fl w4">
+              <input type="text" name="txtAre" id="txtAre" class="txt txt1" placeholder="区号">
+            </p>
+            <p class="fl w5">
+              <input type="text" name="txtTel" id="txtTel" class="txt txt1" placeholder="电话">
+            </p>
+            <p class="fl w4">
+              <input type="text" name="txtExt" id="txtExt" class="txt txt1" placeholder="分机">
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">QQ号码：</p>
+          <p class="r">
+            <input type="text" name="txtQQ" id="txtQQ" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">微信号：</p>
+          <p class="r">
+            <input type="text" name="txtWechat" id="txtWechat" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">微博号：</p>
+          <p class="r">
+            <input type="text" name="txtWeibo" id="txtWeibo" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>验证码：</p>
+          <div class="r">
+            <p class="fl w1">
+              <input type="text" name="txtYan" id="txtYan" class="txt txt1">
+            </p>
+            <p class="fl w5" style="padding-left:15px;"><a href="javascript:;"><img src="images/temp/p10.jpg"></a></p>
+          </div>
+        </div>
+        <div class="row tkd">
+          <p class="l">&nbsp;</p>
+          <p class="r">
+            <input type="checkbox" name="ckTK" id="ckTK" checked>
+            我已阅读并同意<a href="#" class="blue" target="_blank">《晧辰仪联网服务条款》</a> </p>
+        </div>
+        <div class="row">
+          <p class="l">&nbsp;</p>
+          <p class="r"><a href="register_sub.html" class="subbtn">提 交</a></p>
+        </div>
+      </form>
+    </div>
+    <!--./regformd--> 
+    <!-- 手机号快捷注册 -->
+    <div class="regformd" style="display:none;">
+      <form action="" method="post" enctype="multipart/form-data" name="regForm" id="regForm">
+        <div class="row">
+          <p class="l"><i class="x">*</i>手机号：</p>
+          <p class="r">
+            <input type="text" name="txtUsername" id="txtUsername" class="txt">
+          </p>
+          <p class="rr">请录入11位个数字</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>密 码：</p>
+          <p class="r">
+            <input type="password" name="txtPassword" id="txtPassword" class="txt">
+          </p>
+          <p class="rr">允许大小字母、数字、符号录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>再次输入密码：</p>
+          <p class="r">
+            <input type="password" name="txtPassword2" id="txtPassword2" class="txt">
+          </p>
+          <p class="rr">允许中、英文录入，6-32个字符</p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>短信验证码：</p>
+          <div class="r">
+            <p class="fl w1">
+              <input type="text" name="txtYan" id="txtYan" class="txt txt1">
+            </p>
+            <p class="fl w5" style="padding-left:15px;"><a href="javascript:;"><img src="images/temp/p10.jpg"></a></p>
+          </div>
+        </div>
+        <div class="row tkd">
+          <p class="l">&nbsp;</p>
+          <p class="r">
+            <input type="checkbox" name="ckTK" id="ckTK" checked>
+            我已阅读并同意<a href="#" class="blue" target="_blank">《晧辰仪联网服务条款》</a> </p>
+        </div>
+        <div class="row">
+          <p class="l">&nbsp;</p>
+          <p class="r"><a href="register_sub.html" class="subbtn">提 交</a></p>
+        </div>
+      </form>
+    </div>
+    <!--reginfod-->
+    <div class="reginfod">
+      <h3>服务须知：</h3>
+      <p>我们的审核时限为24小时（工作日）遇法定节假日顺延。<br>
+        如您对个人用户注册有疑问，或有采购需求<br>
+        请拨打企业热线：<span>0755－86016691</span></p>
+    </div>
+    <!--./reginfod--> 
+    
+  </div>
+</div>
+<!--./content--> 
+
+<!--foot-->
+<div class="footd">
+  <div class="main">
+    <div class="fcontd">
+      <p>Copyright &copy; 2007 All Rights Reserved. 深圳市晧辰电子科技有限公司 版权所有&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn/" target="_blank">[粤ICP备14101712号-1]</a>&nbsp;<a href="#" target="_blank">[法律顾问]</a></p>
+      <p>公司地址：广东省深圳市南山区西丽街道牛成路221号8楼&nbsp;&nbsp;邮编：518055</p>
+      <p>在线QQ服务：<a href="#"><img src="images/fico0.png"></a>&nbsp;&nbsp;服务热线：0755－86016691&nbsp;&nbsp;电话：13715327187&nbsp;&nbsp;传真：0755-86641139-816</p>
+      <p>E-mail：info@wl95.com</p>
+      <!-- <p style="font-size:15px;color:red;">光通信项目业务负责人：&nbsp;&nbsp;&nbsp;&nbsp;王海涛13715327187&nbsp;&nbsp;&nbsp;&nbsp;赖&nbsp;&nbsp;旭13715283397&nbsp;&nbsp;&nbsp;&nbsp;卫庆利18123986106</p> -->
+    </div>
+    <div class="fimgd"><a href="#" target="_blank"><img src="images/fico1.png"></a><a href="#" target="_blank"><img src="images/fico2.png"></a><a href="#" target="_blank"><img src="images/fico3.png"></a><a href="#" target="_blank"><img src="images/fico4.png"></a></div>
+  </div>
+</div>
+<!--./foot--> 
+
+<script src="js/jquery.min.js"></script> 
+<script src="js/lazyload/jquery.lazyload.min.js"></script> 
+<script src="js/jquery.SuperSlide.2.1.1.js"></script> 
+<script src="/js/main.js"></script> 
+<script type="text/javascript">
+//切换登录方式
+$(".regnav li").click(function(){
+	$(".regnav li").removeClass("on");
+	$(this).addClass("on");
+	$(".regformd").hide();
+	$(".regformd").eq($(this).index()).fadeIn(200);
+});
+</script>
+</body>
+</html>

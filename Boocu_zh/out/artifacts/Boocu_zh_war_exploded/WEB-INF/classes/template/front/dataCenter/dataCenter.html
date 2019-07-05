@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>帮助信息- 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+ <div class="indexContent">
+<!--content-->
+<div class="main">
+  <div class="mainbanner"><img class="lazy" src="images/grey.gif" data-original="/statics/images/mbanner2.jpg" width="1210" height="200"></div>
+  
+  <!--datawhered-->
+  <div class="datawhered">
+    <div class="t">
+      <p>
+        <input type="text" name="txtKey" id="txtKey" class="txt">
+      </p>
+      <p class="btnd_111"><a class="btn transition02" href="javascript:;">资料搜索</a></p>
+      <p><a class="showl" href="javascript:;">精简筛选条件</a></p>
+    </div>
+    <div class="seld">
+      <p>产品型号：
+        <select name="selModel" id="selModel" class="sel">
+          <option value="0">全部型号</option>
+          <option value="1">产品型号1</option>
+          <option value="2">产品型号型号2</option>
+        </select>
+      </p>
+      <p>产品品牌：
+        <select name="selBrand" id="selBrand" class="sel">
+          <option value="all" name="brands">全部品牌</option>
+          [#list brands as item]
+          <option value="${item.id}" name="brands">${item.name}</option>
+          [/#list]
+        </select>
+      </p>
+      </p>
+    </div>
+  </div>
+  <!--./datawhered--> 
+  
+  <!--datalid-->
+  <div class="datalid_111">
+	[#include '/template/front/include/dataLists/dataCenterList.html' /]
+ </div>
+ <!--./pagd--> 
+  <!--./datalid--> 
+      <!-- 搜索条件的隐藏表单 add by fang 20150907-->
+   <form method="post" style="display:none" id="searchForm" action="/dataCenter">
+   	<input name="keyword" value="" /> 
+   	<!-- 综合排序  -->
+   	<input name="brands" value="" />
+   	<!-- 综合排序 -->
+
+   	   	<!-- 分页-->
+   	<input name="pageNum" value="" />
+   </form>
+<!-- 搜索条件的隐藏表单--> 
+</div>
+<!--./content--> 
+</div>
+<!--foot--> 
+<!--底部链接-->
+[#include '/template/front/include/footer2.html' /]
+
+[#include '/template/front/include/jslist.html' /]
+<script type="text/javascript">
+$(".datawhered .showl").click(function(){
+    var selObj = $(".datawhered .seld");
+	if(!selObj.is(":hidden")){
+		selObj.slideUp(200);	
+	}else{
+		selObj.slideDown(200);	
+	}
+});
+$(".seld").find("#selBrand").change(function(){
+	addCondition(this);
+});
+$(".btnd_111").click(function(){
+	var keyword = $(this).prev().find("input").val();
+	$("#searchForm").find("input[name='keyword']").attr("value", keyword);
+	submitPost();
+});
+function addCondition(obj){
+	var $this = $(obj);
+	var id = $this.find("option:selected").val();
+	var type = $this.find("option:selected").attr("name");
+	$("#searchForm").find("input[name='"+ type +"']").attr("value",id);
+	submitPost();
+}
+function submitPost(){
+	$(".datalid").html("");
+	$(".pagd").html("");
+	$(".datalid_111 .listloadingd").show();
+	$.ajax({
+		url:"/dataCenter/dataJson",
+		datatype:"html",
+		type:"post",
+		data:$("#searchForm").serialize(),
+		success:function(data){
+			$(".datalid_111").html(data);
+			$(".datalid_111 .listloadingd").hide();
+		}
+	})
+}
+</script>
+</body>
+</html>

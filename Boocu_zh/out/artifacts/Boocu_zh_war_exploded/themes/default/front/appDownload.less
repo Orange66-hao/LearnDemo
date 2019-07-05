@@ -1,0 +1,257 @@
+@import "main.less";
+
+.block{
+  position: relative;
+}
+
+.float{
+  position: absolute;
+}
+
+/*
+.img1{
+  left: 370px;
+  top: 70px;
+  z-index: 101;
+}
+.img2{
+  left: 255px;
+  top: 125px;
+  z-index: 100;
+}
+.img3{
+  left: 530px;
+  top: 125px;
+  z-index: 100;
+}
+.text1{
+  left: 840px;
+  top: 155px;
+  color:#ffffff;
+  font-size:30px;
+  z-index: 100;
+}
+
+.text2{
+  left: 840px;
+  top: 210px;
+  font-size:66px;
+  color:#ffffff;
+  z-index: 100;
+}
+
+.rectangle1{
+  left: 840px;
+  top: 305px;
+  width:600px;
+  height:185px;
+  background:#ffffff;
+  z-index: 100;
+}
+
+.iphone{
+  left: 40px;
+  top: 25px;
+  width:290px;
+  height:60px;
+  background:#636366;
+  z-index: 100;
+}
+
+.android{
+  left: 40px;
+  top: 105px;
+  width:290px;
+  height:60px;
+  background:#0476d9;
+  z-index: 100;
+}
+
+.phone-text{
+  left: 110px;
+  top: 16px;
+  font-size:18px;
+  color:#ffffff;
+  z-index: 100;
+}
+
+.phone-icon{
+  left:50px;
+  top:10px;
+  width: 40px;
+  height: 40px;
+}
+
+.tdc{
+  left: 430px;
+  top: 15px;
+  width:128px;
+  height:128px;
+}
+
+.tdc-text{
+  left: 432px;
+  top: 150px;
+  font-size:20px;
+  color:#313133;
+  z-index: 100;
+}
+
+.summary{
+  width: 100%;
+  height: 750px;
+  background:#f5f5f5;
+}
+
+.summary1{
+  width: 100%;
+  height: 750px;
+  background:#ffffff;
+}
+
+.rectangle2{
+  left: 0px;
+  top: 0px;
+  width:100%;
+  height:250px;
+  background:#ffffff;
+  z-index: 100;
+}
+.rectangle3{
+  left: 0px;
+  top: 0px;
+  width:100%;
+  height:500px;
+  background:#f5f5f5;
+  z-index: 100;
+}
+.text-summary1{
+  left:120px;
+  top:420px;
+  font-size:18px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary2{
+  left:120px;
+  top:430px;
+  font-size:14px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary3{
+  left:780px;
+  top:620px;
+  font-size:18px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary4{
+  left:780px;
+  top:630px;
+  font-size:14px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary5{
+  left:120px;
+  top:620px;
+  font-size:18px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary6{
+  left:120px;
+  top:630px;
+  font-size:14px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary7{
+  left:530px;
+  top:420px;
+  font-size:18px;
+  color:#313133;
+  z-index: 100;
+}
+
+.text-summary8{
+  left:530px;
+  top:430px;
+  font-size:14px;
+  color:#313133;
+  z-index: 100;
+}
+
+.img4 {
+  left:785px;
+  top: 70px;
+  bottom: 70px;
+  z-index: 100;
+}
+
+.img5 {
+  left:120px;
+  top: 70px;
+  bottom: 70px;
+  z-index: 100;
+}
+
+.img6 {
+  left:380px;
+  top: 70px;
+  bottom: 70px;
+  z-index: 100;
+}
+*/
+
+.top-wrapper {
+  width: 100%;
+  height: 570px;
+  text-align: center;
+  overflow: hidden;
+  & .bg-img{
+    width: 1920px;
+    height: 570px;
+    position: absolute;
+    left: 50%;
+    margin-left: -(1920px/2);
+  }
+  & .download-qrcode{
+    position: absolute;
+    right: 20px;
+    top: 300px;
+    width: 200px;
+    height: 200px;
+    background: url('/statics/images/default/download-qrcode-cli2.png') no-repeat;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/statics/images/default/download-qrcode-cli2.png',sizingMethod='scale');
+    background-size: 200px 200px;
+  }
+  & .link{
+    position: absolute;
+    right: 240px;
+    display: block;
+    width: 300px;
+    height: 120px;
+    background: url('/statics/images/transparent.gif'); //FIXED: 如果不添加这行，在IE下无法点击链接
+  }
+  & .link-iphone{
+    top: 280px;
+  }
+  & .link-android{
+    top: 400px;
+  }
+
+}
+.wrapper2{
+  height: 400px;
+  & .bg-img{
+    height: 400px;
+  }
+}

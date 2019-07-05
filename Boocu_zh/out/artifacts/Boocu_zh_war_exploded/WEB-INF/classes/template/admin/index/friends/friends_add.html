@@ -1,0 +1,37 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="addForm" method="post" class="validate">
+			<table>
+			   <tr>
+					<th>链接名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="name" data-options="required:true" ></input>
+					</td>
+				</tr>
+				 <tr>
+					<th>链接英文名</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="nameEn" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>上层链接分类</th>
+					<td><select id="parentid" name="parentid" style="width:307px;height:30px;" class="easyui-combotree" data-options="url:'/admin/index/friends/friendsData.json',required:true"></select>
+					</td>
+				</tr>
+			   <tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="sort" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>链接</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="link" data-options="required:true" ></input>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+@import "userCommon.less";
+
+.right-list{
+  & > li {
+    & .order {
+      & > * {
+        float: left;
+        margin-right: 50px;
+      }
+    }
+  }
+  .books {
+    .index-book-block-m(@right-panel-width - 100px, @index-book-block-width, 8, @index-book-block-width);
+  }
+}

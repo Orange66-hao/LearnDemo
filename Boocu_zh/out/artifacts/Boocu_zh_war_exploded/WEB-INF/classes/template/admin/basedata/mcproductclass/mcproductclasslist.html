@@ -1,0 +1,259 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body{
+	margin:0px;
+	font-family:Arial,"宋体",Verdana,sans-serif;
+	font-size:12px;
+}
+html,body {padding: 0;margin: 0; overflow-x:hidden; overflow-y:auto;}
+dl,dd{margin:0px}
+ul{
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+}
+
+.input_text2{
+	border: 1px solid #D7D7D7;
+	border-radius: 3PX;
+	/*height: 14PX;*/
+	padding: 7px 0 7px 5px;
+	line-height: 14PX;
+	font-size: 12px;
+	display: inline-block;
+	width:150px;
+}
+
+.input_text2:focus {
+	border: 1px solid #06F;
+	box-shadow: inset 0 1px 2px rgba(0, 102, 255, 0.3);
+}
+</style>
+
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+ 
+<div id="bookinfo" style="display: none;"></div>
+<div id="loading"></div>
+<div class="main">
+	<form id="memberform">
+		<div id="tb" style="height: auto">
+		    <a href="javascript:append()" class="button blueButton" 
+				data-options="iconCls:'icon-add',plain:true" onclick="append(0,map)" >添加</a>
+			<!-- <a href="javascript:void(0)" class="easyui-linkbutton"
+				data-options="plain:true" onclick="del()">删除</a> -->
+				
+			<span style="float: right;"> 
+				<span id="simpleSearch">
+					<input id="searchKeyword" class="input_text" type="text" value="" size="30" style="width: 300px;"
+					placeholder="请输入仪器名" name="searchKeyWord"> 
+					<a href="javascript:void(0)" class="easyui-linkbutton" 
+					data-options="plain:true" onclick="searchIndustryClass();">搜索</a>
+				</span>
+			</span>
+		</div>
+		
+		<div class="clear height10"></div>
+		<!--<div class="content">
+		 <div class="content-left">
+			<div>行业分类<img class="slide"/></div>
+			<div> 
+				<ul id="industries" class="easyui-tree" url="/admin/industyClass/getData.json" >
+				
+				</ul>
+			</div>
+		</div> -->
+		<div class=" shadowBoxWhite tableDiv">
+		<table class="easyui-datagrid" id="dataList"
+			data-options="url:'/admin/basedata/mcproductclass/getData.json',pageList: [5,10,15,20],pageSize:10,fitColumns:'true',rownumbers:'true'"
+			pagination="true" sortName="sort" sortOrder="asc" idField="id" treeField="name" checkbox="true">
+			
+			
+			<thead>
+				<tr>
+					 <!-- <th data-options="field:'id',hidden:true"></th>  -->
+					 <th data-options="field:'id',checkbox:true"></th>
+					<th data-options="field:'sort',width:$(this).width()*0.1,align: 'center'" >排序</th>
+					<th data-options="field:'name',width:$(this).width()*0.2,align: 'center'">仪器名称</th>
+					<th data-options="field:'mc_major.id',hidden:true"></th>
+					<th data-options="field:'mc_major.name',width:$(this).width()*0.3,align: 'center'">所属产品</th>
+					<th data-options="field:'remark',width:$(this).width()*0.2,align: 'center'" >备注</th>
+					<th data-options="field:'action',width:$(this).width()*0.1,align:'center'" formatter="formatOperation">操作</th>
+					<th data-options="field:'delete',width:$(this).width()*0.1,align:'center'" formatter="formatDel">删除</th>
+					
+				</tr>
+			</thead>
+		</table>
+		
+		
+		
+		
+		</div>
+		<!-- </div>  -->
+	</form>
+	<div id="divdia" style="display: none;"></div>
+	<div id="divdia2" style="display: none;"></div>
+	<div id="divdia3" style="display: none;"></div>
+
+</div>
+<script type="text/javascript">
+/* $(window).resize(function(){
+		$("#dataList").treegrid("reload");
+	}) */
+
+	function submitForm(map) {
+		var data={};
+		data.mc_major=$("#mc_major").combobox('getValue'); 
+		var formflag = $(map["formId"]).form().form('validate');
+		if (formflag) {
+			$.Loading.show(map["loadshow"]);
+			var options = {
+				url : map["url"],
+				type : "POST",
+				dataType : 'json',
+				success : function(result) {
+					if (result.result == 1) {
+						$.Loading.show(result.message);
+						$(map["divDialog"]).dialog('close');
+						$(map["gridreload"]).datagrid('clearSelections');//清除所有选择的行
+						$(map["gridreload"]).datagrid('reload');//重新加载
+					}
+					if (result.result == 0) {
+						$.Loading.error(result.message);
+					}
+					$.Loading.hide();
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			};
+			$(map["formId"]).ajaxSubmit(options);
+		}
+	}
+	
+	
+	function append(id) {
+		var map = {}; // Map map = new HashMap();
+		if (!id) {
+			map["href"] = "/admin/basedata/mcproductclass/add_mcproductclass.jspx";
+			map["formId"] = "#addForm";
+			map["url"] = "/admin/basedata/mcproductclass/save_mcproductclass.jspx?ajax=yes";
+			map["title"] = "添加仪器";
+			map["loadshow"] = "正在添加......";
+		} else {
+			map["href"] = "/admin/basedata/mcproductclass/edit_mcproductclass.jspx?id=" + id;
+			map["formId"] = "#editForm";
+			map["url"] = "/admin/basedata/mcproductclass/save_edit_mcproductclass.jspx?ajax=yes";
+			map["title"] = "修改仪器";
+			map["loadshow"] = "正在修改......";
+		}
+		map["divDialog"] = "#divdia";
+		map["gridreload"] = "#dataList";
+		addDialog(map);
+	}
+	
+	function addDialog(map) {
+		$(map["divDialog"]).show();
+		$(map["divDialog"]).dialog({
+			title : map["title"],
+			width : 600,
+			height : 300,
+			closed : false,
+			cache : false,
+			href : map["href"],
+			modal : true,
+			buttons : [ {
+				text : '保存',
+				iconCls : 'icon-ok',
+				handler : function() {
+					var savebtn = $(this);
+	　　				var disabled=savebtn.hasClass("l-btn-disabled");
+	　　				if(!disabled){
+						 submitForm(map,savebtn);
+					}
+				}
+			}, {
+				text : '清空',
+				handler : function() {
+					clearForm(map);
+				}
+			} ]
+		});
+	}
+	
+	function clearForm(map) {
+		$(map["formId"]).form('clear');
+	}
+	
+	function formatOperation(value, row, basedata) {
+		var val = "<a class='edit' title='修改' href='javascript:void(0);' onclick='append("+row.rowid+")' ></a>";
+		return val;
+	}
+	function formatDel(value, row, index) {
+		var val = "<a class='delete' title='删除' href='javascript:void(0);' onclick='delItem("+row.rowid+")' ></a>";
+		return val;
+	}
+	/* function formatStatus(value, row, basedata) {
+		return value==1?"启用":"禁用";
+	} */
+	
+	function delItem(id) {
+		if (!confirm("确认删除选中的行业及其下的所有子行业？")) {
+			return;
+		}
+		$.ajax({
+			url : "/admin/basedata/mcproductclass/delete_mcproductclass.jspx",
+			type : "POST",
+			data:{
+				id:id
+			},
+			dataType : 'json',
+			success : function(result) {
+				$.Loading.success(result.message);
+				if (result.result == 1) {
+					$("#dataList").datagrid("reload");
+				}
+				if (result.result == 0) {
+					$.Loading.error(result.message);
+				}
+			},
+			error : function(e) {
+				$.Loading.error("出现错误 ，请重试");
+			}
+		});
+	}
+	
+	function searchIndustryClass(){
+		var keyword = $("#searchKeyword").val();
+		$("#dataList").datagrid("load",{
+			keyword:keyword
+		});
+	}
+	
+</script>
+</body>
+</html>

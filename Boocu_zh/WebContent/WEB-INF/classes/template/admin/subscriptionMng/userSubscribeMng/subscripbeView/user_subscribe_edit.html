@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>订阅信息 - 晧辰仪联网</title> [#include
+'/template/front/include/csslist.html' /]
+<style type="text/css">
+td {
+	margin-right: 20px;
+	padding-right: 10px;
+	border: 1 solid;
+}
+</style>
+</head>
+<body>
+	<!--top-->
+	<!--./top-->
+
+	<!--content-->
+	<div style="width: 500px;">
+		<!--umainr-->
+		<!--usubd-->
+		<div class="usubd">
+			<div class="usubnavd">
+				<ul>
+					<li><a href="/subscribeInfo/toList.jspx">订阅信息</a></li>
+				</ul>
+			</div>
+			<!--./upronavd-->
+
+			<!--usubeuld-->
+			<div class="usubeuld">
+
+				[#if items.size()>0]
+				<table>
+					<tr>
+						<td>订阅的信息(产品类型、行业分类、常用仪器)</td>
+						<td>订阅的类型</td>
+					</tr>
+					[#list items as item]
+					<tr>
+						<td>[#if item.productEntity!=null] <label
+							title="${item.productEntity.proName}"> [#if
+								item.productEntity.proName?length lt 13]
+								${item.productEntity.proName} [#else]
+								${item.productEntity.proName[0..12]}[/#if] </label> [#elseif
+							item.proClassEntity!=null] <label
+							title="${item.proClassEntity.name}"> [#if
+								item.proClassEntity.name?length lt 13]
+								${item.proClassEntity.name} [#else]
+								${item.proClassEntity.name[0..12]}[/#if] </label>[#elseif
+							item.indClassEntity!=null] <label
+							title="${item.indClassEntity.name}"> [#if
+								item.indClassEntity.name?length lt 13]
+								${item.indClassEntity.name} [#else]
+								${item.indClassEntity.name[0..12]}[/#if] </label> [/#if]
+
+						</td>
+						<td>${item.proType}</td>
+					</tr>
+					[/#list]
+				</table>
+
+				[#else]
+				<div align="center">暂无订阅信息</div>
+				[/#if]
+
+			</div>
+			<!--./usubeuld-->
+
+		</div>
+		<!--./usubd-->
+
+		<!--./usubd2-->
+		[#if items.size()>0]
+		<div class="usubd2">
+			<div class="infoul1">
+				<p class="w">订阅信息接收载体：</p>
+				<p>
+					<label> <input type="checkbox" name="ckZt" id="ckZt"
+						value=0 checked="[#if item.model==3||item.model==1]checked[/#if]"> 用户中心查看
+					</label>
+				</p>
+				<p>
+					<label> <input type="checkbox" name="ckZt" id="ckZt"
+						value=1  checked="[#if item.model==3||item.model==2]checked[/#if]"> 邮件接收
+					</label>
+				</p>
+			</div>
+			<!--./infoul1-->
+			<div class="infoul1">
+				<p class="w">信息收接频率：</p>
+				<p>
+					<label> <input type="radio" name="radPl" id="radPl" value=1
+						checked="[#if item.rate==1]checked[/#if]"> 每天一次
+					</label>
+				</p>
+				<p>
+					<label> <input type="radio" name="radPl" id="radPl" value=2 checked="[#if item.rate==2]checked[/#if]">
+						每周一次
+					</label>
+				</p>
+				<p>
+					<label> <input type="radio" name="radPl" id="radPl" value=3 checked="[#if item.rate==3]checked[/#if]">
+						每月一次
+					</label>
+				</p>
+			</div>
+			<!--./infoul1-->
+		</div>
+		[/#if]
+		<!--./usubd2-->
+
+	</div>
+	<!--./umainr-->
+
+	<!--foot-->
+	<!--底部链接-->
+	<!--./foot-->
+	<script src="/statics/front/js/jquery.min.js"></script>
+	<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script>
+	<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script src="/statics/front/js/main.js"></script>
+	<script src="/statics/front/js/pro.js"></script>
+	<script type="text/javascript">
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>招聘标题</th>
+					<td><input class="input_text" type="text" name="title" value="${item.title}"/>
+					</td>
+				</tr>
+				<tr>
+					<th>招聘内容</th>
+					<td><textarea id="content" name="content" class="ckeditor">${item.content}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="sort" value="${item.sort}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>修改人</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="updateuser" value="${item.updateuser}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>是否推荐</th>
+					<td><input type="radio" value="0" name="status" ${(item.status==0)?string('checked','')}/>否
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><input type="radio" value="1" name="status" ${(item.status==1)?string('checked','')}/>是	
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script>
+	function loadSec(ele){
+		var value = $(ele).attr("s_value");
+		$(ele).combobox("select",value);
+	}
+</script>

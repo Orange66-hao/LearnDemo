@@ -1,0 +1,90 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>交货周期</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.sendCycle}"
+						name="sendCycle"></input>
+						<select name="sendCycleUnit" style="height:30px;">
+							<option ${(item.sendCycleUnit == 'day')?string('selected','')} value="day">天</option>
+							<option ${(item.sendCycleUnit == 'week')?string('selected','')} value="week">周</option>
+							<option ${(item.sendCycleUnit == 'month')?string('selected','')} value="month">月</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>来宾价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proCustomPrice}"
+						name="proCustomPrice" ></input>
+						<select name="proCustomPriceLimit">
+							<option ${(item.proCustomPriceLimit=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.proCustomPriceLimit== 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="proCustomPriceType">
+							<option ${(item.proCustomPriceType=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.proCustomPriceType == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>客户价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proMemberPrice}"
+						name="proMemberPrice" ></input>
+						<select name="proMemberPriceLimit">
+							<option ${(item.proMemberPriceLimit=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.proMemberPriceLimit == 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="proMemberPriceType">
+							<option ${(item.proMemberPriceType=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.proMemberPriceType == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>同行价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proPeer}"
+						name="proPeer" ></input>
+						<select name="proPeerLimit">
+							<option ${(item.proPeerLimit=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.proPeerLimit == 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="proPeerType">
+							<option ${(item.proPeerType=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.proPeerType == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>VIP价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proVipPrice}"
+						name="proVipPrice" ></input>
+						[#if weben==0]
+						<select name="proVipPriceLimit">
+							<option ${(item.proVipPriceLimit=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.proVipPriceLimit == 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="proVipPriceType">
+							<option ${(item.proVipPriceType=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.proVipPriceType == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+						[#else]
+							<select name="proVipPriceLimit">
+							<option ${(item.proVipPriceLimit=='yuan')?string('selected','')} value="yuan">元</option>
+						</select>
+						<select name="proVipPriceType">
+							<option ${(item.proVipPriceType=='rmb')?string('selected','')} value="rmb">人民币</option>
+						</select>
+						[/#if]
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

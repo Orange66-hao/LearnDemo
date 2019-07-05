@@ -1,0 +1,93 @@
+<style>
+#selPro{
+	width:80px;
+	text-align: center;
+	background-color: #2498FC;
+	color:#fff;
+	border-radius: 4px;
+  	height: 24px;
+}
+</style>
+
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="addForm" method="post" class="validate">
+			<table>
+			   <tr>
+					<th>促销名称</th>
+					<td><label id="productShow"></label><input name="productId" id="productId" style="display: none;"><input type="button" id ="selPro" value="选择" >
+					</td>
+				</tr>
+			   <tr>
+					<th>促销图片</th>
+					<td><input id="exap" type="hidden" name="image" class="input_text easyui-validatebox"/>
+						<img class="picImg" id="img" src=""style="width:80px;height:80px"/>
+						<input class="button blueButton" type="button" id="btnPreViewImg" value="上传图片"/>
+					</td>
+				</tr>
+				<tr>
+					<th>促销价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="salesPrice"  ></input>
+						<select name="salesPriceUnit">
+							<option  value="yuan">元</option>
+							<option  value="millionyuan">万元</option>
+						</select>
+						<select name="salesPriceType">
+							<option  value="rmb">人民币</option>
+							<option  value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+			   <tr>
+					<th>促销链接</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="link" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="sort" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>是否显示</th>
+					<td><input type="checkbox" type="text" 
+						name="isShow" data-options="required:true" value="1" >
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<div id="selProDialog"></div>
+<script>
+initAjaxUploadImg('btnPreViewImg','exap','img');
+$("#selPro").click(function(){
+	$("#selProDialog").dialog({
+		title : "选择商品",
+		width : "1200",
+		height : "600",
+		closed : false,
+		cache : false,
+		href : "/admin/productMng/product/list.jspx",
+		modal : true,
+		buttons : [ {
+			text : '保存',
+			iconCls : 'icon-ok',
+			handler : function() {
+				var row = $("#selList").datagrid("getSelections");
+				$("#productId").attr("value",row[0].id);
+				$("#productShow").text(row[0].proName);
+				$("#selProDialog").dialog('close');
+			}
+		}]
+	});
+});
+
+function closeDialog(){
+	$("#selProDialog").dialog('close');
+}
+
+</script>

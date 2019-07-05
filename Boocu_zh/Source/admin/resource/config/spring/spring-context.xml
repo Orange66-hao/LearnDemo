@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:task="http://www.springframework.org/schema/task"
+
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/cache 
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/tx 
+	   http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/task 
+	   http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- 属性占位符（读取Properties配置文件） -->
+	<!-- location：位置 -->
+	<!-- ignore-resource-not-found：是否忽略不存在的资源（资源：配置项，键值对中的值） -->
+	<!-- ignore-unresolvable：是否忽略无法解析的配置项 -->
+	<context:property-placeholder location="classpath:/config/db/config.properties"
+		ignore-resource-not-found="true" ignore-unresolvable="true" />
+
+	<!-- 扫描组件（扫描所有需要注入的组件） -->
+	<context:component-scan base-package="net.boocu">
+		<!-- 例外 -->
+		<!-- type：类型 -->
+		<!-- expression：表达式 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- c3p0 数据源 -->
+	<!-- destroy-method：销毁时调用方法 -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+		destroy-method="close"> 驱动Class <property name="driverClass" value="${jdbc.driver}" 
+		/> URL <property name="jdbcUrl" value="${jdbc.url}" /> 用户名 <property name="user" 
+		value="${jdbc.username}" /> 密码 <property name="password" value="${jdbc.password}" 
+		/> 初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default：3 <property name="initialPoolSize" 
+		value="${connection_pools.initial_pool_size}" /> 连接池中保留的最小连接数。 <property 
+		name="minPoolSize" value="${connection_pools.min_pool_size}" /> 连接池中保留的最大连接数。Default：15 
+		<property name="maxPoolSize" value="${connection_pools.max_pool_size}" /> 
+		最大空闲时间，60秒内未使用则连接被丢弃，若为0则永不丢弃。Default：0 <property name="maxIdleTime" value="${connection_pools.max_idle_time}" 
+		/> 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default：3 <property name="acquireIncrement" 
+		value="${connection_pools.acquire_increment}" /> 当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒，Default：0 
+		<property name="checkoutTimeout" value="${connection_pools.checkout_timeout}" 
+		/> </bean> -->
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、username、password -->
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${druid.initialSize}" />
+		<property name="minIdle" value="${druid.minIdle}" />
+		<property name="maxActive" value="${druid.maxActive}" />
+
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${druid.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+		
+		<property name="validationQuery" value="${druid.validationQuery}" />
+		<!-- 测试sql 浪费大量时间 -->
+		<!-- 
+		<property name="testWhileIdle" value="${druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.testOnReturn}" />
+		 -->
+
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。 -->
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="stat" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置 JPA 实体管理器工厂 -->
+	<!-- 用于创建会话/实体管理器的工厂类 -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+
+		<!-- 用于指定Spring定义的数据源。 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 用于指定JPA配置文件，对于多JPA配置文件情况请选择设置persistenceUnitManager属性来解决。 -->
+		<property name="persistenceXmlLocation" value="classpath*:/persistence.xml" />
+		<!-- 用于指定持久化单元名称。 -->
+		<property name="persistenceUnitName" value="persistenceUnit" />
+
+		<!-- 用于设置JPA实现厂商的特定属性，如设置hibernate的是否自动生成DDL的属性generateDdl，这些属性是厂商特定的，因此最好在这里设置。 -->
+		<!-- 目前Spring提供HibernateJpaVendorAdapter，OpenJpaVendorAdapter，EclipseJpaVendorAdapter，TopLinkJpaVenderAdapter四个实现。 -->
+		<!-- 其中最主要的属性是“database”，用来指定使用的数据库类型。 -->
+		<!-- 从而根据数据库类型决定如何将数据库特定异常转换为Spring一致性异常。 -->
+		<!-- 目前支持以下数据库：DB2，DERBY，H2，HSQL，INFORMIX，MYSQL，ORACLE，POSTGRESQL，SQL_SERVER，SYBASE -->
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<!-- 是否显示SQL -->
+				<!-- <property name="showSql" value="false" /> -->
+				<property name="showSql" value="true" />
+				<!-- 是否自动生成DDL（数据库定义语言） -->
+				<property name="generateDdl" value="true" />
+				<!-- 数据库类型 <property name="database" value="MYSQL"/> -->
+			</bean>
+		</property>
+
+		<!-- 指定JPA属性。 -->
+		<!-- 如Hibernate中指定是否显示SQL的“hibernate.show_sql”属性，对于jpaProperties设置的属性自动会放进jpaPropertyMap中。 -->
+		<property name="jpaProperties">
+			<props>
+				<!-- SQL方言 -->
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<!-- 设置注释命名策略 -->
+				<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+
+				<!-- Hibernate 二级缓存 -->
+				<!-- 是否启用二级缓存 -->
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+				<!-- 二级缓存区域 -->
+				<prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+				<!-- 是否允许查询缓存 -->
+				<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+
+				<!-- 指定JDBC抓取数量的大小，非零值（调用Statement.setFetchSize()） -->
+				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+				<!-- 允许Hibernate使用JDBC2的批量更新，非零值，取值 建议取5到30之间的值 -->
+				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+
+				<!-- 设置JDBC事务隔离级别。 -->
+				<!-- 查看java.sql.Connection来了解各个值的具体意义，但请注意多数数据库都不支持所有的隔离级别。 -->
+				<!-- 取值 1, 2, 4, 8 -->
+				<prop key="hibernate.connection.isolation">2</prop>
+
+				<!-- Error applying BeanValidation relational constraints。 -->
+				<!-- 解决办法：由于javax.persistence.validation.mode的属性值默认是auto，所以会出错。在hibernate.cfg.xml里将javax.persistence.validation.mode设置为none，就可以避免出错了。 -->
+				<prop key="javax.persistence.validation.mode">none</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
+
+			</props>
+		</property>
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<!-- JPA 实体管理器工厂（转交事务管理给Spring） -->
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<!-- 使用注解方式定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 配置国际化 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<!-- 缓存有效秒数 -->
+		<property name="cacheSeconds"
+			value="#{T(net.boocu.framework.util.ConvertUtils).toTernary(${system.development}, 0, ${message.cache_seconds})}" />
+		<!-- 使用代码作为默认消息 -->
+		<property name="useCodeAsDefaultMessage" value="true" />
+		<!-- 国际化资源文件 -->
+		<property name="basenames">
+			<list>
+				<value>${message.path}</value>
+				<value>${message.account_path}</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置国际化语言转换 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
+		<!-- 所在区域（语种） -->
+		<property name="defaultLocale" value="${locale}" />
+	</bean>
+
+	<!-- 配置JCaptcha验证码功能 -->
+	<bean id="imageCaptchaService"
+		class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+		<property name="captchaEngine">
+			<bean class="net.boocu.web.captcha.GooggleCaptchaEngine" />
+		</property>
+		<!-- 验证码过期时间 -->
+		<property name="minGuarantedStorageDelayInSeconds" value="3600" />
+	</bean>
+
+	<!-- 配置SMTP邮件服务 -->
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+				<prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+				<!-- <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> -->
+			</props>
+		</property>
+	</bean>
+
+	<!-- 配置SMTP邮件异步发送 -->
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="${task.core_pool_size}" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="${task.max_pool_size}" />
+		<!-- 最大队列数 -->
+		<property name="queueCapacity" value="${task.queue_capacity}" />
+		<!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="${task.keep_alive_seconds}" />
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>
+	<task:annotation-driven />
+	<!-- 配置调度的任务对应bean的id和自定义class -->
+	<bean id="myQuartz" class="net.boocu.project.util.QuartzSendMail" />
+	<bean id="deleteRecord" class="net.boocu.project.util.DeleteSubscirbeRecord" />
+	<!-- 配置调度任务对应的bean的id和执行的方法,作业不并发调度 -->
+	<bean id="myDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="myQuartz" />
+		<property name="targetMethod" value="sendMail" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<!-- <bean id="myDetail1"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="myQuartz" />
+		<property name="targetMethod" value="sendMailkehu" />
+		<property name="concurrent" value="false" />
+	</bean> -->
+	<!-- <bean id="myDetail2"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="myQuartz" />
+		<property name="targetMethod" value="sendSupplierEmail" />
+		<property name="concurrent" value="false" />
+	</bean> -->
+	<bean id="myDetail3"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="deleteRecord" />
+		<property name="targetMethod" value="deleteRecord" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="myDetail1"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="myQuartz" />
+		<property name="targetMethod" value="sendMobile" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<!-- 配置调度任务执行的触发的时间 -->
+	<bean id="myTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="myDetail" />
+		<property name="cronExpression">
+			<value>0 0 23 * * ?</value>
+		</property>
+	</bean>
+	<bean id="myTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="myDetail1" />
+		<property name="cronExpression">
+			<value>0 0 10 * * ?</value>
+		</property>
+	</bean>
+	<!-- <bean id="myTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="myDetail1" />
+		<property name="cronExpression">
+			<value>0 0 21 * * ?</value>
+		</property>
+	</bean>
+	<bean id="myTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="myDetail2" />
+		<property name="cronExpression">
+			<value>0 0 10 * * ?</value>
+		</property>
+	</bean> -->
+	<bean id="myTrigger3" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="myDetail3" />
+		<property name="cronExpression">
+			<value>0 0 2 ? *  WED</value>
+		</property>
+	</bean>
+	<!-- Quartz的调度工厂，调度工厂只能有一个，多个调度任务在list中添加 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 所有的调度列表 -->
+				<ref bean="myTrigger" />
+				<!--<ref bean="myTrigger1" />
+				<ref bean="myTrigger2" />-->
+				<ref bean="myTrigger3" />
+				<!-- <ref bean="myTrigger1" /> <ref bean="myTrigger2" /> 对应的bean配置：id="myDetail1" 
+					和 id="myTrigger2" 可以对应的并行多配置-对应执行JavaBean和执行时间(各自触发time) -->
+			</list>
+		</property>
+	</bean>
+
+
+</beans>

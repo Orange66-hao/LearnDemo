@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品促销 - 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+ <div class="indexContent">
+<!--content-->
+<div class="main">
+  <div class="mainbanner"><img class="lazy" src="/statics/images/grey.gif" data-original="/statics/images/mbanner5.jpg" width="1210" height="200"></div>
+  <div class="prolistpd_111">
+  <!--salewhered-->
+  <div class="salewhered">
+    <div class="t">
+      <p>
+        <input type="text" name="txtKey" id="txtKey" class="txt" placeholder="请输入商品名称、型号等关键字">
+      </p>
+      <p class="btnd_111"><a class="btn transition02" href="javascript:;">搜一下</a></p>
+    </div>
+    <div class="seld">
+      <p>综合排序：
+        <select name="selSort1" id="selSort1" class="sel">
+          <option value="1" s_val="desc" name="popuOrder">人气从高到低</option>
+          <option value="2" s_val="asc" name="popuOrder">人气从低到高</option>
+        </select>
+        <select name="selSort2" id="selSort2" class="sel">
+          <option value="1" s_val="desc" name="priceOrder">价格从高到低</option>
+          <option value="2" s_val="asc"  name="priceOrder">价格从低到高</option>
+        </select>
+        <select name="selSort3" id="selSort3" class="sel">
+          <option value="1" s_val="desc" name="timeOrder">更新时间由远到近</option>
+          <option value="2" s_val="asc" name="timeOrder">更新时间由近到远</option>
+        </select>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" s_val="0" name="isNew">
+          二手</label>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" s_val="1" name="isNew">
+          新品</label>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" s_val="1" name="isSelf">
+          自营</label>
+      </p>
+      <p><a class="addra" href="javascript:;">地点</a></p>
+    </div>
+  </div>
+  <!--./salewhered--> 
+  
+    <!--./prolistpd--> 
+<div class="pageList_111">
+	[#include '/template/front/include/dataLists/salesList.html' /]
+</div>
+    <!-- 搜索条件的隐藏表单 add by fang 20150907-->
+   <form method="post" style="display:none" id="searchForm" action="/sales">
+   	<input name="keyword" value="" /> 
+   	<!-- 综合排序  -->
+   	<input name="popuOrder" value="" />
+   	<input name="priceOrder" value="" />
+   	<input name="timeOrder" value="" />
+   	<input name="isSelf" value="" />
+   	<input name="isNew" value="" />
+   	<input name="outputPlace" value="" />
+   	<!-- 综合排序 -->
+   	
+   	   	<!-- 分页-->
+   	<input name="pageNum" value="" />
+   </form>
+<!-- 搜索条件的隐藏表单--> 
+</div>
+<!--./prosaled-->
+</div>
+
+<!--./content--> 
+</div>
+[#include '/template/front/include/footer2.html' /]
+
+[#include '/template/front/include/jslist.html' /]
+<script>
+//关键字搜索
+$(".btnd_111").click(function(){
+	var keyword = $(this).prev().find("input").val();
+	$("#searchForm").find("input[name='keyword']").attr("value",keyword);
+	submitPost();
+});
+$(".seld").find("select").change(function(){
+		addCondition(this);
+});
+$(".seld").find("input[type='checkbox']").change(function(){
+	addCondition2(this);
+});
+//增加条件
+function addCondition(obj){
+		var $this = $(obj);
+		var id = $this.find("option:selected").attr("s_val");
+		var type = $this.find("option:selected").attr("name");
+		$("#searchForm").find("input[name='"+type+"']").attr("value",id);
+		submitPost();
+	}	
+function addCondition2(obj){
+	var $this = $(obj);
+	var id = $this.attr("s_val");
+	var type = $this.attr("name");
+	$("#searchForm").find("input[name='"+type+"']").attr("value",id);
+	submitPost();
+}
+//提交表单
+function submitPost(){
+	$(".prosaleuld").html("");
+	$(".pagd").html("");
+	$(".prolistpd_111 .listloadingd").show();
+	$.ajax({
+		url:"/sales/dataJson",
+		data:$("#searchForm").serialize(),
+		datatype:"html",
+		type:"post",
+		success:function(data){
+			$(".pageList_111").html(data);
+			$(".prolistpd_111 .listloadingd").hide();
+		}
+	});
+}
+</script>
+</body>
+</html>

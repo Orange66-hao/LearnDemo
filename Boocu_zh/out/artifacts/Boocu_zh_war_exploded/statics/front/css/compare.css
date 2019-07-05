@@ -1,0 +1,370 @@
+.productCompareThumb {width:100px;}
+
+
+.mainr .compart{
+	margin:0 auto;
+	width:900px;
+	border:2px solid #314a7d;
+}
+
+.mainr .compart .comtab{
+	width:100%;
+	text-align:center;
+}
+.mainr .compart .comtab tr:first-child{
+	height:160px;
+}
+.mainr .compart .comtab td{
+	width:22%;
+	border:1px solid #89aaee;
+	height:60px;
+	font-size:12px;
+	position:relative;
+	overflow:hidden;
+}
+
+.mainr .compart .comtab td .proName{
+	position:absolute;
+	bottom:5px;
+	color:#3B5998;
+	left: 50%;
+	text-align:center;
+	width:100%;
+	margin-left: -49%;
+	height:24px;
+	over-flow:hidden;
+}
+
+.mainr .compart .comtab td .join{
+	font-size: 16px;
+    font-weight:bold;
+    color:#fff;
+    cursor:default;
+    user-select:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    margin: 10px auto;
+    background-color: #999;
+    display: block;
+    height: 30px;
+    width: 100px;
+    line-height: 30px;
+}
+
+.mainr .compart .comtab td .combo{
+	margin:5px auto;
+}
+
+.mainr .compart .comtab td .proName:hover{
+	text-decoration:underline;
+}
+.mainr .compart .comtab td.title{
+	width:10%;
+	font-size:13px;
+}
+
+.mainr .compart .comtab td img{
+	margin:0 auto;
+	max-width:150px;
+	max-height:100px;
+}
+.mainr .compart .comtab td .js-btn-delete{
+    display: inline-block;
+    color: #3b5b98;
+    border: 1px solid #ccd3e4;
+    background-color: #fafbfc;
+    cursor: pointer;
+    outline: 0;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 15px;
+    font-size: 12px;
+    font-weight: 100;
+    text-decoration: none;
+    user-select:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+}
+.mainr .compart .comtab td .js-btn-delete:hover{
+	background-color:#f0f0f0;
+	text-decoration:none;
+}
+a.selectProduct 
+{
+	background: url(CompareClose.gif) no-repeat left top;
+    display:inline-block;
+    cursor:pointer;
+    width:13px;
+    height:13px;
+}
+#TbProduct td.tdbgleft
+{
+    vertical-align:middle;
+}
+
+#scrollMsg
+{
+    width:769px;
+    z-index:999;
+    margin:0 auto;
+    position:absolute;
+    left:center;
+    top:750px;
+    background:#ebd7a2;
+    height:auto;
+    filter:alpha(opacity=80);
+    -moz-opacity:0.8;
+    opacity:0.8;
+}
+
+#scrollMsg a
+{
+    color:Blue;
+}
+
+#scrollMsg td
+{
+    overflow:hidden;
+    vertical-align:middle;
+}
+
+/* .addCompare
+{
+    cursor:pointer;
+} */
+
+.msgBox
+{
+    position:absolute;
+    z-index:999;
+    background:#fef9f3; 
+    border:#ff0000 solid 1px; 
+    padding:3px; 
+    color:#ff0000;
+    width:120px; 
+    overflow:visible;
+}
+
+#ShowProductCount
+{
+    font-size:12px;
+    text-align:center;
+    padding-left:5px;
+}
+        
+#prevBtn {
+	float:left;
+	background: url(CompareUp.gif) no-repeat left bottom;
+}
+
+#nextBtn {
+	float:left; 
+	background: url(CompareDown.gif) no-repeat left top;
+	margin-top:3px;
+}
+#prevBtn, #nextBtn {
+	width: 12px;
+	height:10px;
+	cursor: pointer;
+	font-size:0;
+	line-height:0;
+}
+
+#CompareBox {
+	width: 320px;
+	text-align: left;
+	z-index: 999;
+	top:200px;
+	position: fixed;
+	right: 48px;
+	border:#afc9ee solid 1px;
+	background:#fff;
+	font:normal 12px/22px Tahoma;
+	display:none; 
+}
+
+#CompareShowBox {
+	background:url(CompareTitle.gif) no-repeat;
+	height: 24px;
+	line-height:24px;
+	border-bottom:#afc9ee solid 1px;
+}
+#CompareShowBox span{
+	float:right;
+	background:url(CompareHide.gif )  no-repeat;
+	width:28px;
+	height:10px;
+	font-size:0;
+	line-height:0;
+	margin:7px 5px 0px;
+	cursor:pointer;
+}
+
+#CompareBtnBox{
+	background:#fff3eb;
+	border:#ffe9c6 solid 1px;
+	height:22px;
+	margin:5px;
+	padding:0 5px;
+}
+
+#ClearAllProduct {
+	cursor: pointer;
+	color: #3B5998;
+	font-size: 12px;
+	float:right;
+	margin:5px 5px;
+}
+#ClearAllProduct:hover {
+	text-decoration: underline;
+	color:#d60000;
+}
+
+#CompareProductList {
+	overflow: hidden;
+	padding: 0;
+	margin:5px;
+}
+#CompareProductList li {
+	background:#f3f7fe;
+	border:#deeaff solid 1px;
+	margin-bottom:5px;
+	padding:2px 5px;
+	overflow:hidden;
+}
+#CompareProductList li a {
+	color:#369;
+	text-decoration:none;
+	line-height:18px;
+	}
+#CompareProductList li a :hover{
+	text-decoration:underline;
+}
+#CompareProductList ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#ShowCompare {
+	float:left;
+	margin:5px 5px;
+	cursor:pointer;
+	border:1px solid #cc5f00;
+	background-color:#f70;
+    display: inline-block;
+    color: #3b5b98;
+    outline: 0;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration:none;
+    color:#fff;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 15px;
+    font-size: 12px;
+    font-weight: 100;
+    
+}
+
+#ShowCompare:hover {
+	background:#f90;
+	text-decoration:none;
+}
+
+.removeProduct {
+	width: 16px;
+	height: 16px;
+	/* background: url(CompareClose.gif) no-repeat left top; */
+	background: url(../images/icon-20141212.png) no-repeat;
+    _background: url(../images/icon-20141212.png) no-repeat;
+    background-position:-20px -180px;
+	float:right;
+	margin:3px 3px 0px 3px;
+	cursor:pointer;
+	vertical-align:middle;
+}
+.removeProduct:hover {
+	background-position:0px -180px;
+	background-color:#3b5998;
+	width:16px;
+	height:16px;
+	
+}
+#CompareHideBox {
+	top:200px;
+	background-color:#3b5998;
+	height: 32px;
+	line-height:16px;
+	padding:10px;
+	overflow:hidden;
+	width: 28px;
+	font-size:12px;
+	z-index: 999;
+	position: fixed;
+	right: 1px;
+	cursor: pointer;
+	display:block;
+	color:#fff;
+	-moz-user-select:none;
+	user-select:none;
+	-webkit-user-select:none;
+}
+
+.recad {
+	width: 60px;
+    height: 45px;
+    float: left;
+    margin: 4px 0;
+}
+
+.recad img{
+	max-width:60px; 
+	max-height:45px;
+}
+
+.reName{
+	width: 160px;
+    padding: 0 10px;
+    float: left;
+    height:50px;
+    overflow:hidden;
+}
+.comparepop-alert{
+	float: left;
+    height: 26px;
+    line-height: 26px;
+    padding: 4px 0 0 10px;
+    color: #666;
+}
+#reName:hover{
+	text-decoration: underline;
+}
+.icon10{
+    display: inline-block;
+    background: url(../images/icon-20141212.png) no-repeat;
+    _background: url(../images/icon-20141212.png) no-repeat;
+    background-position: -160px -80px;
+    overflow: hidden;
+    height: 10px;
+    width: 10px;
+    z-index: 9999;
+    cursor: pointer;
+    position: fixed;
+    top: 220px;
+    right: 2px;
+}
+
+.icon10-left{
+	background-position: -160px -100px;
+}
+
+#CompareHideBox:hover {
+	background-color: #4c73c5;
+    text-decoration: none;
+    outline: none; }
+}

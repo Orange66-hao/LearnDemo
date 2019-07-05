@@ -1,0 +1,92 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>示例商城-后台管理</title>
+<style type="text/css">
+body{
+	margin:0px;
+	font-family:Arial,"宋体",Verdana,sans-serif;
+	font-size:12px;
+}
+html,body {padding: 0;margin: 0; overflow-x:hidden; overflow-y:auto;}
+dl,dd{margin:0px}
+ul{
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+}
+</style>
+
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+</head>
+<body>
+
+<div class="main" style="background-color: white;">
+	<form id="addForm">
+		<table width="98%" border="0" cellspacing="0" cellpadding="8">
+			<tr>
+				<th>权限名称：</th>
+				<td><input class="input_text easyui-validatebox" type="text"
+					id="name" name="name" data-options="required:true"></input>
+				</td>
+				<th>权限描述：</th>
+				<td><input class="input_text easyui-validatebox"
+					type="text" name="description" data-options="required:true"></input>
+				</td>
+			</tr>
+		 
+		</table>
+	</form>
+	<div class="buttonWrap fixed">
+		<a id="searchAdvance" class="easyui-linkbutton" onclick="submitForm()"
+			href="javascript:;">保存</a>
+	</div>
+</div>
+<script>
+	function submitForm() {
+		var formflag = $("#addForm").form().form('validate');
+		if (formflag) {
+			$.Loading.show("正在添加......");
+			var options = {
+				url : "/admin/authority/save.jspx?ajax=yes",
+				type : "POST",
+				dataType : 'json',
+				success : function(result) {
+					if (result.result == 1) {
+						$.Loading.success(result.message);
+						newTab($("#name").val() + "—修改",
+								"/admin/authority/detail.jspx?id="
+										+ result.id);
+						parent.CloseTabByTitle("添加权限");
+					}
+					if (result.result == 0) {
+						$.Loading.error(result.message);
+					}
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			};
+			$("#addForm").ajaxSubmit(options);
+		}
+	}
+</script>
+
+</body>
+</html>

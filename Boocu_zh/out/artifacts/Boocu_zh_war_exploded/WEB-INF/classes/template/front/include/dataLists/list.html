@@ -1,0 +1,86 @@
+
+<!--loading-->
+<div class="listloadingd"></div>
+<!--./loading-->
+<div class="prould">
+	<!--li-->
+	[#list page.cont as item] [#if isProductSearch] [#if
+	item.industryClass?trim !=""]
+	<div class="prollid">
+		<div class="ckd">
+			<input type="checkbox" link="/product/${item.id}.jhtml"
+				class="addCompare"
+				name="${item.productBrandEntity.name}&nbsp;${item.proNo}&nbsp;${item.proName}"
+				id="${item.id}"
+				imgSrc="[#if item.proOriginal1!]${item.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]"
+				value="${item.productBrandEntity.name}&nbsp;${item.proNo}&nbsp;${item.proName}">
+		</div>
+		<div class="titd">
+			<i>${item.productType.typeName}</i>[#if item.proClass == 0]<span>[自营]</span>[/#if]
+			<a href="/product/${item.id}.jhtml" target="_blank" show_title='showText'>${item.productBrandEntity.name}&nbsp;${item.proNo}&nbsp;${item.proName}</a>
+			<ul class="prollidp" show_title='showText'>产品信息:${item.industryClass!"-"}
+			</ul>
+		</div>
+		<div class="timed">更新日期：${product.modifyDate}</div>
+	</div>
+	[/#if] [#else]
+	<div class="prollid">
+		<div class="ckd">
+			<input type="checkbox" link="/product/${item.id}.jhtml"
+				class="addCompare"
+				name="${item.productBrandEntity.name}&nbsp;${item.proNo}&nbsp;${item.proName}"
+				id="${item.id}"
+				imgSrc="[#if item.proOriginal1!]${item.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]"
+				value="${item.productBrandEntity.name}&nbsp;${item.proNo}&nbsp;${item.proName}">
+		</div>
+		<div class="titd">
+			<i>${item.productType.typeName}</i>[#if item.proClass == 0]<span>[自营]</span>[/#if]<a
+				href="/product/${item.id}.jhtml" target="_blank"  show_title='showText'>${item.productBrandEntity.name}&nbsp;${item.proNo}&nbsp;${item.proName}</a>
+		</div>
+		<div class="timed">更新日期：${item.modifyDate}</div>
+	</div>
+	[/#if] [/#list]
+</div>
+<div class="pagd" data-isProductSearch="${isProductSearch}">
+	[#if isBegin =='1'] [#if (page.pageNumber-1) gte 1]<a class="prev"
+		href="#" s_val="${page.pageNumber-1}">上一页</a>[/#if] [#list -2..2 as
+	item] [#if (page.pageNumber+item) gte 1 & (page.pageNumber+item) lte
+	page.totalPages]<a href="#" class="${(item ==0)?string('on','')}"
+		s_val="${page.pageNumber+item}">${page.pageNumber+item}</a>[/#if]
+	[/#list] [#if page.pageNumber lt page.totalPages]<a class="next"
+		href="#" s_val="${page.pageNumber+1}">下一页</a>[/#if] [#else] [#if
+	(page.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);"
+		s_val="${page.pageNumber-1}">上一页</a>[/#if] [#list -2..2 as item] [#if
+	(page.pageNumber+item) gte 1 & (page.pageNumber+item) lte
+	page.totalPages]<a href="javascript:void(0);"
+		s_val="${page.pageNumber+item}" class="${(item ==0)?string('on','')}">${page.pageNumber+item}</a>[/#if]
+	[/#list] [#if page.pageNumber lt page.totalPages]<a class="next"
+		href="javascript:void(0);" s_val="${page.pageNumber+1}">下一页</a>[/#if]
+	[/#if]
+</div>
+<!--./pagd-->
+<link rel="stylesheet" href="/statics/front/css/compare.css" />
+<script src="/statics/front/js/jquery.js"></script>
+<script src="/statics/front/js/compartor/jquery.cookie.min.js"></script>
+<script src="/statics/front/js/compartor/jquery.timers.js"></script>
+<script src="/statics/front/js/compartor/productCompare.js"></script>
+<script src="/statics/front/js/title.js"></script>
+<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script>
+<script>
+	//分页
+  $ (".pagd").find ("a").click (function () {
+      var keyword = $(".top-keyword").find("input").val();
+        $ ("#searchForm").find ("input[name='pageNum']").attr ("value", $ (this).attr ("s_val"));
+         $ ("#searchForm").find ("input[name='keyword']").attr ("value", $.trim(keyword));
+        if (!$ (this).hasClass ("on"))
+        {
+    	    submitPost2 ($ (this).parent ().data ("isProductSearch"));
+    	    $ (document).scrollTop (300);
+    	    $ ("#searchForm").find ("input[name='pageNum']").attr ("value", "");
+        }
+        
+     }); 
+</script>
+
+
+

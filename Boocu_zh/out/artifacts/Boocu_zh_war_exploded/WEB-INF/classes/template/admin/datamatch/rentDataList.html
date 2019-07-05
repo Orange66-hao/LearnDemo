@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body{
+	margin:0px;
+	font-family:Arial,"宋体",Verdana,sans-serif;
+	font-size:12px;
+}
+html,body {padding: 0;margin: 0; overflow-x:hidden; overflow-y:auto;}
+dl,dd{margin:0px}
+ul{
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+	
+}
+.prosortd{ clear:both;  margin-left:10px; overflow:hidden; zoom:1; }
+.prosortd p{ float:left; padding-right:120px; font-size:14px;}
+.prosortd1{ clear:both; margin-left:10px; overflow:hidden; zoom:1; }
+.prosortd1 p{ float:left; padding-right:150px; font-size:14px;}
+.prosortd2{ clear:both; margin-left:240px; overflow:hidden; zoom:1; }
+.prosortd2 p{ float:left; padding-right:150px; font-size:14px;}
+</style>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+
+
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+ 
+<div id="bookinfo" style="display: none;"></div>
+<div id="loading"></div>
+<div class="main">
+	<div title="筛选条件" data-options="selected:true">
+		 <div class="prosortd">
+	        <p>日期: </p>
+	        <p><input type="radio"  s_val="1" checked="checked" name="dateGroupId" >今日</p>
+	        <p><input type="radio"  s_val="3" name="dateGroupId">最近三天</p>
+	        <p><input type="radio"  s_val="7" name="dateGroupId">最近七天</p>
+	        <p><input type="radio"  s_val="30" name="dateGroupId">最近一月</p>
+	    </div>
+	</div>
+	<div class="easyui-tabs">
+		<div title="租赁/求租" style="padding:10px;">
+			<div id="tb" style="height: auto">
+			    <a href="javascript:void(0)" id="rentA" class="button blueButton" data-options="plain:true" onclick="showRent()">租赁匹配求租</a>
+				<a href="javascript:void(0)" id="wantRentA" class="button" data-options="plain:true" onclick="showWantRent()">求租匹配租赁</a>
+				<span style="float: right;"> 
+					<span id="simpleSearch">
+						<span id="rentSpan">
+							<input class="easyui-combobox combo " type="text" id="rentSel" name="id" data-options=
+							"url:'/productRent/getRentNames.jspx?date=1',method:'get',valueField:'id',textField:'text', width:300 "/>
+						</span>
+						<span id="wantRentSpan">
+							<input class="easyui-combobox combo " type="text" id="wantRentSel" name="id" data-options=
+							"url:'/productWantRent/getWantRentNames.jspx?date=1',method:'get',valueField:'id',textField:'text', width:300 "/>
+						</span>
+					
+						<input id="searchKeyword2" class="input_text" type="text" value="" size="30" style="width: 300px;"
+						placeholder="请输入品牌型号" name="searchKeyWord">
+						<input type="hidden" id="wrFlag" value="-1">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" onclick="search2()">搜索</a>
+					</span>
+				</span>
+			</div>
+			<div class="clear height10"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<div id="rentdiv">
+					<table class="easyui-datagrid"
+						data-options="url:'/productRent/rentMatchWantRent.json',pageList: [5,10,15,20],pageSize:10"
+						pagination="true" id="rent1" sortName="id" sortOrder="desc">
+						<thead>
+							<tr>
+								<th data-options="field:'id',checkbox:true">id</th>
+							 	<th data-options="field:'name',width:150,sortable:'true',align:'center'" formatter="reqinfo" >品牌/型号</th>
+								<th data-options="field:'poption',width:150,align:'center'">选件</th>
+								<th data-options="field:'qualityStatus',width:150,align:'center'">成色</th>
+								<th data-options="field:'repairPeriod',width:100,align:'center'">保修时间</th>
+								<th data-options="field:'prouseAddress',width:150,align:'center'">使用地</th>
+								<th data-options="field:'price',width:100,align:'center'">预算价格</th>
+								<th data-options="field:'userName',width:150,align:'center'">用户名</th>
+								<!-- 
+								<th data-options="field:'linkUp',width:200,align:'center'" formatter="linkUp">沟通</th>
+								<th data-options="field:'quote',width:200,align:'center'" formatter="quote">报价</th>
+								 -->
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="wantRentdiv">
+					<table class="easyui-datagrid"
+						data-options="url:'/productWantRent/wantRentMatchRent.json',pageList: [5,10,15,20],pageSize:10"
+						pagination="true" id="wantRent1" sortName="id" sortOrder="desc">
+						<thead>
+							<tr>
+								<th data-options="field:'id',checkbox:true">id</th>
+							 	<th data-options="field:'name',width:150,sortable:'true',align:'center'" formatter="reqinfo" >品牌/型号</th>
+								<th data-options="field:'poption',width:150,align:'center'">选件</th>
+								<th data-options="field:'qualityStatus',width:150,align:'center'">成色</th>
+								<th data-options="field:'repairPeriod',width:100,align:'center'">保修时间</th>
+								<th data-options="field:'prouseAddress',width:150,align:'center'">使用地</th>
+								<th data-options="field:'price',width:100,align:'center'">预算价格</th>
+								<th data-options="field:'userName',width:150,align:'center'">用户名</th>
+								<!-- 
+								<th data-options="field:'linkUp',width:200,align:'center'" formatter="linkUp">沟通</th>
+								<th data-options="field:'quote',width:200,align:'center'" formatter="quote">报价</th>
+								 -->
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+	//初始化数据集
+	$(function(){
+		//隐藏的div
+		$("#wantRentdiv").hide();
+		//隐藏的select
+		$("#wantRentSpan").hide();
+	});
+
+	$(".prosortd").find("input[type='radio']").change(function(){
+		var date = $(".prosortd").find("input[name='dateGroupId']:checked").attr("s_val");
+		
+		var kw = $("#searchKeyword2").val();
+		
+		if($("#wrFlag").val()==-1){
+			//销售
+			$("#rentSel").combobox("clear");
+			$("#rentSel").combobox("reload","/productRent/getRentNames.jspx?keyword="+kw+"&date="+date);
+		}else{
+			$("#wantRentSel").combobox("clear");
+			$("#wantRentSel").combobox("reload","/productWantRent/getWantRentNames.jspx?keyword="+kw+"&date="+date);
+		}
+	});
+	
+	
+	//计数器，判断要不要刷新表格
+	var rentf = true;
+	
+	function showRent(){
+		$("#rentdiv").show();
+		$("#wantRentdiv").hide();
+
+		$("#rentSpan").show();
+		$("#wantRentSpan").hide();
+		
+		$("#rentA").addClass("blueButton");
+		$("#wantRentA").removeClass("blueButton")
+		
+		//修改标识
+		$("#wrFlag").val(-1);
+		//清空input的值
+		$("#searchKeyword2").val("");
+	}
+	
+	function showWantRent(){
+		$("#wantRentdiv").show();
+		$("#rentdiv").hide();
+		
+		$("#wantRentSpan").show();
+		$("#rentSpan").hide();
+		
+		$("#wantRentA").addClass("blueButton");
+		$("#rentA").removeClass("blueButton")
+		if(rentf){
+			$("#wantRent1").datagrid('reload');
+		}
+		
+		//修改标识
+		$("#wrFlag").val(1);
+		//清空input的值
+		$("#searchKeyword2").val("");
+		
+		rentf = false;
+	}
+	
+	//租赁的下拉事件
+	$("#rentSel").combobox({
+		onChange:function(id,e){
+			$("#rent1").datagrid("load",{
+				keyword:id,
+				page:1
+			});
+		}
+	});
+	
+	//求租的下拉事件
+	$("#wantRentSel").combobox({
+		onChange:function(id,e){
+			$("#wantRent1").datagrid("load",{
+				keyword:id,
+				page:1
+			});
+		}
+	});
+	
+	//销售、求购搜索事件
+	function search2(){
+		var kw = $("#searchKeyword2").val();
+		var date = $(".prosortd").find("input[name='dateGroupId']:checked").attr("s_val");
+		
+		if($("#wrFlag").val()==-1){
+			//销售
+			$("#rentSel").combobox("clear");
+			$("#rentSel").combobox("reload","/productRent/getRentNames.jspx?keyword="+kw+"&date="+date);
+		}else{
+			$("#wantRepairSel").combobox("clear");
+			$("#wantRepairSel").combobox("reload","/productWantRent/getWantRentNames.jspx?keyword="+kw+"&date="+date);
+		}
+	}
+	
+	function reqinfo(value, row, index) {
+		var val = "<a class='details' title='名称' href='javascript:void(0);' onclick='alert(\""+row.name+"\")'>"+row.name+"</a>";
+		return val;
+	}
+	
+	//沟通
+	function linkUp(value, row, index) {
+		var val = "<a class='details' title='沟通' href='javascript:void(0);' onclick='alert(\""+row.linkUp+"\")'>沟通</a>";
+		return val;
+	}
+	
+	//报价
+	function quote(value, row, index) {
+		var val = "<a class='details' title='报价' href='javascript:void(0);' onclick='alert(\""+row.quote+"\")'>报价</a>";
+		return val;
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>新闻标题</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="title" data-options="required:true" value="${item.title}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>新闻类型</th>
+					<td>
+						<select name="newstype">
+							<option ${(item.newstype =='enterprise')?string('selected','')} value="enterprise">企业新闻</option>
+							<option value="industry" ${(item.newstype == 'industry')?string('selected','')}>行业新闻</option>
+							<option ${(item.newstype =='international')?string('selected','')} value="international">国际新闻</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>新闻区域</th>
+					<td><input class="easyui-combobox combo" type="text" s_value="${item.newsareaEntity.id}"
+						name="newsareaId" id="newsareaId" data-options="url:'/admin/index/newsarea/get_newsarea_names.jspx',method:'get',valueField:'id',
+						textField:'text', width:307, onLoadSuccess:function(){loadSec('#newsareaId');}" style="height:30px"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>新闻内容</th>
+					<td ><textarea rows="15" cols="50" id="content" name="content" class="ckeditor">${item.content}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>修改人</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="updateuser" value="${item.updateuser}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>是否推荐</th>
+					<td><input type="radio" value="0" name="isrecommend" ${(item.isrecommend==0)?string('checked','')}/>否
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><input type="radio" value="1" name="isrecommend" ${(item.isrecommend==1)?string('checked','')}/>是	
+				</tr>			
+				<tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="sort" value="${item.sort}" ></input>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script>
+	function loadSec(ele){
+		var value = $(ele).attr("s_value");
+		$(ele).combobox("select",value);
+	}
+</script>

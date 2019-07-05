@@ -1,0 +1,33 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<input name="id" value="${item.id}" hidden="true" />
+			<table>
+				<tr>
+					<th>发件人</th>
+					<td><input class="input_text" type="text" name="name"
+						data-options="required:true" value="${item.sendEntity.username}"
+						readonly="readonly"></input></td>
+
+				</tr>
+				<tr>
+					<th>回复标题</th>
+					<td><input class="input_text" type="text" name="title"
+						data-options="required:true" readonly="readonly"
+						value="${item.messageEntity.message_title}" ></input></td>
+				</tr>
+				<tr>
+					<th>原件内容</th>
+					<td><textarea id="content" rows="15" cols="50"
+							class="ckeditor">${item.messageEntity.message_context}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>回复内容</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+						data-options="required:true" name="context"></input></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商品比较 - 晧辰仪联网</title>
+<link rel="stylesheet" href="/statics/front/css/compare.css" />
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray1/easyui.css"/> 
+<script src="/statics/front/js/jquery.min.js"></script> 
+<style>
+.picd{position:relative;width:268px;height:175px;}
+.picd img{position:absolute;bottom:0;top:0;left:0;right:0;margin:auto;vertical-align: middle;max-width:268px;_width:expression(this.width > 268px ? "268px" : this.width);max-height:175px;_height:expression(this.height > 175px ? "175px" : this.height);}
+</style>
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+<!--content-->
+<div class="indexContent">
+<!--content-->
+<div class="main prodpd"> 
+  
+  <!--mainl-->
+  <div class="mainl"> 
+    <!--产品分类-->
+    <div class="maintit">
+      <h3>所有设备分类</h3>
+    </div>
+    <div class="maintyped index">
+      <ul id="prodClass">
+      	[#list products as product]
+      	[#assign secondNodes = product.children]
+        <li><a class="la" href="javascript:;" s_id="${product.id}">${product.text}</a>
+          <div class="listbg"></div>
+          <div class="listd">
+          	[#list secondNodes as secondNode]
+          	[#assign thirdNodes = secondNode.children]
+            <div class="nlid">
+              <h4><a href="javascript:;" s_id="${secondNode.id}">${secondNode.text}</a></h4>
+              [#if secondNode.children??]
+              <p>
+	              [#list thirdNodes as thirdNode]
+	              <a href="javascript:;" s_id="${thirdNode.id}">${thirdNode.text}</a>
+	              [/#list]
+              </p>
+              [/#if] 
+            </div>
+            [/#list]
+          </div>
+        </li>
+		[/#list]
+      </ul>
+    </div>
+    <!--./产品分类--> 
+    <!--新闻动态-->
+    <div class="maintit">
+      <h3>新闻动态</h3>
+    </div>
+    <div class="mainnewsd index">
+      <ul>
+      	[#list newsList as item]
+      	<li><a href="/news/${item.id}.jhtml">${item.title}</a></li>
+      	[/#list]
+      </ul>
+    </div>
+    <!--./新闻动态--> 
+    <!--促销信息-->
+    <div class="maintit">
+      <h3>促销信息</h3>
+    </div>
+    <div class="prorpiculd ld"> 
+        [#list imageList as item]
+      <!--li-->
+      <div class="prorpiclid"><a href="/product/${item.id}.jhtml" target="_blank">
+		<div class="picd"><img class="lazy" src="/statics/front/images/grey.gif" data-original="${item.proOriginal1}"></div>
+          <div class="infod">
+           	 <h3>产品型号：${item.productBrandEntity.name} ${item.proNo}</h3>
+       		 <p>促销价<span><span class="f">       		
+       		 [#if priceType??]
+         		[#if priceType=='VIP']
+         			[#if item.proVipPrice?? && item.proVipPrice != 0] 
+         				${item.proVipPrice}${message("PriceUnit."+item.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if item.proPeer?? && item.proPeer != 0] 
+         				${item.proPeer}${message("PriceUnit."+item.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if item.proMemberPrice?? && item.proMemberPrice != 0] 
+         				${item.proMemberPrice}${message("PriceUnit."+item.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if item.proCustomPrice?? && item.proCustomPrice != 0] 
+         				${item.proCustomPrice}${message("PriceUnit."+item.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if]</span></span></p>
+            <i class="bg3"></i></div>
+          </a></div>
+      <!--./li-->
+      [/#list] 
+    </div>
+    
+    <!--./促销信息--> 
+    
+  </div>
+  <!--./mainl--> 
+	
+  <!--mainr-->
+  <div class="mainr"> 
+  	<div class="umainrtitd" style="border:none; margin-left:13px; user-select:none; -moz-user-select:none; -webkit-user-select:none; cursor:default;"><span>商品对比</span></div>
+	<div class="compart">
+		<table class="comtab">
+			<tr>
+				<td class="title">商品图片</td>
+				<td class="play0"><div class="display">[#if product0!]<a href="/product/${product0.id}.jhtml" target="_blank">
+						<img class="lazy" src="[#if product0.proOriginal1!]${product0.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]" />
+						<p class="proName">${product0.proName}</p>
+					</a>
+					[/#if]
+					</div>
+					<div class="display">
+					<div class="join">加入对比</div>
+					<p><input class="easyui-combobox combo " type="text" name="brandId0" data-options="url:'/brand/get_brand_names.jspx',method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="brandId0"></input></p>
+					<p><input class="easyui-combobox combo" type="text" name="proNo0" data-options="method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="proNo0"></input></p>
+					</div>					
+				</td>
+				<td class="play1"><div class="display">[#if product1!]<a href="/product/${product1.id}.jhtml" target="_blank">
+						<img class="lazy" src="[#if product1.proOriginal1!]${product1.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]" />
+						<p class="proName">${product1.proName}</p>
+					</a>
+					[/#if]	
+					</div>
+					<div class="display">
+						<div class="join">加入对比</div>
+						<p><input class="easyui-combobox combo " type="text" name="brandId1" data-options="url:'/brand/get_brand_names.jspx',method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="brandId1"></input></p>
+						<p><input class="easyui-combobox combo" type="text" name="proNo1" data-options="method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="proNo1"></input></p>
+					</div>
+				</td>
+				<td class="play2"><div class="display">[#if product2!]<a href="/product/${product2.id}.jhtml" target="_blank">
+						<img class="lazy" src="[#if product2.proOriginal1!]${product2.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]" />
+						<p class="proName">${product2.proName}</p>
+					</a>
+					[/#if]
+					</div>
+					<div class="display">
+						<div class="join">加入对比</div>
+						<p><input class="easyui-combobox combo " type="text" name="brandId2" data-options="url:'/brand/get_brand_names.jspx',method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="brandId2"></input></p>
+						<p><input class="easyui-combobox combo " type="text" name="proNo2" data-options="method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="proNo2"></input></p>
+					</div>
+				</td>
+				<td class="play3"><div class="display">[#if product3!]<a href="/product/${product3.id}.jhtml" target="_blank">
+						<img class="lazy" src="[#if product3.proOriginal1!]${product3.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if]" />
+						<p class="proName">${product3.proName}</p>
+					</a>
+					[/#if]
+					</div>
+					<div class="display">
+					<div class="join">加入对比</div>
+					<p><input class="easyui-combobox combo " type="text" name="brandId3" data-options="url:'/brand/get_brand_names.jspx',method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="brandId3"></input></p>
+					<p><input class="easyui-combobox combo " type="text" name="proNo3" data-options="method:'get',valueField:'id',textField:'text',editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="proNo3"></input></p>
+					</div>
+				</td>
+			</tr>
+			<script>
+			[#if product0!]
+			$(".play0").find(".display").eq(0).show();
+			$(".play0").find(".display").eq(1).hide();
+			[#else]
+			$(".play0").find(".display").eq(0).hide();
+			$(".play0").find(".display").eq(1).show();
+			[/#if]
+			[#if product1!]
+			$(".play1").find(".display").eq(0).show();
+			$(".play1").find(".display").eq(1).hide();
+			[#else]
+			$(".play1").find(".display").eq(0).hide();
+			$(".play1").find(".display").eq(1).show();
+			[/#if]
+			[#if product2!]
+			$(".play2").find(".display").eq(0).show();
+			$(".play2").find(".display").eq(1).hide();
+			[#else]
+			$(".play2").find(".display").eq(0).hide();
+			$(".play2").find(".display").eq(1).show();
+			[/#if]
+			[#if product3!]
+			$(".play3").find(".display").eq(0).show();
+			$(".play3").find(".display").eq(1).hide();
+			[#else]
+			$(".play3").find(".display").eq(0).hide();
+			$(".play3").find(".display").eq(1).show();
+			[/#if]
+			</script>
+			<tr>
+				<td class="title">操作</td>
+				<td><a class="js-btn-delete btn-disabled" href="javascript:;">删除</a></td>
+				<td><a class="js-btn-delete btn-disabled" href="javascript:;">删除</a></td>
+				<td><a class="js-btn-delete btn-disabled" href="javascript:;">删除</a></td>
+				<td><a class="js-btn-delete btn-disabled" href="javascript:;">删除</a></td>
+			</tr>
+			<tr>
+				<td class="title">品牌</td>
+				<td>[#if product0!][#if product0.productBrandEntity!]${product0.productBrandEntity.name}[/#if][/#if]</td>
+				<td>[#if product1!][#if product1.productBrandEntity!]${product1.productBrandEntity.name}[/#if][/#if]</td>
+				<td>[#if product2!][#if product2.productBrandEntity!]${product2.productBrandEntity.name}[/#if][/#if]</td>
+				<td>[#if product3!][#if product3.productBrandEntity!]${product3.productBrandEntity.name}[/#if][/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">型号</td>
+				<td>[#if product0!]${product0.proNo}[/#if]</td>
+				<td>[#if product1!]${product1.proNo}[/#if]</td>
+				<td>[#if product2!]${product2.proNo}[/#if]</td>
+				<td>[#if product3!]${product3.proNo}[/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">信息来源</td>
+				<td>[#if product0!][#if product0.productType!]${product0.productType.typeName}[/#if][/#if]</td>
+				<td>[#if product1!][#if product1.productType!]${product1.productType.typeName}[/#if][/#if]</td>
+				<td>[#if product2!][#if product2.productType!]${product2.productType.typeName}[/#if][/#if]</td>
+				<td>[#if product3!][#if product3.productType!]${product3.productType.typeName}[/#if][/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">成色</td>
+				<td>[#if product0!]${message("QualityStatus."+product0.qualityStatus)}[/#if]</td>
+				<td>[#if product1!]${message("QualityStatus."+product1.qualityStatus)}[/#if]</td>
+				<td>[#if product2!]${message("QualityStatus."+product2.qualityStatus)}[/#if]</td>
+				<td>[#if product3!]${message("QualityStatus."+product3.qualityStatus)}[/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">价格</td>
+				<td> [#if product0!][#if priceType?? && priceType!='来宾']
+         		[#if priceType=='VIP']
+         			[#if product0.proVipPrice?? && product0.proVipPrice != 0] 
+         				${product0.proVipPrice}${message("PriceUnit."+product0.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if product0.proPeer?? && product0.proPeer != 0] 
+         				${product0.proPeer}${message("PriceUnit."+product0.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if product0.proMemberPrice?? && product0.proMemberPrice != 0] 
+         				${product0.proMemberPrice}${message("PriceUnit."+product0.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if product0.proCustomPrice?? && product0.proCustomPrice != 0] 
+         				${product0.proCustomPrice}${message("PriceUnit."+product0.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if][/#if]</td>
+				<td>[#if product1!][#if priceType?? && priceType!='来宾']
+         		[#if priceType=='VIP']
+         			[#if product1.proVipPrice?? && product1.proVipPrice != 0] 
+         				${product1.proVipPrice}${message("PriceUnit."+product1.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if product1.proPeer?? && product1.proPeer != 0] 
+         				${product1.proPeer}${message("PriceUnit."+product1.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if product1.proMemberPrice?? && product1.proMemberPrice != 0] 
+         				${product1.proMemberPrice}${message("PriceUnit."+product1.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if product1.proCustomPrice?? && product1.proCustomPrice != 0] 
+         				${product1.proCustomPrice}${message("PriceUnit."+product1.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if][/#if]</td>
+				<td>[#if product2!][#if priceType?? && priceType!='来宾']
+         		[#if priceType=='VIP']
+         			[#if product2.proVipPrice?? && product2.proVipPrice != 0] 
+         				${product2.proVipPrice}${message("PriceUnit."+product2.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if product2.proPeer?? && product2.proPeer != 0] 
+         				${product2.proPeer}${message("PriceUnit."+product2.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if product2.proMemberPrice?? && product2.proMemberPrice != 0] 
+         				${product2.proMemberPrice}${message("PriceUnit."+product2.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if product2.proCustomPrice?? && product2.proCustomPrice != 0] 
+         				${product2.proCustomPrice}${message("PriceUnit."+product2.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if][/#if]</td>
+				<td>[#if product3!][#if priceType?? && priceType!='来宾']
+         		[#if priceType=='VIP']
+         			[#if product3.proVipPrice?? && product3.proVipPrice != 0] 
+         				${product3.proVipPrice}${message("PriceUnit."+product3.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if product3.proPeer?? && product3.proPeer != 0] 
+         				${product3.proPeer}${message("PriceUnit."+product3.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if product3.proMemberPrice?? && product3.proMemberPrice != 0] 
+         				${product3.proMemberPrice}${message("PriceUnit."+product3.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if product3.proCustomPrice?? && product3.proCustomPrice != 0] 
+         				${product3.proCustomPrice}${message("PriceUnit."+product3.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if][/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">是否含税</td>
+				<td>[#if product0.isTax!][#if product0.isTax== '1']<i>含</i>[#else]否[/#if][/#if]</td>
+				<td>[#if product1.isTax!][#if product1.isTax== '1']<i>含</i>[#else]否[/#if][/#if]</td>
+				<td>[#if product2.isTax!][#if product2.isTax== '1']<i>含</i>[#else]否[/#if][/#if]</td>
+				<td>[#if product3.isTax!][#if product3.isTax== '1']<i>含</i>[#else]否[/#if][/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">税率</td>
+				<td>[#if product0.isTax== '1']<i>含${message("Rate."+product0.taxRate)}税[/#if]</i></td>
+				<td>[#if product1.isTax== '1']<i>含${message("Rate."+product1.taxRate)}税[/#if]</i></td>
+				<td>[#if product2.isTax== '1']<i>含${message("Rate."+product2.taxRate)}税[/#if]</i></td>
+				<td>[#if product3.isTax== '1']<i>含${message("Rate."+product3.taxRate)}税[/#if]</i></td>
+			</tr>
+			<tr>
+				<td class="title">所在地</td>
+				<td class="areaId" s_id="${product0.id}"></td>
+				<td class="areaId" s_id="${product1.id}"></td>
+				<td class="areaId" s_id="${product2.id}"></td>
+				<td class="areaId" s_id="${product3.id}"></td>
+			</tr>
+			<tr>
+				<td class="title">发货时间</td>
+				<td>[#if product0!]${product0.sendCycle!"-"}${message("DateType."+product0.sendCycleUnit)}[/#if]</td>
+				<td>[#if product1!]${product1.sendCycle!"-"}${message("DateType."+product1.sendCycleUnit)}[/#if]</td>
+				<td>[#if product2!]${product2.sendCycle!"-"}${message("DateType."+product2.sendCycleUnit)}[/#if]</td>
+				<td>[#if product3!]${product3.sendCycle!"-"}${message("DateType."+product3.sendCycleUnit)}[/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">保修时间</td>
+				<td>[#if product0!]${product0.repairPeriod!"-"}${message("DateType."+product0.repairPeriodUnit)}[/#if]</td>
+				<td>[#if product1!]${product1.repairPeriod!"-"}${message("DateType."+product1.repairPeriodUnit)}[/#if]</td>
+				<td>[#if product2!]${product2.repairPeriod!"-"}${message("DateType."+product2.repairPeriodUnit)}[/#if]</td>
+				<td>[#if product3!]${product3.repairPeriod!"-"}${message("DateType."+product3.repairPeriodUnit)}[/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">状态</td>
+				<td>[#if product0!]${message("Status."+product0.status)}[/#if]</td>
+				<td>[#if product1!]${message("Status."+product1.status)}[/#if]</td>
+				<td>[#if product2!]${message("Status."+product2.status)}[/#if]</td>
+				<td>[#if product3!]${message("Status."+product3.status)}[/#if]</td>
+			</tr>
+			<tr>
+				<td class="title">是否计量</td>
+				<td>[#if product0!][#if product0.isUnit==1]是[#else]否[/#if][/#if]</td>
+				<td>[#if product1!][#if product1.isUnit==1]是[#else]否[/#if][/#if]</td>
+				<td>[#if product2!][#if product2.isUnit==1]是[#else]否[/#if][/#if]</td>
+				<td>[#if product3!][#if product3.isUnit==1]是[#else]否[/#if][/#if]</td>
+			</tr>
+		</table>
+		
+	
+	</div>
+	
+  </div>
+  <!--./mainr-->
+</div>
+</div>
+[#include '/template/front/include/footer.html' /]
+
+<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script> 
+<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script> 
+<script src="/statics/front/js/main.js"></script>
+<script src="/statics/front/js/pro.js"></script>
+<script src="/statics/front/js/list.js?isProductSearch=${isProductSearch}"  ></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery1.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+
+<script>
+//行业分类
+$("#prodClass").find("a").click(function(){
+	var proClass = $(this).attr("s_id");
+	$(".indexContent").hide();
+	$("#indexLoading").show();
+	$.ajax({
+		url:"/product/list.jspx",
+		dataType:"html",
+		type:"post",
+		data:{
+			proClass:proClass
+		},
+		success:function(data){
+			$.includePath = ''; 
+			$(".indexContent").html(data);
+			$.include(['/statics/front/js/jquery.min.js', '/statics/front/js/lazyload/jquery.lazyload.min.js', '/statics/front/js/jquery.SuperSlide.2.1.1.js','/statics/front/js/main.js']);
+			//动态加载css和js
+			$("#indexLoading").hide();
+			$(".indexContent").show();
+		}
+	});
+});
+$(".ptitd").find("a").click(function(){
+	var proClass = $(this).attr("s_id");
+	$(".indexContent").hide();
+	$("#indexLoading").show();
+	$.ajax({
+		url:"/product/list.jspx",
+		dataType:"html",
+		type:"post",
+		data:{
+			proClass:proClass
+		},
+		success:function(data){
+			$.includePath = ''; 
+			$(".indexContent").html(data);
+			$.include(['/statics/front/js/jquery.min.js', '/statics/front/js/lazyload/jquery.lazyload.min.js', '/statics/front/js/jquery.SuperSlide.2.1.1.js','/statics/front/js/main.js']);
+			//动态加载css和js
+			$("#indexLoading").hide();
+			$(".indexContent").show();
+		}
+	});
+});
+//搜索
+$(".btn").click(function(){
+	var keyword = $("#keyword").val();
+	$(".indexContent").hide();
+	$("#indexLoading").show();
+	$.ajax({
+		url:"/product/list.jspx",
+		dataType:"html",
+		type:"post",
+		data:{
+			keyword:keyword
+		},
+		success:function(data){
+			$.includePath = ''; 
+			$(".indexContent").html(data);
+			$.include(['/statics/front/js/jquery.min.js', '/statics/front/js/lazyload/jquery.lazyload.min.js', '/statics/front/js/jquery.SuperSlide.2.1.1.js','/statics/front/js/main.js']);
+			//动态加载css和js
+			$("#indexLoading").hide();
+			$(".indexContent").show();
+		}
+	});
+});
+$(function(){
+	$("#brandId0").combobox('setValue','请选择品牌');
+	$("#proNo0").combobox('setValue','请选择型号');
+	$("#brandId1").combobox('setValue','请选择品牌');
+	$("#proNo1").combobox('setValue','请选择型号');
+	$("#brandId2").combobox('setValue','请选择品牌');
+	$("#proNo2").combobox('setValue','请选择型号');
+	$("#brandId3").combobox('setValue','请选择品牌');
+	$("#proNo3").combobox('setValue','请选择型号');
+	$(".areaId").each(function(){
+ 		var id = $(this).attr("s_id");
+		var it = $(this);
+		if(id !=null && id!=""){
+			$.ajax({
+				data:{
+					id:id,
+				},
+				dataType:"json",
+				type:"post",
+				caChe:false,
+				url:"/productBuy/areaArea.aspx",
+				success:function(map){
+					it.html(map.worldArea);
+				},
+			}); 	
+		}
+	});
+	$(".btn-disabled").each(function(){
+		$(this).click(function(){
+			var index=$(this).parent("td").index()+1;
+	 		$("table tr td:nth-child("+index+")").each(function(){
+	 			$this = $(this);
+	 			var k = $this.index()-1;
+	 			if($(this).attr("class")==("play"+k)){
+					var index = $this.index()-1;
+					$("#brandId"+index).combobox('setValue','请选择品牌');
+					$("#proNo"+index).combobox('setValue','请选择型号');
+					$this.find(".display").eq(0).hide();
+					$this.find(".display").eq(1).show();
+	 				return true;
+	 			}
+				if($(this).find("img").attr("class")=="lazy"){
+					var index = $this.index()-1;
+					$("#brandId"+index).combobox('setValue','请选择品牌');
+					$("#proNo"+index).combobox('setValue','请选择型号');
+					$this.find(".display").eq(0).hide();
+					$this.find(".display").eq(1).show();
+	/* 				var com = "";
+					com +='<div class="join">加入对比</div>';
+					com +='<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>';
+					com +='<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray1/easyui.css"/>';
+					com +='<p><input class="easyui-combobox combo" type="text" name="brandId'+index+'" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="brandId'+index+'"></input></p>';
+					com +='<p><input class="easyui-combobox combo" type="text" name="proNo'+index+'" data-options="method:get,valueField:id,textField:text,editable:false" style="width:150px;height:30px;border-radius:0px;-webkit-border-radius:0px;-moz-border-radius:0px;" id="proNo'+index+'"></input></p>';
+					com +='<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery1.easyui.min.js">'+'</'+'script'+'>';
+					com +='<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js">'+'</'+'script'+'>';
+					$("#brandId0").combobox({
+						url:'/brand/get_brand_names.jspx',
+						method:'get',
+						valueField:'id',
+					    textField:'text',
+					    editable:false
+					});
+					$("#proNo0").combobox({
+						method:'get',
+						valueField:'id',
+					    textField:'text',
+					    editable:false
+					});
+					$this.append(com); */
+
+					return true;
+				}
+				if($(this).find("a").attr("class")!=null){
+					if($(this).find("a").attr("class").indexOf("js-btn-delete")>=0){
+						$(this).find("a").removeClass("btn-disabled");
+						return true;
+					}	
+				}
+				$(this).html("");	
+			}); 
+		});
+	});
+});
+$("#brandId0").combobox({
+	onSelect: function(){
+		var brandId = $(this).combobox('getValue');
+		$("#proNo0").combobox('setValue','请选择型号');
+		$("#proNo0").combobox('reload','/ProCompartor/get_proNo.jspx?brandId='+brandId);
+	}
+});
+$("#brandId1").combobox({
+	onSelect: function(){
+		var brandId = $(this).combobox('getValue');
+		$("#proNo1").combobox('setValue','请选择型号');
+		$("#proNo1").combobox('reload','/ProCompartor/get_proNo.jspx?brandId='+brandId);
+	}
+});
+$("#brandId2").combobox({
+	onSelect: function(){
+		var brandId = $(this).combobox('getValue');
+		$("#proNo2").combobox('setValue','请选择型号');
+		$("#proNo2").combobox('reload','/ProCompartor/get_proNo.jspx?brandId='+brandId);
+	}
+});
+$("#brandId3").combobox({
+	onSelect: function(){
+		var brandId = $(this).combobox('getValue');
+		$("#proNo3").combobox('setValue','请选择型号');
+		$("#proNo3").combobox('reload','/ProCompartor/get_proNo.jspx?brandId='+brandId);
+	}
+});
+$(".proNo").each(function(){
+	$this = $(this);
+	alert($(this).index());
+
+});
+$("#proNo0").combobox({
+	onSelect: function(){
+		var brandId = $("#brandId0").combobox('getValue');
+		var proNo = $(this).combobox('getValue');
+		if(proNo !=null && proNo!=""){
+			$.ajax({
+				data:{
+					brandId : brandId,
+					proNo : proNo,
+				},
+				dataType:"json",
+				type:"post",
+				caChe:false,
+				url:"/ProCompartor/get_proCom.jspx",
+				success: function(result){
+					if(result.message=="success"){
+						var index=0;
+				 		$("table tr td:nth-child(2)").each(function(){
+				 			if(index==0){
+				 				$(this).find(".display").eq(1).hide();
+				 				$(this).find(".display").eq(0).show();
+				 				$(this).find(".display").eq(0).html("");
+				 				var com="";
+				 				if(result.proOriginal==""){
+				 					result.proOriginal='/statics/front/images/nopic.jpg';
+				 				}
+				 				com+='<a href="/product/${product0.id}.jhtml" target="_blank">';
+				 				com+='<img class="lazy" src="'+result.proOriginal+'" />';
+								com+='<p class="proName">'+result.proName+'</p></a>';
+								$(this).find(".display").eq(0).append(com);
+				 			}
+				 			if(index==1){
+				 				index++;
+				 				return true;
+				 			}
+				 			if(index==2){
+				 				$(this).html(result.brand);
+				 			}
+				 			if(index==3){
+				 				$(this).html(result.proNo);
+				 			}
+				 			if(index==4){
+				 				$(this).html(result.type);
+				 			}
+				 			if(index==5){
+				 				$(this).html(result.qualityStatus);
+				 			}
+				 			if(index==6){
+				 				var price=
+				 				[#if priceType?? && priceType!='来宾']
+				         		[#if priceType=='VIP']
+				         			[#if result.proVipPrice?? && result.proVipPrice != 0] 
+				         				${result.proVipPrice}${message("PriceUnit."+result.proVipPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='同行']
+				         			[#if result.proPeer?? && result.proPeer != 0] 
+				         				${result.proPeer}${message("PriceUnit."+result.proPeerLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='客户']
+				         			[#if result.proMemberPrice?? && result.proMemberPrice != 0] 
+				         				${result.proMemberPrice}${message("PriceUnit."+result.proMemberPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         	[#else]
+				       			[#if result.proCustomPrice?? && result.proCustomPrice != 0] 
+				         				${result.proCustomPrice}${message("PriceUnit."+result.proCustomPriceLimit)}
+				         		[#else]
+				         			"电议"
+				           		[/#if]
+				           [/#if];
+				         		$(this).html(price);
+				 			}
+				 			if(index==7){
+				 				if(result.isTax==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			if(index==8){
+				 				$(this).html(result.taxRate);
+				 			}
+				 			if(index==9){
+				 				$(this).html(result.worldArea);
+				 			}
+				 			if(index==10){
+				 				$(this).html(result.sendCycleUnit);
+				 			}
+				 			if(index==11){
+				 				$(this).html(result.repairPeriod+result.repairPeriodUnit);
+				 			}
+				 			if(index==12){
+				 				$(this).html(result.status);
+				 			}
+				 			if(index==13){
+				 				if(result.isUnit==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			index++;
+				 		});
+				 		}
+					}
+			});	
+		}
+	}
+});
+$("#proNo1").combobox({
+	onSelect: function(){
+		var brandId = $("#brandId1").combobox('getValue');
+		var proNo = $(this).combobox('getValue');
+		if(proNo !=null && proNo!=""){
+			$.ajax({
+				data:{
+					brandId : brandId,
+					proNo : proNo,
+				},
+				dataType:"json",
+				type:"post",
+				caChe:false,
+				url:"/ProCompartor/get_proCom.jspx",
+				success: function(result){
+					if(result.message=="success"){
+						var index=0;
+				 		$("table tr td:nth-child(3)").each(function(){
+				 			if(index==0){
+				 				$(this).find(".display").eq(1).hide();
+				 				$(this).find(".display").eq(0).show();
+				 				$(this).find(".display").eq(0).html("");
+				 				var com="";
+				 				if(result.proOriginal==""){
+				 					result.proOriginal='/statics/front/images/nopic.jpg';
+				 				}
+				 				com+='<a href="/product/${product0.id}.jhtml" target="_blank">';
+				 				com+='<img class="lazy" src="'+result.proOriginal+'" />';
+								com+='<p class="proName">'+result.proName+'</p></a>';
+								$(this).find(".display").eq(0).append(com);
+				 			}
+				 			if(index==1){
+				 				index++;
+				 				return true;
+				 			}
+				 			if(index==2){
+				 				$(this).html(result.brand);
+				 			}
+				 			if(index==3){
+				 				$(this).html(result.proNo);
+				 			}
+				 			if(index==4){
+				 				$(this).html(result.type);
+				 			}
+				 			if(index==5){
+				 				$(this).html(result.qualityStatus);
+				 			}
+				 			if(index==6){
+				 				var price=
+				 				[#if priceType?? && priceType!='来宾']
+				         		[#if priceType=='VIP']
+				         			[#if result.proVipPrice?? && result.proVipPrice != 0] 
+				         				${result.proVipPrice}${message("PriceUnit."+result.proVipPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='同行']
+				         			[#if result.proPeer?? && result.proPeer != 0] 
+				         				${result.proPeer}${message("PriceUnit."+result.proPeerLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='客户']
+				         			[#if result.proMemberPrice?? && result.proMemberPrice != 0] 
+				         				${result.proMemberPrice}${message("PriceUnit."+result.proMemberPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         	[#else]
+				       			[#if result.proCustomPrice?? && result.proCustomPrice != 0] 
+				         				${result.proCustomPrice}${message("PriceUnit."+result.proCustomPriceLimit)}
+				         		[#else]
+				         			"电议"
+				           		[/#if]
+				           [/#if];
+				         		$(this).html(price);
+				 			}
+				 			if(index==7){
+				 				if(result.isTax==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			if(index==8){
+				 				$(this).html(result.taxRate);
+				 			}
+				 			if(index==9){
+				 				$(this).html(result.worldArea);
+				 			}
+				 			if(index==10){
+				 				$(this).html(result.sendCycleUnit);
+				 			}
+				 			if(index==11){
+				 				$(this).html(result.repairPeriod+result.repairPeriodUnit);
+				 			}
+				 			if(index==12){
+				 				$(this).html(result.status);
+				 			}
+				 			if(index==13){
+				 				if(result.isUnit==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			index++;
+				 		});
+				 		}
+					}
+			});	
+		}
+	}
+});
+$("#proNo2").combobox({
+	onSelect: function(){
+		var brandId = $("#brandId2").combobox('getValue');
+		var proNo = $(this).combobox('getValue');
+		if(proNo !=null && proNo!=""){
+			$.ajax({
+				data:{
+					brandId : brandId,
+					proNo : proNo,
+				},
+				dataType:"json",
+				type:"post",
+				caChe:false,
+				url:"/ProCompartor/get_proCom.jspx",
+				success: function(result){
+					if(result.message=="success"){
+						var index=0;
+				 		$("table tr td:nth-child(4)").each(function(){
+				 			if(index==0){
+				 				$(this).find(".display").eq(1).hide();
+				 				$(this).find(".display").eq(0).show();
+				 				$(this).find(".display").eq(0).html("");
+				 				var com="";
+				 				if(result.proOriginal==""){
+				 					result.proOriginal='/statics/front/images/nopic.jpg';
+				 				}
+				 				com+='<a href="/product/${product0.id}.jhtml" target="_blank">';
+				 				com+='<img class="lazy" src="'+result.proOriginal+'" />';
+								com+='<p class="proName">'+result.proName+'</p></a>';
+								$(this).find(".display").eq(0).append(com);
+				 			}
+				 			if(index==1){
+				 				index++;
+				 				return true;
+				 			}
+				 			if(index==2){
+				 				$(this).html(result.brand);
+				 			}
+				 			if(index==3){
+				 				$(this).html(result.proNo);
+				 			}
+				 			if(index==4){
+				 				$(this).html(result.type);
+				 			}
+				 			if(index==5){
+				 				$(this).html(result.qualityStatus);
+				 			}
+				 			if(index==6){
+				 				var price=
+				 				[#if priceType?? && priceType!='来宾']
+				         		[#if priceType=='VIP']
+				         			[#if result.proVipPrice?? && result.proVipPrice != 0] 
+				         				${result.proVipPrice}${message("PriceUnit."+result.proVipPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='同行']
+				         			[#if result.proPeer?? && result.proPeer != 0] 
+				         				${result.proPeer}${message("PriceUnit."+result.proPeerLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='客户']
+				         			[#if result.proMemberPrice?? && result.proMemberPrice != 0] 
+				         				${result.proMemberPrice}${message("PriceUnit."+result.proMemberPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         	[#else]
+				       			[#if result.proCustomPrice?? && result.proCustomPrice != 0] 
+				         				${result.proCustomPrice}${message("PriceUnit."+result.proCustomPriceLimit)}
+				         		[#else]
+				         			"电议"
+				           		[/#if]
+				           [/#if];
+				         		$(this).html(price);
+				 			}
+				 			if(index==7){
+				 				if(result.isTax==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			if(index==8){
+				 				$(this).html(result.taxRate);
+				 			}
+				 			if(index==9){
+				 				$(this).html(result.worldArea);
+				 			}
+				 			if(index==10){
+				 				$(this).html(result.sendCycleUnit);
+				 			}
+				 			if(index==11){
+				 				$(this).html(result.repairPeriod+result.repairPeriodUnit);
+				 			}
+				 			if(index==12){
+				 				$(this).html(result.status);
+				 			}
+				 			if(index==13){
+				 				if(result.isUnit==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			index++;
+				 		});
+				 		}
+					}
+			});	
+		}
+	}
+});
+$("#proNo3").combobox({
+	onSelect: function(){
+		var brandId = $("#brandId3").combobox('getValue');
+		var proNo = $(this).combobox('getValue');
+		if(proNo !=null && proNo!=""){
+			$.ajax({
+				data:{
+					brandId : brandId,
+					proNo : proNo,
+				},
+				dataType:"json",
+				type:"post",
+				caChe:false,
+				url:"/ProCompartor/get_proCom.jspx",
+				success: function(result){
+					if(result.message=="success"){
+						var index=0;
+				 		$("table tr td:nth-child(5)").each(function(){
+				 			if(index==0){
+				 				$(this).find(".display").eq(1).hide();
+				 				$(this).find(".display").eq(0).show();
+				 				$(this).find(".display").eq(0).html("");
+				 				var com="";
+				 				if(result.proOriginal==""){
+				 					result.proOriginal='/statics/front/images/nopic.jpg';
+				 				}
+				 				com+='<a href="/product/${product0.id}.jhtml" target="_blank">';
+				 				com+='<img class="lazy" src="'+result.proOriginal+'" />';
+								com+='<p class="proName">'+result.proName+'</p></a>';
+								$(this).find(".display").eq(0).append(com);
+				 			}
+				 			if(index==1){
+				 				index++;
+				 				return true;
+				 			}
+				 			if(index==2){
+				 				$(this).html(result.brand);
+				 			}
+				 			if(index==3){
+				 				$(this).html(result.proNo);
+				 			}
+				 			if(index==4){
+				 				$(this).html(result.type);
+				 			}
+				 			if(index==5){
+				 				$(this).html(result.qualityStatus);
+				 			}
+				 			if(index==6){
+				 				var price=
+				 				[#if priceType?? && priceType!='来宾']
+				         		[#if priceType=='VIP']
+				         			[#if result.proVipPrice?? && result.proVipPrice != 0] 
+				         				${result.proVipPrice}${message("PriceUnit."+result.proVipPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='同行']
+				         			[#if result.proPeer?? && result.proPeer != 0] 
+				         				${result.proPeer}${message("PriceUnit."+result.proPeerLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         		[#if priceType=='客户']
+				         			[#if result.proMemberPrice?? && result.proMemberPrice != 0] 
+				         				${result.proMemberPrice}${message("PriceUnit."+result.proMemberPriceLimit)}
+				         			[#else]
+				         			"电议"
+				           			[/#if]
+				         		[/#if]
+				         	[#else]
+				       			[#if result.proCustomPrice?? && result.proCustomPrice != 0] 
+				         				${result.proCustomPrice}${message("PriceUnit."+result.proCustomPriceLimit)}
+				         		[#else]
+				         			"电议"
+				           		[/#if]
+				           [/#if];
+				         		$(this).html(price);
+				 			}
+				 			if(index==7){
+				 				if(result.isTax==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			if(index==8){
+				 				$(this).html(result.taxRate);
+				 			}
+				 			if(index==9){
+				 				$(this).html(result.worldArea);
+				 			}
+				 			if(index==10){
+				 				$(this).html(result.sendCycleUnit);
+				 			}
+				 			if(index==11){
+				 				$(this).html(result.repairPeriod+result.repairPeriodUnit);
+				 			}
+				 			if(index==12){
+				 				$(this).html(result.status);
+				 			}
+				 			if(index==13){
+				 				if(result.isUnit==1){
+				 					$(this).html("是");
+				 				}else{
+				 					$(this).html("否");
+				 				}
+				 			}
+				 			index++;
+				 		});
+				 		}
+					}
+			});	
+		}
+	}
+});
+</script>
+</body>
+</html>

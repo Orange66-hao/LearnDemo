@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - 晧辰仪联网</title> [#include
+'/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/gray1/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+<link rel="stylesheet" type="text/css"
+	href="/statics/front/js/uploadify/uploadify.css" />
+<style type="text/css">
+#w1 {
+	display: none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+</head>
+<body>
+	<div id="w1"></div>
+	<div id="w3" style="display: none;">
+		<div id="w" class="easyui-window" title="提  示"
+			data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true,"
+			style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'"
+					style="padding: 10px; background: #fff;">
+					您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+					<p style="padding-top: 80px; margin-left: 110px;">
+						<a class="easyui-linkbutton" href="javascript:void(0)"
+							onclick="window_submit()" style="width: 80px">确 认</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div id="w2" class="easyui-window" title="提  示"
+			data-options="closed:true,resizable:false,minimizable:false,maximizable:false"
+			style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'"
+					style="padding: 10px; background: #fff">
+					您的账号未激活，请先登录注册邮箱激活!
+					<p style="padding-top: 105px; margin-left: 110px;">
+						<a class="easyui-linkbutton" href="javascript:void(0)"
+							onclick="window_close()" style="width: 80px">确 认</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--top-->
+	[#include '/template/front/include/header.html' /]
+	<!--./top-->
+	<!--loading-->
+	<div class="listloadingd" id="indexLoading"></div>
+	<!--./loading-->
+	<div class="indexContent">
+		<!--content-->
+		<div class="main userd">
+			<div class="umaintitd">
+				当前位置：<a href="/" style="text-decoration: none;">首页</a> &gt; <a
+					href="/user/user" style="text-decoration: none;">会员中心 </a>&gt; <a
+					href="javascript:void;" style="text-decoration: none;"><span>发布新品</span></a>
+			</div>
+			<!--usernav-->
+			[#include '/template/front/include/usernav.html' /]
+			<!--./usernav-->
+
+			<!--umainr-->
+			<div class="umainr">
+				<div class="umainrtitd">
+					<span>发布新品</span>
+				</div>
+
+				<!--upublishd2-->
+				<div class="upublishd2">
+					<div class="upubnavd2">
+						<ul>
+							<li><a href="/user_pub_sale.jhtml">产品销售</a><a
+								href="user_pub_buy.html">产品求购</a></li>
+							<li><a class="on" href="/user_pub_rent.jhtml">产品租赁</a><a
+								href="user_pub_wantRent.html">产品求租</a></li>
+							<li><a href="user_pub_repair.html">产品维修</a><a
+								href="user_pub_wantRepair.html">产品求修</a></li>
+							<li><a href="#">自动化测试方案</a><a href="#">自动化测试方案需求</a></li>
+							<li><a href="#">拍卖</a><a href="#">招标</a></li>
+							<li><a href="#">产品测试</a><a href="#">测试需求</a></li>
+							<li><a href="user_pub_metering.html">计量校准</a></li>
+						</ul>
+					</div>
+					<!--./upubnavd2-->
+
+					<!--客户发布-->
+					<div class="upformd">
+						<form id="perRegist" action="/" method="post"
+							enctype="multipart/form-data" name="pubForm" id="pubForm">
+							<input type="text" name="memberId" id="memberId"
+								value="${currentMember.id}" style="display: none;">
+							<div class="row">
+								<p class="l">
+									<i class="x">*</i>品 牌：
+								</p>
+								<p class="r">
+									<input class="easyui-combobox"
+										data-options="url:'/brand/get_brand_names.jspx',valueField:'id',textField:'text', width:307,[#if item.productBrandEntity??]value:'${item.productBrandEntity.id}'[/#if]"
+										style="width: 292px; height: 36px;" name="brandId"
+										id="brandId">
+								</p>
+								<p class="rr">填写求购的产品品牌</p>
+							</div>
+							<div class="row">
+								<p class="l">
+									<i class="x">*</i>型 号：
+								</p>
+								<p class="r">
+									<input type="text" name="proNo" id="proNo" class="txt"
+										value="${item.proNo}">
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">选 件：</p>
+								<p class="r">
+									<input type="text" name="poption" id="poption" class="txt"
+										value="${item.poption}">
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">
+									<i class="x">*</i>名 称：
+								</p>
+								<div class="r">
+									<p class="fl">
+										<input type="text" name="proName" id="proName" class="txt w2"
+											value="${item.proName}">
+									</p>
+									<!-- <p class="fl pl15">英文名：</p>
+									<p class="fl">
+										<input type="text" name="proNameEn" id="proNameEn"
+											class="txt w2" value="${item.proNameEn}">
+									</p> -->
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">
+									<i class="x">*</i>设备类目：
+								</p>
+								<p class="r">
+									<select style="width: 292px; height: 36px;"
+										class="easyui-combotree"
+										url="/productClass/combotreeData.json" name="proClassId"
+										id="proClassId" /> </select>
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">是否上架：</p>
+								<div class="r">
+									<label class="pr15"> <input type="radio"
+										name="proownaudit" id="proownaudit" value="1"
+										${(item.proownaudit==1)?string('checked','')}> 是
+									</label> <label class="pr15"> <input type="radio"
+										name="proownaudit" id="proownaudit" value="0"
+										${(item.proownaudit==0)?string('checked','')}> 否
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<p class="l">数 量：</p>
+								<p class="r">
+									<input type="text" name="proStock" id="proStock" class="txt"
+										value="${(item.proStock)}">
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">本信息显示在：</p>
+								<div class="r">
+									<label class="pr15"> <input type="checkbox"
+										name="webzh" id="webzh" ${(item.webzh==1)?string('checked','')}>
+										中文站
+									</label> <label class="pr15"> <input type="checkbox"
+										name="weben" id="weben" ${(item.weben==1)?string('checked','')}>
+										英文站
+									</label>
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row" id="prodN">
+								<p class="l">机身号码：</p>
+								<p class="r">
+									<input type="text" name="prodNumber" id="prodNumber"
+										class="txt" value="${item.prodNumber}">
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">设备价值：</p>
+								<p class="r">
+									<input type="text" name="procostPrice" id="procostPrice"
+										class="txt" value="${item.procostPrice}">
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">成 色：</p>
+								<p class="r">
+									<select name="qualityStatus" id="qualityStatus"
+										class="txt sel w1">
+										<option ${(item.qualityStatus==
+											'all')?string('selected','')} value="all">全新</option>
+										<option ${(item.qualityStatus==
+											'nine')?string('selected','')} value="nine">九成新</option>
+										<option ${(item.qualityStatus==
+											'eight')?string('selected','')} value="eight">八成新</option>
+										<option ${(item.qualityStatus==
+											'seven')?string('selected','')} value="seven">七成新</option>
+										<option ${(item.qualityStatus==
+											'six')?string('selected','')} value="six">六成新</option>
+										<option ${(item.qualityStatus==
+											'five')?string('selected','')} value="five">五成新</option>
+										<option ${(item.qualityStatus==
+											'belowfive')?string('selected','')} value="belowfive">五成新以下</option>
+									</select>
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row" id="reference" style="display: none;">
+								<p class="l">全新参考价格：</p>
+								<div class="r">
+									<p class="fl">
+										<input type="text" name="referencePrice" id="referencePrice"
+											class="txt w3" value="${item.referencePrice}">
+									</p>
+									<p class="fl pl5">
+										<select name="referencepricetype" id="referencepricetype"
+											class="txt sel w4">
+											<option ${(item.referencepricetype==
+												'yuan')?string('selected','')} value="yuan">元</option>
+											<option ${(item.referencepricetype==
+												'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+										</select>
+									</p>
+									<p class="fl pl5">
+										<select name="referencePriceLimit" id="referencePriceLimit"
+											class="txt sel w4">
+											<option ${(item.referencePriceLimit==
+												'rmb')?string('selected','')} value="rmb">人民币</option>
+											<option ${(item.referencePriceLimit==
+												'dollar')?string('selected','')} value="dollar">美元</option>
+										</select>
+									</p>
+									<p class="rr">填写销售的全新参考价格</p>
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">产品状态：</p>
+								<p class="r">
+									<select name="status" id="status" class="txt sel w1">
+										<option ${(item.status==
+											'fine')?string('selected','')} value="fine">完好</option>
+										<option ${(item.status==
+											'bad')?string('selected','')} value="bad">故障</option>
+										<option ${(item.status==
+											'unknown')?string('selected','')} value="unknown">未知</option>
+									</select>
+								</p>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">出租价格：</p>
+								<div class="r">
+									<p class="fl">
+										<input type="text" name="rentPrice" id="rentPrice"
+											class="txt w3" value="${item.productRentEntity.rentPrice}">
+									</p>
+									<p class="fl pl5">
+										<select name="rentPriceUnit" id="rentPriceUnit"
+											class="txt sel w4">
+											<option ${(item.productRentEntity.rentPriceUnit==
+												'yuan')?string('selected','')} value="yuan">元</option>
+											<option ${(item.productRentEntity.rentPriceUnit==
+												'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+										</select>
+									</p>
+									<p class="fl pl5">
+										<select name="rentPriceType" id="rentPriceType"
+											class="txt sel w4">
+											<option ${(item.productRentEntity.rentPriceType==
+												'rmb')?string('selected','')} value="rmb">人民币</option>
+											<option ${(item.productRentEntity.rentPriceType==
+												'dollar')?string('selected','')} value="dollar">美元</option>
+										</select>
+									</p>
+								</div>
+								<p class="rr">面议请填0</p>
+							</div>
+							<div class="row" id="isTax">
+								<p class="l">是否含税：</p>
+								<div class="r">
+									<label class="pr15"> <input type="radio" name="isTax"
+										id="isTax" value="0" ${(item.isTax==0)?string('checked','')}>
+										否
+									</label> <label class="pr15"> <input type="radio" name="isTax"
+										id="isTax1" value="1" ${(item.isTax==1)?string('checked','')}>
+										是
+									</label>
+								</div>
+								<div class="rr"></div>
+							</div>
+							<div class="row" id="taxRate" style="display: none;">
+								<p class="l">税率：</p>
+								<p class="r">
+									<select name="taxRate" id="taxRate" class="txt sel w1">
+										<option ${(item.taxRate==
+											'invoice')?string('selected','')} value="invoice">普通发票3%</option>
+										<option ${(item.taxRate==
+											'taxInvoice')?string('selected','')} value="taxInvoice">增值税专用发票3%</option>
+										<option ${(item.taxRate==
+											'taxSpecialInvoice')?string('selected','')} value="taxSpecialInvoice">增值税专用发票16%</option>
+									</select>
+								</p>
+							</div>
+							<div class="row">
+								<p class="l">是否可计量：</p>
+								<div class="r">
+									<p class="fl" id="isUnit">
+										<label class="pr15"> <input type="radio" name="isUnit"
+											id="isUnit" value="0" ${(item.isUnit==0)?string('checked','')}>
+											否
+										</label> <label class="pr15"> <input type="radio"
+											name="isUnit" id="isUnit1" value="1"
+											${(item.isUnit==1)?string('checked','')}> 是
+										</label>
+									</p>
+									<p class="fl pl5" id="proUnit">
+										<input type="text" name="proUnit" id="proUnit" class="txt w5"
+											style="display: none;" value="${item.proUnit}">
+									</p>
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">交货周期：</p>
+								<div class="r">
+									<p class="fl">
+										<input type="text" name="cycle" id="cycle" class="txt w7"
+											value="${item.cycle}">
+									</p>
+									<p class="fl pl5">
+										<select name="cycleUnit" id="cycleUnit" class="txt sel w6">
+											<option ${(item.cycleUnit==
+												'day')?string('selected','')} value="day">天</option>
+											<option ${(item.cycleUnit==
+												'week')?string('selected','')} value="week">周</option>
+											<option ${(item.cycleUnit==
+												'month')?string('selected','')} value="month">月</option>
+										</select>
+									</p>
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">所在地：</p>
+								<div class="r">
+									<p class="fl">
+										<select name="prouseAddress" id="prouseAddress"
+											class="easyui-combobox combo" data-options="editable:false"
+											style="width: 125px; height: 36px;">
+											<option ${(item.prouseAddress==
+												'inChina')?string('selected','')} value="inChina">中国</option>
+											<option ${(item.prouseAddress==
+												'outofChina')?string('selected','')} value="outofChina">国外</option>
+										</select>
+									</p>
+									<p class="fl pl5">
+										<input class="easyui-combobox combo " type="text"
+											name="areaProvince"
+											data-options="url:'/worldArea/get_province.jspx?id='+${(item.prouseAddress =='inChina')?string('0','1')},method:'get',valueField:'id',textField:'text',editable:false,[#if item.areaProvince??]value:'${item.areaProvince}'[/#if]"
+											style="width: 125px; height: 36px;" id="areaProvince"></input>
+									</p>
+									<p class="fl pl5">
+										<input class="easyui-combobox combo " type="text"
+											name="areaCity"
+											data-options="url:'/worldArea/get_city.jspx?id='+${(item.areaProvince != '')?string('${item.areaProvince}','0')},method:'get',valueField:'id',textField:'text',editable:false,[#if item.areaCity??]value:'${item.areaCity}'[/#if]"
+											style="width: 125px; height: 36px;" id="areaCity"></input>
+									</p>
+									<p class="rr">填写租赁产品的所在地</p>
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">添加图片:</p>
+								<p class="r">
+									<INPUT type="file" name="uploadify" id="uploadify" />
+								</p>
+								<p class="rr">选择要上传的图片，最多4张</p>
+							</div>
+							<div class="row">
+								<p class="l">图片预览:</p>
+								<div class="xsfb-preview-ad">
+									<div id="preview1" class="xsfb-vdiv img-previewd"
+										style="display: none;">
+										<img class="urt-tit-img"
+											src="/statics/front/images/close_2.png"
+											style="position: absolute; right: 3px; top: 3px;"
+											onclick="delImg(1)" /> <img class=advimg1
+											src="${item.proOriginal1}" width="100" height="100"> <input
+											class="prooriginal1" type="text" name="proOriginal1" hidden />
+									</div>
+									<div id="fileQueue1"></div>
+									<div id="preview2" class="xsfb-vdiv img-previewd"
+										style="display: none;">
+										<img class="urt-tit-img"
+											src="/statics/front/images/close_2.png"
+											style="position: absolute; right: 3px; top: 3px;"
+											onclick="delImg(2)" /> <img class=advimg2
+											src="${item.proOriginal2}" width="100" height="100"> <input
+											class="prooriginal2" type="text" name="proOriginal2" hidden />
+									</div>
+									<div id="preview3" class="xsfb-vdiv img-previewd"
+										style="display: none;">
+										<img class="urt-tit-img"
+											src="/statics/front/images/close_2.png"
+											style="position: absolute; right: 3px; top: 3px;"
+											onclick="delImg(3)" /> <img class=advimg3
+											src="${item.proOriginal3}" width="100" height="100"> <input
+											class="prooriginal3" type="text" name="proOriginal3" hidden />
+									</div>
+									<div id="preview4" class="xsfb-vdiv img-previewd"
+										style="display: none;">
+										<img class="urt-tit-img"
+											src="/statics/front/images/close_2.png"
+											style="position: absolute; right: 3px; top: 3px;"
+											onclick="delImg(4)" /> <img class=advimg4
+											src="${item.proOriginal4}" width="100" height="100"> <input
+											class="prooriginal4" type="text" name="proOriginal4" hidden />
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="row">
+								<p class="l">产品简介:</p>
+								<p class="r">
+									<textarea name="proSynopsis" id="proSynopsis" class="txta w1">${item.proSynopsis}</textarea>
+								</p>
+							</div>
+						<!-- 	<div class="row">
+								<p class="l">英文输入：</p>
+								<p class="r">
+									<textarea name="proSynopsisEn" id="proSynopsisEn"
+										class="txta w1">${item.proSynopsisEn}</textarea>
+								</p>
+							</div> -->
+							<div class="row">
+								<p class="l">其他要求：</p>
+								<p class="r">
+									<textarea name="proContent" id="proContent" class="txta w1">${item.proContent}</textarea>
+								</p>
+							</div>
+						<!-- 	<div class="row">
+								<p class="l">英文输入：</p>
+								<p class="r">
+									<textarea name="proContentEn" id="proContentEn" class="txta w1">${item.proContentEn}</textarea>
+								</p>
+							</div> -->
+							<div class="row">
+								<p class="l">信息有效期：</p>
+								<div class="r">
+									<p class="fl">
+										<input style="width: 292px; line-height: 36px; height: 36px;"
+											panelWidth="292px;"
+											data-options="required:true,missingMessage:'必填项',editable:false"
+											id="inforValidity" name="inforValidity" type="text"
+											class="easyui-datebox"> <span id="changqi"><input
+											type="checkbox" ${(item.longTerm==1)?string(
+											'checked','')} name="longTerm" id="longTerm"
+											style="width: 20px; height: 20px; vertical-align: middle;">&nbsp;长期</span>
+									</p>
+								</div>
+								<p class="rr"></p>
+							</div>
+							<div class="row">
+								<p class="l">产品分类：</p>
+								<p class="r">
+									<select style="width: 292px; line-height: 36px; height: 36px;"
+										multiple class="easyui-combotree"
+										url="/industryClass/combotreeDataAsyn.json" name="indClassId"
+										id="indClassId" /> </select>
+								</p>
+							</div>
+							<div class="row">
+								<p class="l">备注：</p>
+								<p class="r">
+									<input type="text" name="apply" id="apply" class="txt"
+										value="${item.apply}">
+								</p>
+							</div>
+							<div class="row">
+								<p class="l">优化标题</p>
+								<p class="r">
+									<input type="text" name="prometaTitle" id="prometaTitle"
+										class="txt" value="${item.prometaTitle}">
+								</p>
+								<p class="rr">商品页的页头上进行显示的SEO标题信息，不多于150字</p>
+							</div>
+							<div class="row">
+								<p class="l">优化关键字</p>
+								<p class="r">
+									<input type="text" name="proMetaKeywords" id="proMetaKeywords"
+										class="txt" value="${item.proMetaKeywords}">
+								</p>
+								<p class="rr">设置关键字，以便于搜索引擎抓取，不多于100字</p>
+							</div>
+							<div class="row">
+								<p class="l">优化描述</p>
+								<p class="r">
+									<input type="text" name="prometaDescription"
+										id="prometaDescription" class="txt"
+										value="${item.prometaDescription}">
+								</p>
+							</div>
+							<div class="row tkd">
+								<p class="l">&nbsp;</p>
+								<p class="r">
+									<input type="checkbox" name="ckTK" id="ckTK" checked>
+									我已阅读并同意<a href="#" class="blue" target="_blank">《晧辰仪联网服务条款》</a>
+								</p>
+							</div>
+							<div class="row">
+								<p class="l">&nbsp;</p>
+								<p class="r">
+									<input type="submit" value="提交" class="subbtn"
+										style="border: 0px;">
+								</p>
+							</div>
+						</form>
+					</div>
+					<!--./upformd-->
+
+				</div>
+				<!--./upublishd-->
+			</div>
+			<!--./umainr-->
+		</div>
+		<!--./content-->
+	</div>
+	<!--foot-->
+	[#include '/template/front/include/footer2.html' /]
+	<!--./foot-->
+
+	[#include '/template/front/include/jslist.html' /]
+	<!-- uploadify -->
+	<script type="text/javascript"
+		src="/statics/front/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+	<script type="text/javascript"
+		src="/statics/front/js/uploadify/swfobject.js"></script>
+
+	<script type="text/javascript"
+		src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+	<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery1.easyui.min.js"></script>
+	<script type="text/javascript"
+		src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+	<script src="/statics/front/js/kindeditor/kindeditor-all-min.js"></script>
+	[#-- validate 验证器 --]
+	<script type="text/javascript"
+		src="/statics/validate/jquery.validate.min.js"></script>
+	<script type="text/javascript"
+		src="/statics/validate/jquery.validate.method.min.js"></script>
+
+
+	<script>
+//长期
+$("#longTerm").click(function(){
+		if($(this).attr("checked")){
+			$("#inforValidity").datebox({
+				disabled:true
+			});
+		}else{
+			$("#inforValidity").datebox({
+				disabled:false
+			});
+		}
+});
+//未审核提示
+function window_submit(){
+	window.location.href="/editRegister.jhtml?id="+${currentMember.id};
+}
+//关闭账号未审核窗口
+function window_close(){
+	$("#w2").window('close');
+	$("#w1").hide();
+}
+//账号审核
+$(function(){
+	$("#w").window({
+		onClose:function(){
+			$("#w1").hide();
+		}
+	});
+	$("#w2").window({
+		onClose:function(){
+			$("#w1").hide();
+		}
+	});
+	$(".addprod").click(function(){
+		var userClass="${currentMember.userType}";
+		var enabled = "${currentMember.enabled}"
+		if(enabled == "1"){
+			$("#w3").show();
+			$("#w2").window('open');
+			$("#w1").show();
+		}else{
+			if(userClass =="buyer" || userClass =="" || enabled =="2"){
+				$("#w3").show();
+				$("#w").window('open');
+				$("#w1").show();
+			}else if(userClass =="seller" || userClass =="business"){
+				window.location.href="/user_pub_sale";
+			}
+		}
+	});
+});
+var editor_proSynopsis, editor_proContent;
+KindEditor.ready(function(K) {
+	editor_proSynopsis = K.create("#proSynopsis");
+	editor_proContent = K.create("#proContent");
+	//window.editor = K.create('#proSynopsis, #proSynopsisEn, #proContent, #proContentEn');
+});
+$("#isUnit").find("input[name=isUnit]").change(function(){
+	if($(this).val() == 1){
+		$("#proUnit").find("input[name=proUnit]").fadeIn();
+	}
+	else{
+		$("#proUnit").find("input[name=proUnit]").val("");
+		$("#proUnit").find("input[name=proUnit]").fadeOut();
+	}
+});
+$("#isTax").find("input[name=isTax]").change(function(){
+	if($(this).val() == 1){
+		$("#taxRate").slideDown();
+	}
+	else{
+		$("#taxRate").slideUp();
+	}
+});
+/* 	initAjaxUploadImg('btnPreViewImg','exap','img');
+	initAjaxUploadImg('btnPreViewImg1','exap1','img1');
+	initAjaxUploadImg('btnPreViewImg2','exap2','img2');
+	initAjaxUploadImg('btnPreViewImg3','exap3','img3'); */
+	//图片上传取消
+	function delImg(index){
+		document.getElementById("preview"+index).style.display = "none";
+		 $(".advimg"+index).attr("src","");
+		   $(".prooriginal"+index).attr("value","");
+	}
+var $pubForm = $("#perRegist");
+$(function(){
+	//初始化上传按钮
+	$("#uploadify").uploadify( {//初始化函数
+    'uploader' :'/statics/front/js/uploadify/uploadify.swf',//flash文件位置，注意路径
+    'script' :'/fileUpload/imgUpload.jspx',//后台处理的请求
+    'cancelImg' :'/statics/front/js/uploadify/cancel.png',//取消按钮图片
+    'folder' :'uploads',//您想将文件保存到的路径
+    'queueID' :'fileQueue1',//与下面的上传文件列表id对应
+    'queueSizeLimit' :4,//上传文件的数量
+    'fileDesc' :'图片文件',//上传文件类型说明
+    'fileExt' :'*.jpg;*.jpeg;*.png;*.gif;*.bmp', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+    'method':'post',//如果向后台传输数据，必须是get
+    'sizeLimit':6*1024*1024,//文件上传的大小限制，单位是字节
+    'auto' :true,//是否自动上传
+    'multi' :true,
+    'simUploadLimit' :4,//同时上传文件的数量
+    //'buttonText' :'上传',//浏览按钮图片
+    'onComplete': function(event, queueID, fileObj,response,data) {//当上传完成后的回调函数，ajax方式哦~~ 
+    	
+       
+       if(document.getElementById("preview1").style.display == "none"){
+    	   document.getElementById("preview1").style.display="";
+    	   $(".advimg1").attr("src",response);
+	       $(".prooriginal1").attr("value",response);
+	       
+       }else if(document.getElementById("preview2").style.display == "none"){
+    	   document.getElementById("preview2").style.display="";
+    	   $(".advimg2").attr("src",response);
+    	   $(".prooriginal2").attr("value",response);
+       }else if(document.getElementById("preview3").style.display == "none"){
+    	   document.getElementById("preview3").style.display="";
+    	   $(".advimg3").attr("src",response);
+    	   $(".prooriginal3").attr("value",response);
+       }else if(document.getElementById("preview4").style.display == "none"){
+    	   document.getElementById("preview4").style.display="";
+    	   $(".advimg4").attr("src",response);
+    	   $(".prooriginal4").attr("value",response);
+       }
+    },'onError': function (a, b, c, d) {
+        if (d.status == 404)
+            alert('找不到文件');
+        else if (d.type === "HTTP")
+            alert('error ' + d.type + ": " + d.status);
+        else if (d.type === "File Size")
+            alert('上传的文件合计大小超过6M');
+        else
+            alert('error ' + d.type + ": " + d.info);
+    }
+
+   });	
+	//图片上传
+	if($(".advimg1").attr("src") !="" ){
+		$("#preview1").show();
+	}
+	if($(".advimg2").attr("src") !="" ){
+		$("#preview2").show();
+	}
+	if($(".advimg3").attr("src") !="" ){
+		$("#preview3").show();
+	}
+	if($(".advimg4").attr("src") !="" ){
+		$("#preview4").show();
+	}
+	
+	//长期有效期
+	if($("#longTerm").attr("checked")=="checked"){
+		$("#inforValidity").datebox({
+			disabled:true
+		});
+	}else{
+		$("#inforValidity").datebox({
+			disabled:false
+		});
+	}
+	//是否含税
+	if($("#isUnit").find("input[id=isUnit1]").attr("checked")=="checked"){
+		$("#proUnit").find("input[name=proUnit]").show();
+	}else{
+		$("#proUnit").find("input[name=proUnit]").hide();
+	}
+	//是否计量
+	if($("#isTax").find("input[id=isTax1]").attr("checked")=="checked"){
+		$("#taxRate").show();
+	}else{
+		$("#taxRate").hide();
+	}
+	$("#proClassId").combotree({
+		onLoadSuccess:function(){
+			$("#proClassId").combotree('setValue', "${item.productclass.id}");
+		}
+	});
+	$("#indClassId").combotree({
+		onLoadSuccess:function(){
+			$("#indClassId").combotree('setValue', "${item.industryClass}")
+		}
+	});
+	var qualityStatus = $("#qualityStatus").val();
+	if(qualityStatus != 'all'){
+		$("#reference").fadeIn();
+		//有效期
+	 	$('#inforValidity').datebox().datebox('calendar').calendar({
+			validator: function(date){
+				var now = new Date();
+				var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+				var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+30);
+				return date<=d2;
+			}
+		}); 
+	}else{
+		$("#reference").fadeOut();
+		//有效期
+	 	$('#inforValidity').datebox().datebox('calendar').calendar({
+			validator: function(date){
+				var now = new Date();
+				var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+				var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+30);
+				return date<=d2;
+			}
+		}); 
+	}
+	//成色
+	$("#qualityStatus").change(function(){
+		var qualityStatus = $("#qualityStatus").val();
+		if(qualityStatus != 'all'){
+			$("#reference").fadeIn();
+			$("#changqi").hide();
+			$("#inforValidity").datebox({
+				disabled:false
+			});
+			$("#longTerm").removeAttr("checked");
+		 	$('#inforValidity').datebox().datebox('calendar').calendar({
+				validator: function(date){
+					var now = new Date();
+					var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+					var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+30);
+					return d1<=date && date<=d2;
+				}
+			}); 
+		}else{
+			$("#reference").fadeOut();
+			$("#changqi").show();
+			$("#inforValidity").datebox({
+				disabled:false
+			});
+			$("#longTerm").removeAttr("checked");
+		 	$('#inforValidity').datebox().datebox('calendar').calendar({
+				validator: function(date){
+					var now = new Date();
+					var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+					var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+30);
+					return d1<=date && date<=d2;
+				}
+			}); 
+		}
+	});
+	//有效期
+	$("#inforValidity").datebox('setValue', "${(item.inforValidity?string("yyyy-MM-dd"))!''}");
+	//机身号码
+	$("#prodNumber").change(function(){
+		var prodNumber = $("#prodNumber").val();
+		if(prodNumber ==""){
+			$("#proStock").removeAttr("readonly");
+		}else{
+			$("#proStock").val("1");
+			$("#proStock").attr("readonly","readonly");
+		}
+	});
+	var proStock = $("#proStock").val();
+	if(proStock =='1'){
+		$("#prodN").show();
+	}else{
+		$("#prodN").hide();
+	}
+	$("#proStock").change(function(){
+		var proStock = $("#proStock").val();
+		if(proStock =='1'){
+			$("#prodN").show();
+		}else{
+			$("#prodN").hide();
+		}
+	});
+	//国内
+	$("#prouseAddress").combobox({
+		onSelect:function(){
+			var prouse = $(this).combobox('getValue');
+			if(prouse =="outofChina"){
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=1");
+			}else{
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=0");
+			}
+		}
+	});
+	//省
+	$("#areaProvince").combobox({
+		onSelect:function(){
+			$("#areaCountry").combobox('setValue', "");
+			$("#areaCity").combobox('setValue', "");
+			$("#areaCity").combobox('reload', "/worldArea/get_city.jspx?id="+$(this).combobox('getValue'));
+		}
+	});
+	//市
+	$("#areaCity").combobox({
+		onSelect:function(){
+			$("#areaCountry").combobox('setValue', "");
+			$("#areaCountry").combobox('reload', "/worldArea/get_country.jspx?id="+$(this).combobox('getValue'));
+		}
+	});
+	var validate = $("#perRegist").validate({
+		rules:{
+			proNo:{
+				required:true
+			},
+			poption:{
+				required:true
+			},
+			proName:{
+				required:true
+			},
+			rentPrice:{
+				required:true
+			},
+			cycle:{
+				required:true
+			},
+			proStock:{
+				required:true
+			},
+			procostPrice:{
+				required:true
+			}
+			
+		},
+		messages:{
+			proNo:{
+				required:"请填写租赁产品的型号"
+			},
+			poption:{
+				required:"请填写租赁产品的选件"
+			},
+			proName:{
+				required:"请填写租赁产品的名称"
+			},
+			rentPrice:{
+				required:"请填写租赁产品的出租价格"
+			},
+			cycle:{
+				required:"请填写租赁产品的交货周期"
+			},
+			proStock:{
+				required:"请填写租赁产品的数量"
+			},
+			procostPrice:{
+				required:"请填写租赁产品的设备价值"
+			}
+		},
+		errorPlacement:function(error,element){
+			element.closest(".row").find(".rr").text(error.text());
+		},
+		unhighlight:function(element){
+			$(element).closest(".row").find(".rr").text("");
+		},
+		submitHandler:function(form){
+			//长期
+			if($("#longTerm").attr("checked")=="checked"){
+				$("#longTerm").attr("value","1");
+			}else{
+				$("#longTerm").attr("value","0");
+			}
+			//中文站
+			if($("#webzh").attr("checked")=="checked"){
+				$("#webzh").attr("value","1")
+			}else{
+				$("#webzh").attr("value","0")
+			}
+			//英文站
+			if($("#weben").attr("checked")=="checked"){
+				$("#weben").attr("value","1");
+			}else{
+				$("#weben").attr("value","0");
+			}
+			if( $ ("#brandId").combobox ('getValue')==""){
+				alert("请填写产品品牌");
+				return false;
+			}
+			$(this).find(".subbtn").prop("disabled",true);
+			$.ajax({
+				url:"/save_updateEdit_user_pub_rent?id="+${item.id},
+				data:{
+					longTerm: $("#longTerm").val(),
+					brandId: $("#brandId").combobox("getValue"),
+					brandName: $("#brandId").combobox("getValue"),
+					proNo: $("#proNo").val(),
+					poption: $("#poption").val(),
+					proName: $("#proName").val(),
+					proClassId: $("#proClassId").combotree("getValue"),
+					indClassId: $("#indClassId").combotree("getText"),
+					memberId: $("#memberId").val(),
+					rentPrice: $("#rentPrice").val(),
+					rentPriceUnit: $("#rentPriceUnit").val(),
+					rentPriceType: $("#rentPriceType").val(),
+					qualityStatus: $("#qualityStatus").val(),
+					status: $("#status").val(),
+					prouseAddress: $("#prouseAddress").combobox('getValue'),
+					areaCity: $("#areaCity").combobox('getValue'),
+					areaProvince: $("#areaProvince").combobox('getValue'),
+					isUnit: $("#isUnit").find("input[name=isUnit]:checked").val(),
+					proUnit: $("input[name=proUnit]").val(),
+					cycleUnit: $("#cycleUnit").val(),
+					cycle: $("#cycle").val(),
+					proownaudit: $("#proownaudit").val(),
+					webzh: $("#webzh").val(),
+					weben: $("#weben").val(),
+					proStock: $("#proStock").val(),
+					procostPrice: $("#procostPrice").val(),
+					isTax: $("#isTax").find("input[name=isTax]:checked").val(),
+					taxRate: $("#taxRate").find("#taxRate").val(),
+					proOriginal1: $(".advimg1").attr("src"),
+					proOriginal2: $(".advimg2").attr("src"),
+					proOriginal3: $(".advimg3").attr("src"),
+					proOriginal4: $(".advimg4").attr("src"),
+					proSynopsis: editor_proSynopsis.html(),
+					proContent: editor_proContent.html(),
+					apply: $("#apply").val(),
+					prometaTitle: $("#prometaTitle").val(),
+					proMetaKeywords: $("#proMetaKeywords").val(),
+					prometaDescription: $("#prometaDescription").val(),
+					inforValidity: $("#inforValidity").datebox('getValue'),
+					prodNumber: $("#prodNumber").val(),
+					referencePrice: $("#referencePrice").val(),
+					referencePriceLimit: $("#referencePriceLimit").val(),
+					referencepricetype: $("#referencepricetype").val()
+				},
+				dataType:"json",
+				cache:false,
+				type:"post",
+				beforeSend:function(){
+					$pubForm.find(".subbtn").val("修改租赁中...");
+				},
+				success:function(result){
+					if(result.result ==1){
+						alert("修改租赁成功!")
+						window.location = "/rentInfor";
+					}
+					if(result.result ==0){
+						alert("信息有效期不能为空!");
+						$pubForm.find(".subbtn").prop("disabled",false);
+						$pubForm.find(".subbtn").val("提交");
+					}
+					if(result.result ==2){
+						alert("设备类目不能为空!");
+						$pubForm.find(".subbtn").prop("disabled",false);
+						$pubForm.find(".subbtn").val("提交");
+					}
+				},
+				error:function(){
+					alert("出现错误, 请重试");
+				}
+			});
+		}
+	});
+});
+</script>
+
+</body>
+</html>

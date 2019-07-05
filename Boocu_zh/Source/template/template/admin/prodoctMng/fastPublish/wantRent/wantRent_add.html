@@ -1,0 +1,96 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="addForm" method="post" class="validate">
+			<table>
+			   <tr>
+					<th>商品名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="proName" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>品牌</th>
+					<td><input class="easyui-combobox combo " type="text" 
+						name="brandId" data-options="url:'/admin/basedata/brand/get_brand_names.jspx',method:'get',valueField:'id',textField:'text', width:307" style="height:30px;" ></input>
+					</td>
+				</tr>
+				 <tr>
+					<th>商品分类</th>
+					<td ><select style="width:307px;height:30px;" class="easyui-combotree" url="/admin/basedata/productclass/combotreeData.json" name="proClassId" />
+					</td>
+				</tr>
+			   <tr>
+					<th>商品型号</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="proNo" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>行业分类</th>
+					<td ><select style="width:307px;height:30px;" class="easyui-combotree" url="/admin/industyClass/combotreeData.json" name="indClassId" />
+					</td>
+				</tr>
+			   <tr>
+					<th>求租预算</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="magdebrugBudget" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>求租预算单位</th>
+					<td><select name="magdebrugBudgetLimit">
+						<option value="yuan">元</option>
+						<option value="millionyuan">万元</option>
+					</select>
+					</td>
+				</tr>
+			   <tr>
+					<th>价格币种</th>
+					<td><select name="magdebrugBudgetType">
+						<option value="rmb">人民币</option>
+						<option value="dollar">美元</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<th>起租日期</th>
+					<td><input class="easyui-datebox" type="text" 
+						name="startRent" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>租赁周期</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="rentperiod" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>租赁周期单位</th>
+					<td><select name="rentperiodunit" >
+						<option value="day">天</option>
+						<option value="week">周</option>
+						<option value="month">月</option>
+					</select>
+				</tr>
+			   <tr>
+					<th>机身号码</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="prodNumber" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>产品状态</th>
+					<td><select name="status">
+							<option  value="fine">完好</option>
+							<option value="bad">故障</option>
+							<option value="unknown">未知</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+</script>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<div class=" shadowBoxWhite tableDiv" id="productclass">
+			<table class="easyui-treegrid" id="dataList"
+				data-options="url:'/subscribe/getProClassData.json',fitColumns:'true' "
+				idField="id" treeField="name" checkbox="true">
+				<thead>
+					<tr>
+						<th data-options="field:'name',width:$(this).width()*0.3">名称</th>
+						<th
+							data-options="field:'check',width:$(this).width()*0.1,align:'center'"
+							formatter="formatOperation">操作</th>
+					</tr>
+				</thead>
+			</table>
+			<!-- <input type="button" onclick="toCheck()" value="获取选中项"
+				style="margin-left: 200px;"> -->
+		</div>
+		<script type="text/javascript"
+			src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript"
+			src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+		<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+		
+		<script type="text/javascript"
+			src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+		<script type="text/javascript"
+			src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript"
+			src="/adminthemes/new/js/jquery.blockUI.js"></script>
+		<script type="text/javascript"
+			src="/adminthemes/new/js/jquery.loading.js"></script>
+		
+		<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+		<script type="text/javascript"
+			src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+		<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+		<script type="text/javascript">
+			function formatOperation (value, row, basedata)
+		    {
+				if(row.parentId.length == 2) {
+					return null;
+				} else {
+				    var val = "<input type='checkbox' name='ckyq' title='Type' href='javascript:void(0);' parent='"
+				            + row.parentId + "' value='" + row.id + "' va='" + row.id + "' indName='" + row.name
+				            + "' onclick=\"showappend('" + row.id + "','"
+				            + row.name + "',this,'" + row.parentId + "')\";></a>";
+				    return val;
+				}
+		    }
+		
+		    function showappend (id, text, _this, parentId)
+		    {
+			    if ($ (_this).attr ("checked"))
+			    {
+				    //$ (".seluld").append (dataHtml (id, text));
+				    $ ("[parent=" + id + "]").attr ("checked", true);
+				    $ (".ico").bind ('click', function ()
+				    {
+					    $ ("[va=" + id + "]").attr ("checked", false);
+					    $ (_this).closest (".wlid").remove ();
+				    });
+			    }
+			    else
+			    {
+				    $ (".wlid[va='" + id + "']").remove ();
+				    $ ("[va=" + parentId + "]").attr ("checked", false);
+				    $ ("[parent=" + id + "]").attr ("checked", false);
+				    $ (".ico").bind ('click', function ()
+				    {
+					    var id = $ (this).parent ().attr ("va");
+					    $ ("[va=" + id + "]").attr ("checked", false);
+					    $ (this).closest (".wlid").remove ();
+					    
+				    });
+			    }
+			    toCheck ();
+		    }
+		
+		    function toCheck ()
+		    {
+		    	  $ (".seluld .wlid").remove ();
+		  	    var ids = Array ();
+		  	    $ ("[title='Type']").each (function ()
+		  	    {
+		  		    if ($ (this).attr ("checked"))
+		  		    ids.push ($(this).val());
+		  	    })
+		  	    $ ("[title='Type']").each (function ()
+		  	    {
+		  		    if ($ (this).attr ("checked"))
+		  		    {
+		  			    if (ids.contains ($ (this).attr ("parent")))
+		  			    {
+		  				    return true;
+		  			    }
+		  			    $ (".seluld").append (dataHtml ($ (this).attr ("va"), $ (this).attr ("indName")));
+		  			    $ (".ico").bind ('click', function ()
+		  			    {
+		  				    var id = $ (this).parent ().attr ("va");
+		  				    $ ("[va=" + id + "]").attr ("checked", false);
+		  				    $ (this).closest (".wlid").remove ();
+		  				    
+		  			    });
+		  		    }
+		  	    })
+		    }
+		
+		    Array.prototype.contains = function (needle)
+		    {
+			    for (i in this)
+			    {
+				    if (this[i] == needle)
+					    return true;
+			    }
+			    return false;
+		    }
+		</script>
+	</body>
+</html>

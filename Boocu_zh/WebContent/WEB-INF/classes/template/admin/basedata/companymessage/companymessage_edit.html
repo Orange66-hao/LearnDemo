@@ -1,0 +1,72 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+			 <tr>
+					<th>QQ号码</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.qqnumber}"
+						name="qqnumber" data-options="required:true" ></input>
+					</td>
+				</tr>
+			  <tr>
+					<th>热线电话</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.hotline}"
+						name="hotline" data-options="required:true" ></input>
+					</td>
+				</tr>
+			  <tr>
+					<th>移动电话</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.mobile}"
+						name="mobile" data-options="required:true" ></input>
+					</td>
+				</tr>
+				 <tr>
+					<th>传真</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.fax}"
+						name="fax" data-options="required:true" ></input>
+					</td>
+				</tr>
+				 <tr>
+					<th>email</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.email}"
+						name="email" data-options="required:true" ></input>
+					</td>
+				</tr>
+				 <tr>
+					<th>公司地址</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.address}"
+						name="address" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>公司Logo</th>
+					<td><input id="exap" type="hidden" name="logo" value="${item.logo}" />
+						<img class="picImg" id="img" style="width:80px;height:80px" src="${item.logo}" />
+						<input class="button blueButton" type="button" id="btnPreViewImg" value="上传图片" />
+					</td>
+				</tr>
+			   <tr>
+					<th>公司邮编</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.compost}"
+						name="compost" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>注册协议</th>
+					<td><input class="input_text easyui-validatebox" type="text"  value="${item.argument}"
+						name="argument" data-options="required:true" ></input>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script>
+initAjaxUploadImg('btnPreViewImg','exap','img');
+</script>

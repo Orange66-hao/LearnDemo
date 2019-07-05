@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<style type="text/css">
+#w1 {
+	display:none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+</head>
+<body>
+<!--top-->
+[#include '/template/front/include/header.html' /]
+<!--./top--> 
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+ <div class="indexContent">
+<!--content-->
+<div id="w1"></div>
+<div id="w3" style="display:none;">
+	<div id="w" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true," style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'center'" style="padding:10px;background:#fff;">
+				您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+				<p style="padding-top:80px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_submit()" style="width:80px">确  认</a></p>
+			</div>
+		</div>
+	</div>
+    <div id="w2" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false" style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'center'" style="padding:10px;background:#fff">
+				您的账号未激活，请先登录注册邮箱激活!
+				<p style="padding-top:105px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_close()" style="width:80px">确  认</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main userd">
+  <div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>会员中心首页</span></a></div>
+  <!--usernav-->
+  [#include '/template/front/include/usernav.html' /]
+  <!--./usernav--> 
+  
+  <!--umainr-->
+  <div class="umainr">
+    <div class="umainrtitd"><span>产品测试</span></div>
+    
+    <!--uprod-->
+    <div class="uprod">
+      <div class="upronavd">
+        <ul>
+          <li class="${(appr == 1)?string('on','')}"><a href="javascript:;">已审核（${page.total}）</a></li>
+          <li class="${(appr == 0)?string('on','')}"><a href="javascript:;">待审核（${page1.total}）</a></li>
+          <li class="${(appr == 2)?string('on','')}"><a href="javascript:;">未通过（${page2.total}）</a></li>
+          <li class="${(appr == 3)?string('on','')}"><a href="javascript:;">首页推荐（${page3.total}）</a></li>
+          <li class="${(appr == 4)?string('on','')}"><a href="javascript:;">下架（${page4.total}）</a></li>
+        </ul>
+      </div>
+      <!--./upronavd-->
+      <div class="uprotabd" style="${(appr == 1)?string('','display:none')}">
+        <table width="100%" cellspacing="0" class="uprotab" id="uprotabd">
+          <tr>
+            <th width="4%">&nbsp;</th>
+            <th width="48%">方案名称</th>
+            <th width="13%">&nbsp;</th>
+            <th width="13%">库存</th>
+            <th width="13%">操作</th>
+            <th width="13%">发布</th>
+          </tr>
+          [#list page.cont as product]
+          <tr>
+            <td><input type="checkbox" name="ckId" id="ckId1" value="${product.id}"></td>
+            <td class="l"><a class="tit" href="#">${product.proNo}&nbsp;${product.proName}</a></td>
+            <td class="t">${product.modifyDate?date}</td>
+            <td><input type="text" name="txtKcnum" id="txtKcnum" class="txt" value="${product.proStock}"></td>
+            <td><a href="javascript:;" s_id="${product.id}" onclick="del(this)">删除</a>&nbsp;|&nbsp;<a href="javascript:;" s_id="${product.id}" onclick="update(this)">修改</a></td>
+            <td><a href="javascript:;" class="fb" s_id="${product.id}" onclick="publishUpdate(this)">发布</a></td>
+          </tr>
+          [/#list] 
+        </table>
+        <!--uexepaged-->
+        <div class="uexepaged">
+          <div class="uexed">
+            <p>
+              <label>
+                <input type="checkbox" name="ckAll" id="ckAll" class="ckall">
+                全选</label>
+            </p>
+            <ul>
+              <li><a href="javascript:;" onclick="isPromSale()">设为推荐</a></li>
+              <li><a href="javascript:;" onclick="isPromSaleOut()">取消推荐</a></li>
+              <li><a href="javascript:;" onclick="proownaudit()">下架</a></li>
+              <li><a href="javascript:;" onclick="Del()">永久删除</a></li>
+            </ul>
+          </div>
+          <!--./uexed-->
+          <div class="upagfr"> 
+           <!--pagd-->
+ 			<div class="upagd" id="upagd">
+ 			[#if (page.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${page.pageNumber-1}">上一页</a>[/#if]
+ 			[#list -2..2 as item]
+			 [#if (page.pageNumber+item) gte 1 & (page.pageNumber+item) lte page.totalPages]<a href="javascript:void(0);" s_val="${page.pageNumber+item}" class="${(item ==0)?string('on','')}">${page.pageNumber+item}</a>[/#if]
+ 			[/#list]
+ 			[#if page.pageNumber lt page.totalPages]<a class="next" href="javascript:void(0);" s_val="${page.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${page.totalPages}页</span><span class="txtd">到
+              <input type="text" name="txtPnum" id="txtPnum" class="txt">
+              页</span><input type="button" class="btn" id="btn" href="javascript:;" value="确认" /></div>
+ 			<!--./pagd--> 
+ 			</div>
+ 			</div>
+        <!--./uexepaged-->
+      </div>
+      <!--./uprotabd-->
+      
+      <div class="uprotabd" style="${(appr == 0)?string('','display:none')}">
+        <table width="100%" cellspacing="0" class="uprotab" id="uprotabd1">
+          <tr>
+            <th width="4%">&nbsp;</th>
+            <th width="48%">方案名称</th>
+            <th width="13%">&nbsp;</th>
+            <th width="13%">库存</th>
+            <th width="13%">操作
+              </t>
+            <th width="13%">发布</th>
+          </tr>
+          [#list page1.cont as product1]
+          <tr>
+            <td><input type="checkbox" name="ckId" id="ckId" value="${product1.id}"></td>
+            <td class="l"><a class="tit" href="#">${product1.proNo}&nbsp;${product1.proName}</a></td>
+            <td class="t">${product1.modifyDate?date}</td>
+            <td><input type="text" name="txtKcnum" id="txtKcnum" class="txt" value="${product1.proStock}"></td>
+            <td><a href="javascript:;" s_id="${product1.id}" onclick="del(this)">删除</a>&nbsp;|&nbsp;<a href="javascript:;" s_id="${product1.id}" onclick="update(this)">修改</a></td>
+            <td><a href="javascript:;" class="fb" s_id="${product1.id}" onclick="publishUpdate(this)">发布</a></td>
+          </tr>
+          [/#list]
+        </table>
+        <!--uexepaged-->
+        <div class="uexepaged">
+          <div class="uexed">
+            <p>
+              <label>
+                <input type="checkbox" name="ckAll" id="ckAll" class="ckall">
+                全选</label>
+            </p>
+            <ul>
+              <li><a href="javascript:;" onclick="Del1()">永久删除</a></li>
+          <!--<li><a href="javascript:;">修改</a></li>-->
+            </ul>
+          </div>
+          <!--./uexed-->
+          <div class="upagfr"> 
+           <!--pagd-->
+ 			<div class="upagd" id="upagd1">
+ 			[#if (page1.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${page1.pageNumber-1}">上一页</a>[/#if]
+ 			[#list -2..2 as item]
+			 [#if (page1.pageNumber+item) gte 1 & (page1.pageNumber+item) lte page1.totalPages]<a href="javascript:void(0);" s_val="${page1.pageNumber+item}" class="${(item ==0)?string('on','')}">${page1.pageNumber+item}</a>[/#if]
+ 			[/#list]
+ 			[#if page1.pageNumber lt page1.totalPages]<a class="next" href="javascript:void(0);" s_val="${page1.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${page1.totalPages}页</span><span class="txtd">到
+              <input type="text" name="txtPnum" id="txtPnum1" class="txt">
+              页</span><input type="button" class="btn" id="btn1" href="javascript:;" value="确认" /></div>
+ 			<!--./pagd--> 
+ 			</div>
+        </div>
+        <!--./uexepaged--> 
+      </div>
+      <!--./uprotabd-->
+      
+      <div class="uprotabd" style="${(appr == 2)?string('','display:none')}">
+        <table width="100%" cellspacing="0" class="uprotab" id="uprotabd2">
+          <tr>
+            <th width="4%">&nbsp;</th>
+            <th width="48%">方案名称</th>
+            <th width="13%">&nbsp;</th>
+            <th width="13%">库存</th>
+            <th width="13%">操作
+              </t>
+            <th width="13%">发布</th>
+          </tr>
+          [#list page2.cont as product2]
+          <tr>
+            <td><input type="checkbox" name="ckId" id="ckId" value="${product2.id}"></td>
+            <td class="l"><a class="tit" href="#">${product2.proNo}&nbsp;${product2.proName}</a></td>
+            <td class="t">${product2.modifyDate?date}</td>
+            <td><input type="text" name="txtKcnum" id="txtKcnum" class="txt" value="${product2.proStock}"></td>
+            <td><a href="javascript:;" s_id="${product2.id}" onclick="del(this)">删除</a>&nbsp;|&nbsp;<a href="javascript:;" s_id="${product2.id}" onclick="update(this)">修改</a></td>
+            <td><a href="javascript:;" class="fb" s_id="${product2.id}" onclick="publishUpdate(this)">发布</a></td>
+          </tr>
+          [/#list]
+        </table>
+        <!--uexepaged-->
+        <div class="uexepaged">
+          <div class="uexed">
+            <p>
+              <label>
+                <input type="checkbox" name="ckAll" id="ckAll" class="ckall">
+                全选</label>
+            </p>
+            <ul>
+              <li><a href="javascript:;" onclick="Del2()">永久删除</a></li>
+              <!-- <li><a href="javascript:;">修改</a></li> -->
+            </ul>
+          </div>
+          <!--./uexed-->
+          <div class="upagfr"> 
+           <!--pagd-->
+ 			<div class="upagd" id="upagd2">
+ 			[#if (page2.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${page2.pageNumber-1}">上一页</a>[/#if]
+ 			[#list -2..2 as item]
+			 [#if (page2.pageNumber+item) gte 1 & (page2.pageNumber+item) lte page2.totalPages]<a href="javascript:void(0);" s_val="${page2.pageNumber+item}" class="${(item ==0)?string('on','')}">${page2.pageNumber+item}</a>[/#if]
+ 			[/#list]
+ 			[#if page2.pageNumber lt page2.totalPages]<a class="next" href="javascript:void(0);" s_val="${page2.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${page2.totalPages}页</span><span class="txtd">到
+              <input type="text" name="txtPnum" id="txtPnum2" class="txt">
+              页</span><input type="button" class="btn" id="btn2" href="javascript:;" value="确认" /></div>
+ 			<!--./pagd--> 
+ 			</div>
+        </div>
+        <!--./uexepaged--> 
+      </div>
+      <!--./uprotabd-->
+      
+      <div class="uprotabd" style="${(appr == 3)?string('','display:none')}">
+        <table width="100%" cellspacing="0" class="uprotab" id="uprotabd3">
+          <tr>
+            <th width="4%">&nbsp;</th>
+            <th width="48%">方案名称</th>
+            <th width="13%">&nbsp;</th>
+            <th width="13%">库存</th>
+            <th width="13%">操作
+              </t>
+            <th width="13%">发布</th>
+          </tr>
+          [#list page3.cont as item]
+          <tr>
+            <td><input type="checkbox" name="ckId" id="ckId" value="${item.id}"></td>
+            <td class="l"><a class="tit" href="#">${item.proNo}&nbsp;${item.proName}</a></td>
+            <td class="t">${item.modifyDate?date}</td>
+            <td><input type="text" name="txtKcnum" id="txtKcnum" class="txt" value="${item.proStock}"></td>
+            <td><a href="javascript:;" s_id="${item.id}" onclick="del(this)">删除</a>&nbsp;|&nbsp;<a href="javascript:;" s_id="${item.id}" onclick="update(this)">修改</a></td>
+            <td><a href="javascript:;" class="fb" s_id="${item.id}" onclick="publishUpdate(this)">发布</a></td>
+          </tr>
+          [/#list]
+        </table>
+        <!--uexepaged-->
+        <div class="uexepaged">
+          <div class="uexed">
+            <p>
+              <label>
+                <input type="checkbox" name="ckAll" id="ckAll" class="ckall">
+                全选</label>
+            </p>
+            <ul>
+              <li><a href="javascript:;" onclick="isPromSaleOut3()">取消推荐</a></li>
+              <li><a href="javascript:;" onclick="proownaudit3()">下架</a></li>
+             <!-- <li><a href="javascript:;">修改</a></li> -->
+              <li><a href="javascript:;" onclick="Del3()">永久删除</a></li>
+            </ul>
+          </div>
+          <!--./uexed-->
+        </div>
+        <!--./uexepaged--> 
+      </div>
+      <!--./uprotabd--> 
+      
+      <!--./upronavd-->
+      <div class="uprotabd" style="${(appr == 4)?string('','display:none')}">
+        <table width="100%" cellspacing="0" class="uprotab" id="uprotabd4">
+          <tr>
+            <th width="4%">&nbsp;</th>
+            <th width="48%">方案名称</th>
+            <th width="13%">&nbsp;</th>
+            <th width="13%">库存</th>
+            <th width="13%">操作</th>
+            <th width="13%">发布</th>
+          </tr>
+          [#list page4.cont as item]
+          <tr>
+            <td><input type="checkbox" name="ckId" id="ckId" value="${item.id}"></td>
+            <td class="l"><a class="tit" href="#">${item.proNo}&nbsp;${item.proName}</a></td>
+            <td class="t">${item.modifyDate?date}</td>
+            <td><input type="text" name="txtKcnum" id="txtKcnum" class="txt" value="${item.proStock}"></td>
+            <td><a href="javascript:;" s_id="${item.id}" onclick="del(this)">删除</a>&nbsp;|&nbsp;<a href="javascript:;" s_id="${item.id}" onclick="update(this)">修改</a></td>
+            <td><a href="javascript:;" class="fb" s_id="${item.id}" onclick="proown1(this)">上架</a></td>
+          </tr>
+          [/#list]
+        </table>
+        <!--uexepaged-->
+        <div class="uexepaged">
+          <div class="uexed">
+            <p>
+              <label>
+                <input type="checkbox" name="ckAll" id="ckAll" class="ckall">
+                全选</label>
+            </p>
+            <ul>
+              <li><a href="javascript:;" onclick="proown()">上架</a></li>
+              <li><a href="javascript:;" onclick="Del()">永久删除</a></li>
+            </ul>
+          </div>
+          <!--./uexed-->
+          <div class="upagfr"> 
+           <!--pagd-->
+ 			<div class="upagd" id="upagd4">
+ 			[#if (page4.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${page4.pageNumber-1}">上一页</a>[/#if]
+ 			[#list -2..2 as item]
+			 [#if (page4.pageNumber+item) gte 1 & (page4.pageNumber+item) lte page4.totalPages]<a href="javascript:void(0);" s_val="${page4.pageNumber+item}" class="${(item ==0)?string('on','')}">${page4.pageNumber+item}</a>[/#if]
+ 			[/#list]
+ 			[#if page4.pageNumber lt page4.totalPages]<a class="next" href="javascript:void(0);" s_val="${page4.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${page4.totalPages}页</span><span class="txtd">到
+              <input type="text" name="txtPnum" id="txtPnum4" class="txt">
+              页</span><input type="button" class="btn" id="btn4" href="javascript:;" value="确认" /></div>
+ 			<!--./pagd--> 
+ 			</div>
+ 			</div>
+        <!--./uexepaged-->
+      </div>
+      <!--./uprotabd-->
+      
+    </div>
+    <!--./uprod--> 
+  </div>
+  <!--./umainr--> 
+</div>
+<!--./content--> 
+</div>
+<!--foot--> 
+[#include '/template/front/include/footer2.html' /]
+<!--./foot--> 
+[#include '/template/front/include/jslist.html' /]
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+
+<script>
+//给点击的加上链接样式 
+$(".unavd").find(".unavlid").eq(0).find("li").eq(10).addClass("on");
+//未审核提示
+function window_submit(){
+	window.location.href="/editRegister.jhtml?id="+${currentMember.id};
+}
+//关闭账号未审核窗口
+function window_close(){
+	$("#w2").window('close');
+	$("#w1").hide();
+}
+//账号审核
+$(function(){
+	$("#w").window({
+		onClose:function(){
+			$("#w1").hide();
+		}
+	});
+	$("#w2").window({
+		onClose:function(){
+			$("#w1").hide();
+		}
+	});
+	$(".addprod").click(function(){
+		var userClass="${currentMember.userType}";
+		var enabled = "${currentMember.enabled}"
+		if(enabled == "1"){
+			$("#w3").show();
+			$("#w2").window('open');
+			$("#w1").show();
+		}else{
+			if(userClass =="buyer" || userClass =="" || enabled =="2"){
+				$("#w3").show();
+				$("#w").window('open');
+				$("#w1").show();
+			}else if(userClass =="seller" || userClass =="business"){
+				window.location.href="/user_pub_sale";
+			}
+		}
+	});
+});
+
+//跳转修改
+function update(obj){
+	$this = $(obj);
+	window.location.href="/edit_productTestInfor?id="+$this.attr("s_id");
+}
+//选项卡
+$(".upronavd li").click(function(){
+   $(".upronavd li").removeClass("on");
+   $(this).addClass("on"); 
+   $(".uprotabd").hide();
+   $(".uprotabd").eq($(this).index()).fadeIn(200);
+});
+
+//全选
+$(".ckall").click(function(){
+	if($(this).attr("checked")){
+		$(this).parent().parent().parent().parent().parent().find("input[name='ckId']").attr("checked","checked");
+	}else{
+		$(this).parent().parent().parent().parent().parent().find("input[name='ckId']").removeAttr("checked");
+	}
+});
+
+//审核分页
+$("#upagd").find("a").click(function(){
+		window.location.href="/productTestInfor?appr=1&pageNum="+$(this).attr("s_val");
+});
+
+//待审核分页
+$("#upagd1").find("a").click(function(){
+		window.location.href="/productTestInfor?appr=0&pageNum1="+$(this).attr("s_val");
+});
+
+//未审核分页
+$("#upagd2").find("a").click(function(){
+		window.location.href="/productTestInfor?appr=2&pageNum2="+$(this).attr("s_val");
+});
+
+//下架分页
+$("#upagd4").find("a").click(function(){
+		window.location.href="/productTestInfor?appr=4&pageNum4="+$(this).attr("s_val");
+});
+
+//审核跳转页数
+$("#upagd").find("#btn").click(function(){
+	var txt = $("#txtPnum").val();
+	var a1 = ${page.totalPages};
+	if(txt > a1 || txt < 1){
+		return;
+	}
+	window.location.href="/productTestInfor?appr=1&pageNum="+txt;
+});
+
+//待审核跳转页数
+$("#upagd1").find("#btn1").click(function(){
+	var txt = $(this).prev().find("#txtPnum1").val();
+	var a1 = ${page1.totalPages};
+	if(txt >a1 || txt <1){
+		return;
+	}
+	window.location.href="/productTestInfor?pageNum1="+txt+"&appr=0";
+});
+
+//未审核跳转页数
+$("#upagd2").find("#btn2").click(function(){
+	var txt = $("#txtPnum2").val();
+	var a1 = ${page2.totalPages};
+	if(txt > a1 || txt <1){
+		return;
+	}
+	window.location.href="/productTestInfor?pageNum2="+txt+"&appr=2";
+});
+
+//下架跳转页数
+$("#upagd4").find("#btn4").click(function(){
+	var txt = $("#txtPnum4").val();
+	var a1 = ${page4.totalPages};
+	if(txt > a1 || txt <1){
+		return;
+	}
+	window.location.href="/productTestInfor?pageNum4="+txt+"&appr=4";
+});
+
+//审核推荐
+function isPromSale() {
+	var rows = $("#uprotabd").find("input:checkbox[checked=checked]");
+	var rowsArr =[] ;
+	var s1 = $("#upagd").find("a.on").attr("s_val");
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	var s2 = ${page3.total} + rowsArr.length; 
+	if(rows.length < 1){
+		alert("请选择要推荐的产品");
+		return;
+	}
+	if(s2 > 12){
+		alert("首页推荐最多只能推荐 12 条");
+		return;
+	}
+	if(!confirm("确认要推荐该产品")){
+		return;
+	}
+	$.ajax({
+		url:"/isPromSale?ajax=yes",
+		type:"post",
+		cache:false,
+		dataType:"json",
+		data:{
+			ids:rowsArr.join(",")
+		},
+		success : function(result) {
+			if(result.result == 1) {
+				alert("推荐成功");
+				window.location.href="/productTestInfor?appr=1&pageNum="+s1;
+			}
+		},
+		error : function(e) {
+		 		alert("出现错误 ，请重试");
+		}
+	});
+}
+
+//审核取消推荐
+function isPromSaleOut() {
+	var rows = $("#uprotabd").find("input:checkbox[checked=checked]");
+	var rowsArr =[] ;
+	var s1 = $("#upagd").find("a.on").attr("s_val");
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rows.length < 1){
+		alert("请选择要取消推荐的产品");
+		return;
+	}
+	if(!confirm("确认要取消推荐该产品")){
+		return;
+	}
+	$.ajax({
+		url:"/isPromSaleOut?ajax=yes",
+		type:"post",
+		cache:false,
+		dataType:"json",
+		data:{
+			ids:rowsArr.join(",")
+		},
+		success : function(result) {
+			if(result.result == 1) {
+				alert("取消推荐成功");
+				window.location.href="/productTestInfor?appr=1&pageNum="+s1;
+			}
+		},
+		error : function(e) {
+		 		alert("出现错误 ，请重试");
+		}
+	});
+}
+
+//首页推荐取消推荐
+function isPromSaleOut3() {
+	var rows = $("#uprotabd3").find("input:checkbox[checked=checked]");
+	var rowsArr =[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rowsArr.length < 1){
+		alert("请选择要取消推荐的产品");
+		return;
+	}
+	if(!confirm("确认要取消推荐该产品")){
+		return;
+	}
+	$.ajax({
+		data:{
+			ids : rowsArr.join(",")
+		},
+		dataType: "json",
+		type: "post",
+		caChe: false,
+		url: "/isPromSaleOut",
+		success: function(result){
+			var rows = $("#uprotabd3").find("input:checkbox[checked=checked]").closest('tr');
+			if(result.result == 1){
+				alert("取消推荐产品成功");
+				rows.remove();
+			}
+		},
+		error: function(e){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+
+//审核下架
+function proownaudit(){
+	var rows = $("#uprotabd").find("input:checkbox[checked=checked]");
+	var s1 = $("#upagd").find("a.on").attr("s_val");
+	var rowsArr =[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rowsArr.length < 1){
+		alert("请选择要下架的产品");
+		return;
+	}
+	if(!confirm("确认要下架该产品")){
+		return;
+	}
+	$.ajax({
+		url:"/proownaudit",
+		type:"post",
+		cache:false,
+		dataType:"json",
+		data:{
+			ids:rowsArr.join(",")
+		},
+		success : function(result) {
+			if(result.result == 1) {
+				window.location.href="/productTestInfor?appr=1&pageNum="+s1;
+				alert("下架产品成功");
+			}
+		},
+		error : function(e) {
+			alert("出现错误，请重试");
+		}
+	});
+}
+
+//首页推荐下架
+function proownaudit3(){
+	var rows = $("#uprotabd3").find("input:checkbox[checked=checked]");
+	var rowsArr=[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rows.length < 1){
+		alert("请选择要下架的产品");
+		return;
+	}
+	if(!confirm("确认要下架该产品")){
+		return;
+	}
+	$.ajax({
+		data:{
+			ids: rowsArr.join(",")
+		},
+		dataType: "json",
+		type: "post",
+		caChe: false,
+		url: "/proownaudit",
+		success: function(result){
+			if(result.result){
+				window.location.href="/productTestInfor?appr=3";
+				alert("下架产品成功");
+			}
+		},
+		error: function(e){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+
+//下架   上架功能
+function proown(){
+	var rows =$("#uprotabd4").find("input:checkbox[checked=checked]");
+	var rowsArr=[];
+	var s1 = $("#upagd4").find("a.on").attr("s_val");
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rows.length <1){
+		alert("请选择要上架的产品");
+		return;
+	}
+	if(!confirm("确认要上架该商品")){
+		return;
+	}
+	$.ajax({
+		data:{
+			ids: rowsArr.join(",")
+		},
+		dataType:"json",
+		type:"post",
+		caChe:false,
+		url: "/proown/proown",
+		success: function(result){
+			if(result.result==1){
+				alert("上架产品成功");
+				window.location.href="/productTestInfor?appr=4&pageNum4="+s1;
+			}
+		},
+		error:function(){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+
+//删除
+function del(obj){
+	$this=$(obj);
+	var id =$this.attr("s_id");
+	if(!confirm("确认要删除该产品")){
+		return;
+	}
+	$.ajax({
+		data:{
+			ids:id
+		},
+		dataType:"json",
+		type:"post",
+		caChe:false,
+		url :"/del",
+		success: function(result){
+			var row = $this.parent().parent();
+			if(result.result ==1){
+				alert("删除产品成功");
+				row.remove();
+			}
+		},
+		error:function(){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+
+//审核永久删除
+function Del() {
+	var rows = $("#uprotabd").find("input:checkbox[checked=checked]");
+	var rowsArr=[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rowsArr.length < 1){
+		alert("请选择要永久删除的产品");
+		return;
+	}
+	if(!confirm("确认要永久删除该产品")){
+		return;
+	}
+	$.ajax({
+		data:{
+			ids:rowsArr.join(",")
+		},
+		dataType :"json",
+		cache :false,
+		type :"post",
+		url :"/del",
+		success :function(result){
+			var rows = $("#uprotabd").find("input:checkbox[checked=checked]").closest('tr');
+			if(result.result ==1){
+				alert("永久删除产品成功");
+				rows.remove();
+			}
+		},
+		error : function(e){
+			alert("出现错误, 请重试");
+		}	
+	});
+}
+function Del1() {
+	var rows = $("#uprotabd1").find("input:checkbox[checked=checked]");
+	var rowsArr=[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rowsArr.length <1){
+		alert("请选择要永久删除的产品");
+		return;
+	}
+	if(!confirm("确认要永久删除该产品")){
+		return;
+	}
+	$.ajax({
+		data :{
+			ids:rowsArr.join(",")
+		},
+		dataType :"json",
+		caChe :false,
+		type :"post",
+		url :"/del",
+		success :function(result){
+			var rows = $("#uprotabd1").find("input:checkbox[checked=checked]").closest('tr');
+			if(result.result == 1){
+				alert("永久删除产品成功");
+				rows.remove();
+			}
+		},
+		error :function(e){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+function Del2() {
+	var rows = $("#uprotabd2").find("input:checkbox[checked=checked]");
+	var rowsArr =[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rowsArr.length <1){
+		alert("请选择要永久删除的产品");
+		return;
+	}
+	if(!confirm("确认要永久删除该产品")){
+		return;
+	}
+	$.ajax({
+		data: {
+			ids: rowsArr.join(",")
+		},
+		dataType: "json",
+		type: "post",
+		url: "/del",
+		success: function(result){
+			var rows = $("#uprotabd2").find("input:checkbox[checked=checked]").closest('tr');
+			if(result.result == 1){
+				alert("永久删除产品成功");
+				rows.remove();
+			}
+		},
+		error: function(e){
+			alert("出现错误请重试");
+		}
+	});
+}
+
+//首页推荐 永久删除
+function Del3(){
+	var rows = $("#uprotabd3").find("input:checkbox[checked=checked]");
+	var rowsArr=[];
+	rows.each(function(){
+		rowsArr.push($(this).val());
+	});
+	if(rowsArr.length < 1){
+		alert("请选择要永久删除的产品");
+		return;
+	}
+	if(!confirm("确认要永久删除该商品")){
+		return;
+	}
+	$.ajax({
+		data: {
+			ids :rowsArr.join(",")
+		},
+		dataType: "json",
+		type: "post",
+		caChe: false,
+		url: "/del",
+		success: function(result){
+			var rows =$("#uprotabd3").find("input:checkbox[checked=checked]").closest('tr');
+			if(result.result =1){
+				alert("永久删除产品成功");
+				rows.remove();
+			}
+		},
+		error: function(e){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+
+//上架
+function proown1(obj){
+	var $this =$(obj);
+	var rows =$this.attr("s_id");
+	var s1 = $("#upagd4").find("a.on").attr("s_val");
+	if(!confirm("确认要上架该产品")){
+		return;
+	}
+	$.ajax({
+		data:{
+			id:rows
+		},
+		dataType:"json",
+		type:"post",
+		caChe:false,
+		url:"/proown1/proown1",
+		success:function(result){
+			if(result.result==1){
+				alert("上架产品成功");
+				window.location.href="/productTestInfor?appr=4&pageNum4="+s1;
+			}
+		},
+	});
+}
+
+//发布
+function publishUpdate(obj) {
+	var $this =$(obj);
+	var rows =$this.attr("s_id");
+	if(!confirm("确认要发布该产品")){
+		return;
+	}
+	$.ajax({
+		data: {
+			id: rows
+		},
+		dataType: "json",
+		type: "post",
+		caChe: false,
+		url: "/saleInforUpdate",
+		success: function(){
+			var date = new Date();
+			var month = date.getMonth()<9?('0'+(date.getMonth()+1)):(date.getMonth()+1);
+			var today = date.getDate()<10?('0'+date.getDate()):(date.getDate());
+			if(result =1){
+				$this.parent().prev().prev().prev().html(date.getFullYear()+"-"+month+"-"+today);
+			}
+		},
+		error: function(){
+			alert("出现错误, 请重试");
+		}
+	});
+}
+</script>
+</body>
+</html>

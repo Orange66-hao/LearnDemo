@@ -1,0 +1,575 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>晧辰仪联网-后台管理</title>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray1/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/statics/front/js/uploadify/uploadify.css"/>
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<!-- <script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script> -->
+<!-- uploadify -->
+<script type="text/javascript" src="/statics/front/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript" src="/statics/front/js/uploadify/swfobject.js"></script>
+<script src="/statics/front/js/kindeditor/kindeditor-all-min.js"></script> 
+</head>
+<body>
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>品  牌</th>
+					<td><!-- <input class="easyui-combobox combo" type="text" s_value="${item.productEntity.productBrandEntity.id}"
+						name="brandId" id="brandId" data-options="url:'/admin/basedata/brand/get_brand_names.jspx',method:'get',valueField:'id',
+						textField:'text', width:300, onLoadSuccess:function(){loadSec('#brandId');}" ></input> -->
+						<input class="easyui-combobox combo" data-options="url:'/admin/basedata/brand/get_brand_names.jspx',valueField:'id',textField:'text', width:307,[#if item.productBrandEntity??]value:'${item.productBrandEntity.id}'[/#if]" style="width:307px;height:30px;" name="brandId" id="brandId" >
+						<input style="display:none;" class="input_text easyui-validatebox" type="text" name="brandName" id="brandName" value="${item.productBrandEntity.name}"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>商品型号</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proNo}"
+						name="proNo" id="proNo" data-options="required:true"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>选  件</th>
+					<td><input type="text" name="poption" id="poption" class="input_text" data-options="required:true" value="${item.poption}">
+					</td>
+				</tr>
+				<tr>
+					<th>名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proName}"
+						name="proName" data-options="required:true" ></input>
+						<a id="proNameR" href="javascript:;" class="easyui-linkbutton freshData" data-options="iconCls:'icon-reload'">名称</a>
+					</td>
+					<th>英文名</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proNameEn}"
+						name="proNameEn" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>设备类目</th>
+					<td>
+					<select style="width:307px;height:30px;" class="easyui-combotree" url="/admin/basedata/productclass/combotreeData.json" data-options="required:true" name="proClassId" id="proClassId" /></select>
+					<a id="proClassIdR" href="javascript:;" class="easyui-linkbutton freshData" data-options="iconCls:'icon-reload'">设备类目</a>
+					</td>	
+				</tr>
+				<tr>
+					<th>是否上架</th>
+					<td><input type="radio" ${(item.proownaudit==0)?string('checked','')} value="0"
+						name="proownaudit"  >否
+					<input type="radio" ${(item.proownaudit==1)?string('checked','')} value="1"
+						name="proownaudit"  >是
+					</td>
+				</tr>
+				<tr>
+					<th>本信息显示在</th>
+					<td><input type="checkbox" ${(item.webzh==1)?string('checked','')} value="1"
+						name="webzh">中文网
+					<input type="checkbox" ${(item.weben==1)?string('checked','')} value="1"
+						name="weben">英文网
+					</td>
+				</tr>
+				 <tr>
+					<th>维修价格</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productRepairEntity.repairPrice}"
+						name="repairPrice" data-options="required:true" ></input>
+						<select name="repairPriceUnit" style="height:30px;">
+							<option ${(item.productRepairEntity.repairPriceUnit=='yuan')?string('selected','')} value="yuan">元</option>
+							<option ${(item.productRepairEntity.repairPriceUnit == 'millionyuan')?string('selected','')} value="millionyuan">万元</option>
+						</select>
+						<select name="repairPriceType" style="height:30px;">
+							<option ${(item.productRepairEntity.repairPriceType=='rmb')?string('selected','')} value="rmb">人民币</option>
+							<option ${(item.productRepairEntity.repairPriceType == 'dollar')?string('selected','')} value="dollar">美元</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>是否含税</th>
+					<td id="isTax"><input type="radio" ${(item.isTax==0)?string('checked','')}  value="0"
+						name="isTax"  >否
+					<input type="radio" ${(item.isTax==1)?string('checked','')}  value="1"
+						name="isTax"  >是
+					</td>
+					<th ${(item.isTax==0)?string('style="display:none;"','')}>税率</th>
+					<td id="taxRate" ${(item.isTax==0)?string('style="display:none;"','')}>             
+					  <select name="taxRate" id="taxRate" style="height:30px;">
+		                <option ${(item.taxRate =='invoice')?string('selected','')} value="invoice">普通发票3%</option>
+		                <option ${(item.taxRate =='taxInvoice')?string('selected','')} value="taxInvoice">增值税专用发票3%</option>
+		                <option ${(item.taxRate =='taxSpecialInvoice')?string('selected','')} value="taxSpecialInvoice">增值税专用发票16%</option>
+		              </select>
+					</td>
+				</tr>
+				 <tr>
+					<th>是否可计量</th>
+					<td id="isUnit"><input type="radio" ${(item.isUnit==0)?string('checked','')} value="0" name="isUnit">否
+						<input type="radio" ${(item.isUnit==1)?string('checked','')} value="1" name="isUnit">是
+					</td>
+					<th ${(item.isUnit==0)?string('style="display:none"','')}>计量单位</th>
+					<td id="proUnit" ${(item.isUnit==0)?string('style="display:none"','')}><input class="input_text" type="text" value="${item.proUnit}" 
+						name="proUnit"  ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>维修时间</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.productRepairEntity.maintainPeriod}"
+						name="maintainPeriod" data-options="required:true" ></input>
+						<select name="maintainPeriodunit" style="height:30px;">
+		                  <option ${(item.productRepairEntity.maintainPeriodunit =='day')?string('selected','')} value="day">天</option>
+						  <option ${(item.productRepairEntity.maintainPeriodunit =='week')?string('selected','')} value="week">周</option>
+					      <option ${(item.productRepairEntity.maintainPeriodunit =='month')?string('selected','')} value="month">月</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>所在地</th>
+					<td>
+					  <p class="fl">
+		                <select name="prouseAddress" id="prouseAddress" class="easyui-combobox combo" data-options="editable:false" style="width:125px;height:30px;">
+		                  <option ${(item.prouseAddress =='inChina')?string('selected','')} value="inChina">中国</option>
+						  <option ${(item.prouseAddress =='outofChina')?string('selected','')} value="outofChina">国外</option>
+		                </select>
+		              </p>
+		              <p class="fl pl5">
+						<input class="easyui-combobox combo " type="text" name="areaProvince" data-options="url:'/worldArea/get_province.jspx?id='+${(item.prouseAddress =='inChina')?string('0','1')},method:'get',valueField:'id',textField:'text',editable:false,[#if item.areaProvince??]value:'${item.areaProvince}'[/#if]" style="width:125px;height:30px;" id="areaProvince"></input>
+		              </p>
+		              <p class="fl pl5">
+		                <input class="easyui-combobox combo " type="text" name="areaCity" data-options="url:'/worldArea/get_city.jspx?id='+${(item.areaProvince != '')?string('${item.areaProvince}','0')},method:'get',valueField:'id',textField:'text',editable:false,[#if item.areaCity??]value:'${item.areaCity}'[/#if]" style="width:125px;height:30px;" id="areaCity"></input>
+		              </p>
+					</td>
+				</tr>
+				<tr>
+					<th>保修时间</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.repairPeriod}"
+						name="repairPeriod" data-options="required:true" ></input>
+						<select name="repairPeriodUnit" style="height:30px;">
+							<option ${(item.repairPeriodUnit == 'day')?string('selected','')} value="day">天</option>
+							<option ${(item.repairPeriodUnit == 'week')?string('selected','')} value="week">周</option>
+							<option ${(item.repairPeriodUnit == 'month')?string('selected','')} value="month">月</option>
+						</select>
+					</td>
+				</tr>
+			<tr>
+				<th>添加图片:</th>
+				<td style="font-size:15px;">
+	              <INPUT type="file" name="uploadify" id="uploadify" />
+	              		选择要上传的图片，最多4张
+	            </td>
+			<tr>
+			  <tr>
+				<th>图片预览:<th>
+	            	<div class="xsfb-preview-ad">
+	                  	<div id="preview1" class="xsfb-vdiv img-previewd" style="display: none;">
+	                      	<img class="urt-tit-img" src="/statics/front/images/close_2.png" style="position: absolute;right: 3px;top: 3px;" onclick="delImg(1)"/>
+	                        <img class=advimg1 src="${item.proOriginal1}" width="100" height="100">
+	                        <input class="prooriginal1" type="text"  name="proOriginal1" value="${item.proOriginal1}" style="display:none;"/>
+	                    </div>
+	                    <div id="fileQueue1"></div>
+	                    	<div id="preview2" class="xsfb-vdiv img-previewd" style="display: none;">
+	                       		<img class="urt-tit-img" src="/statics/front/images/close_2.png" style="position: absolute;right: 3px;top: 3px;" onclick="delImg(2)"/>
+	                 			<img class=advimg2 src="${item.proOriginal2}" width="100" height="100">
+	                         	<input class="prooriginal2" type="text"  name="proOriginal2" value="${item.proOriginal2}" style="display:none;"/>
+	                     	 </div>  
+	                         <div id="preview3" class="xsfb-vdiv img-previewd" style="display: none;">
+	                         	<img class="urt-tit-img" src="/statics/front/images/close_2.png" style="position: absolute;right: 3px;top: 3px;" onclick="delImg(3)"/>
+	                            <img class=advimg3 src="${item.proOriginal3}" width="100" height="100">
+	                            <input class="prooriginal3" type="text"  name="proOriginal3" value="${item.proOriginal3}" style="display:none;"/>
+	                         </div>                           
+	                         <div id="preview4" class="xsfb-vdiv img-previewd" style="display: none;">
+	                            <img class="urt-tit-img" src="/statics/front/images/close_2.png" style="position: absolute;right: 3px;top: 3px;" onclick="delImg(4)"/>
+	                            <img class=advimg4 src="${item.proOriginal4}" width="100" height="100">
+	                            <input class="prooriginal4" type="text"  name="proOriginal4" value="${item.proOriginal4}" style="display:none;"/>
+	                         </div>
+	                 	<div class="clear"></div>
+	   			 	</div>
+				  </tr>
+				<tr>
+					<th>常见故障</th>
+					<td >
+						<textarea style="height:305px;width:670px" name="fault" id="fault">${item.productRepairEntity.fault}</textarea>
+						<a id="faultR" href="javascript:;" class="easyui-linkbutton freshData" data-options="iconCls:'icon-reload'">产品描述</a>
+					</td>
+				</tr>
+				<tr>
+					<th>英文输入</th>
+					<td ><textarea style="height:305px;width:670px" name="faultEn" id="faultEn">${item.productRepairEntity.faultEn}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>维修案例</th>
+					<td ><textarea style="height:305px;width:670px" name="maintaindemo" id="maintaindemo">${item.productRepairEntity.maintaindemo}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>英文输入</th>
+					<td ><textarea style="height:305px;width:670px" name="maintaindemoEn" id="maintaindemoEn">${item.productRepairEntity.maintaindemoEn}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>产品分类</th>
+					<td><select style="width:307px;line-height:30px;height:30px;" multiple class="easyui-combotree" url="/industryClass/combotreeDataAsyn.json" name="indClassId" id="indClassId" /></select>
+					<a id="indClassIdR" href="javascript:;" class="easyui-linkbutton freshData" data-options="iconCls:'icon-reload'">产品分类</a>
+              		选择该仪器可以测试的产品（支持多选）</td>
+				</tr>
+				<tr>
+					<th>信息有效期</th>
+					<td><input style="width:307px;line-height:30px;height:30px;" panelWidth="307px;"
+                		 data-options="required:true,missingMessage:'必填项',editable:false"
+                 		 id="inforValidity" name="inforValidity" type="text" class="easyui-datebox">
+                 		 <span id="changqi"><input type="checkbox" ${(item.longTerm==1)?string('checked','')} name="longTerm" id="longTerm" style="width:20px;height:20px;vertical-align:middle;" value="1">&nbsp;长期</span>
+						</td>
+				</tr>
+				<tr>
+					<th>行业应用</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.apply}"
+						name="apply"  ></input></td>
+				</tr>
+				<tr>
+					<th>优化标题</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.prometaTitle}"
+						name="prometaTitle" data-options="required:true" ></input></td>
+				</tr>
+				<tr>
+					<th>优化关键字</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.proMetaKeywords}"
+						name="proMetaKeywords" data-options="required:true" ></input></td>
+				</tr>
+				<tr>
+					<th>优化描述</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.prometaDescription}"
+						name="prometaDescription" data-options="required:true" ></input></td>
+				</tr>
+				<tr>
+					<th>&nbsp;</th>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div class="buttonWrap fixed">
+		<a id="searchAdvance" class="easyui-linkbutton" onclick="submitForm()"
+			href="javascript:;">修改</a>
+	</div>
+</div>
+<script>
+//触发品牌
+$("#brandId").combobox({
+	onChange: function(){
+		$("#brandName").val($("#brandId").combobox('getValue'));
+	}
+});
+//长期
+$("#longTerm").click(function(){
+		if($(this).attr("checked")){
+			$("#inforValidity").datebox({
+				disabled:true
+			});
+		}else{
+			$("#inforValidity").datebox({
+				disabled:false
+			});
+		}
+});
+/* var editor_proSynopsis, editor_proSynopsisEn, editor_proContent, editor_proContentEn; */
+KindEditor.ready(function(K) {
+/* 	editor_proSynopsis = K.create("#proSynopsis");
+	editor_proSynopsisEn = K.create("#proSynopsisEn");
+	editor_proContent = K.create("#proContent");
+	editor_proContentEn = K.create("#proContentEn"); */
+	editor_proContentEn = K.create('#fault, #faultEn, #maintaindemo, #maintaindemoEn', {
+		afterBlur: function(){this.sync();}
+	});
+	//window.editor = K.create('#proSynopsis, #proSynopsisEn, #proContent, #proContentEn');
+});
+	function loadSec(ele){
+		var value = $(ele).attr("s_value");
+		$(ele).combobox("select",value);
+	}
+	//图片上传取消
+	function delImg(index){
+		document.getElementById("preview"+index).style.display = "none";
+		 $(".advimg"+index).attr("src","");
+		   $(".prooriginal"+index).attr("value","");
+	}
+	$(function () {
+	    
+		//初始化上传按钮
+		$("#uploadify").uploadify( {//初始化函数
+	    'uploader' :'/statics/front/js/uploadify/uploadify.swf',//flash文件位置，注意路径
+	    'script' :'/fileUpload/imgUpload.jspx',//后台处理的请求
+	    'cancelImg' :'/statics/front/js/uploadify/cancel.png',//取消按钮图片
+	    'folder' :'uploads',//您想将文件保存到的路径
+	    'queueID' :'fileQueue1',//与下面的上传文件列表id对应
+	    'queueSizeLimit' :4,//上传文件的数量
+	    'fileDesc' :'图片文件',//上传文件类型说明
+	    'fileExt' :'*.jpg;*.jpeg;*.png;*.gif;*.bmp', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+	    'method':'post',//如果向后台传输数据，必须是get
+	    'sizeLimit':6*1024*1024,//文件上传的大小限制，单位是字节
+	    'auto' :true,//是否自动上传
+	    'multi' :true,
+	    'simUploadLimit' :4,//同时上传文件的数量
+	    //'buttonText' :'上传',//浏览按钮图片
+	    'onComplete': function(event, queueID, fileObj,response,data) {//当上传完成后的回调函数，ajax方式哦~~ 
+	    	
+	       
+	       if(document.getElementById("preview1").style.display == "none"){
+	    	   document.getElementById("preview1").style.display="";
+	    	   $(".advimg1").attr("src",response);
+		       $(".prooriginal1").attr("value",response);
+		       
+	       }else if(document.getElementById("preview2").style.display == "none"){
+	    	   document.getElementById("preview2").style.display="";
+	    	   $(".advimg2").attr("src",response);
+	    	   $(".prooriginal2").attr("value",response);
+	       }else if(document.getElementById("preview3").style.display == "none"){
+	    	   document.getElementById("preview3").style.display="";
+	    	   $(".advimg3").attr("src",response);
+	    	   $(".prooriginal3").attr("value",response);
+	       }else if(document.getElementById("preview4").style.display == "none"){
+	    	   document.getElementById("preview4").style.display="";
+	    	   $(".advimg4").attr("src",response);
+	    	   $(".prooriginal4").attr("value",response);
+	       }
+	    },'onError': function (a, b, c, d) {
+	        if (d.status == 404)
+	            alert('找不到文件');
+	        else if (d.type === "HTTP")
+	            alert('error ' + d.type + ": " + d.status);
+	        else if (d.type === "File Size")
+	            alert('上传的文件合计大小超过6M');
+	        else
+	            alert('error ' + d.type + ": " + d.info);
+	    }
+
+	   });	
+		//图片上传
+		if($(".advimg1").attr("src") !="" ){
+			$("#preview1").show();
+		}
+		if($(".advimg2").attr("src") !="" ){
+			$("#preview2").show();
+		}
+		if($(".advimg3").attr("src") !="" ){
+			$("#preview3").show();
+		}
+		if($(".advimg4").attr("src") !="" ){
+			$("#preview4").show();
+		}
+		
+		//初始化上传按钮
+		$("#uploadifyFile").uploadify( {//初始化函数
+	    'uploader' :'/statics/front/js/uploadify/uploadify.swf',//flash文件位置，注意路径
+	    'script' :'/fileUpload/uploadifyFile.jspx',//后台处理的请求
+	    'cancelImg' :'/statics/front/js/uploadify/cancel.png',//取消按钮图片
+	    'folder' :'uploads',//您想将文件保存到的路径
+	    'queueID' :'fileQueue2',//与下面的上传文件列表id对应
+	    'queueSizeLimit' :10,//上传文件的数量
+	    'fileDesc' :'文档文件',//上传文件类型说明
+	    'fileExt' :'*.ppt;*.doc;*.rar;*.txt;*.xls;*.zip;*.docx;*.xlsx;*.pdf;*.chm;*.jpg;*.jpeg;*.png;*.gif;*.bmp', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+	    'method':'post',//如果向后台传输数据，必须是get
+	    'sizeLimit':50*1024*1024,//文件上传的大小限制，单位是字节
+	    'auto' :true,//是否自动上传
+	    'multi' :true,
+	    'simUploadLimit' :10,//同时上传文件的数量
+	    //'buttonText' :'上传',//浏览按钮图片
+	    'onComplete': function(event, queueID, fileObj,response,data) {//当上传完成后的回调函数，ajax方式哦~~ 
+	    	var str= new Array();   
+	    	str = response.split("*");
+	    	$(".downdata").attr("value",str[0]);
+	    	$(".downdataname").text(str[1]);
+	    	$("#dataName").val(str[1]);
+	    },'onError': function (a, b, c, d) {
+	        if (d.status == 404)
+	            alert('找不到文件');
+	        else if (d.type === "HTTP")
+	            alert('error ' + d.type + ": " + d.status);
+	        else if (d.type === "File Size")
+	            alert('上传的文件合计大小超过50M');
+	        else
+	            alert('error ' + d.type + ": " + d.info);
+	    }
+	   });	
+		//长期有效期
+		if($("#longTerm").attr("checked")=="checked"){
+			$("#inforValidity").datebox({
+				disabled:true
+			});
+		}else{
+			$("#inforValidity").datebox({
+				disabled:false
+			});
+		}
+		//有效期
+	 	$('#inforValidity').datebox().datebox('calendar').calendar({
+			validator: function(date){
+				var now = new Date();
+				var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+				var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+30);
+				return d1<=date && date<=d2;
+			}
+		}); 
+		//有效期
+		$("#inforValidity").datebox('setValue', [#if item.inforValidity!]"${item.inforValidity?date}"[#else]"${item.inforValidity}"[/#if]);
+	});
+	//是否含量
+	$("#isTax").find("input[name=isTax]").change(function(){
+		if($(this).val()==0){
+			$("#taxRate").hide();
+			$("#taxRate").prev().hide();
+		}else{
+			$("#taxRate").show();
+			$("#taxRate").prev().show();
+		}
+	});
+	//计量
+	$("#isUnit").find("[name=isUnit]").change(function(){
+		if($(this).val()==0){
+			$("#proUnit").hide();
+			$("#proUnit").prev().hide();
+		}else{
+			$("#proUnit").show();
+			$("#proUnit").prev().show();
+		}
+	});
+	//国内
+	$("#prouseAddress").combobox({
+		onSelect:function(){
+			var prouse = $(this).combobox('getValue');
+			if(prouse =="outofChina"){
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=1");
+			}else{
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=0");
+			}
+		}
+	});
+	//省
+	$("#areaProvince").combobox({
+		onSelect:function(){
+			$("#areaCountry").combobox('setValue', "");
+			$("#areaCity").combobox('setValue', "");
+			$("#areaCity").combobox('reload', "/worldArea/get_city.jspx?id="+$(this).combobox('getValue'));
+		}
+	});
+	//市
+	$("#areaCity").combobox({
+		onSelect:function(){
+			$("#areaCountry").combobox('setValue', "");
+			$("#areaCountry").combobox('reload', "/worldArea/get_country.jspx?id="+$(this).combobox('getValue'));
+		}
+	});
+ 	$("#proClassId").combotree({
+		onLoadSuccess:function(){
+			$("#proClassId").combotree('setValue', "${item.productclass.id}");
+		}
+	}); 
+	$("#indClassId").combotree({
+		onLoadSuccess:function(){
+			$("#indClassId").combotree('setValue', "${item.industryClass}")
+		}
+	});
+	function submitForm(){
+		var formflag = $("#editForm").form().form('validate');
+		if (formflag) {
+			$.Loading.show("正在修改......");
+			$.ajax({
+				url : "/admin/prodoctMng/productAudit/update_editRepair_productAudit.jspx?ajax=yes",
+				type : "POST",
+				data : $("#editForm").serialize(),
+				dataType : 'json',
+				success : function(result) {
+					if(result.result==1){
+						$.Loading.success(result.message);
+					}
+					if(result.result==0){ 
+						$.Loading.error(result.message);
+					}
+					$.Loading.hide();
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			});
+		}
+	}
+	
+	
+	//更新
+	$(".freshData").click(function(){
+		var brand = $("#brandId").combobox('getText');
+		var proNo = $("#proNo").val();
+		if($(this).attr("id")=="proNameR"){
+			var proName = $("#proName").val();
+			if(brand=="" || proNo == "" || proName==""){
+				$.Loading.error("信息不能为空");
+			}else{
+				$.post("/admin/basedata/basedata/freshData",{brand:brand, proNo:proNo, proName: proName},
+						function(result){
+								if(result.result==1){
+									$.Loading.success(result.success);
+								}
+								if(result.result==0){
+									$.Loading.error(result.error);
+								}
+				},'json');
+			}	
+		}
+		if($(this).attr("id")=="proClassIdR"){
+			var id = $("#proClassId").combobox('getValue');
+			if(brand=="" || proNo == "" || id==""){
+				$.Loading.error("信息不能为空");
+			}else{
+				$.post("/admin/basedata/basedata/freshData",{brand:brand, proNo:proNo, id: id},
+						function(result){
+								if(result.result==1){
+									$.Loading.success(result.success);
+								}
+								if(result.result==0){
+									$.Loading.error(result.error);
+								}
+				},'json');
+			}	
+		}
+		if($(this).attr("id") == "indClassIdR"){
+			var indClassId = $("#indClassId").combobox('getText');
+			if(brand=="" || proNo == "" || indClassId==""){
+				$.Loading.error("信息不能为空");
+			}else{
+				$.post("/admin/basedata/basedata/freshData",{brand:brand, proNo:proNo, indClassId: indClassId},
+						function(result){
+								if(result.result==1){
+									$.Loading.success(result.success);
+								}
+								if(result.result==0){
+									$.Loading.error(result.error);
+								}
+				},'json');
+			}
+		}
+	});
+</script>
+</body>

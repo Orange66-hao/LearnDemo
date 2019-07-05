@@ -1,0 +1,132 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Hichen equiplink Subscription[#if systemShowPowered] -
+	bee-lending.com[/#if]</title>
+<meta name="author" content="bee-lending.com" />
+<meta name="copyright" content="bee" />
+<style>
+.inewprotabd {
+	clear: both;
+	padding-bottom: 10px;
+	overflow: hidden;
+	width: 400px;
+}
+
+.inewprotabd .tabd {
+	height: 326px;
+	overflow: hidden;
+}
+
+.inewprotabd .mored {
+	clear: both;
+	text-align: right;
+	padding-top: 10px;
+}
+
+.inewprotabd .mored a {
+	color: #0070ff;
+}
+
+.inewprotab {
+	width: 100%;
+	border: 0;
+	background-color: #fff;
+	margin-top: -1px;
+}
+
+.inewprotab th, .inewprotab td {
+	padding: 8px 0;
+	line-height: 18px;
+	border: 2px #EFF6FF solid;
+	text-align: center;
+}
+
+.inewprotab th {
+	font-weight: bold;
+}
+
+.inewprotab .bgc {
+	background-color: #C9E9FE;
+}
+</style>
+</head>
+<body>
+	<center>
+		<div class='inewpropd'>
+			<h3> Hello,My partner ${entity.username} the following is your subscription product information!</h3>
+			<div class='tabd'>
+				<table cellspacing='0' class='inewprotab'>
+					[#if proEntity != null ]
+					<tr class='bgc'>
+						<th>Brand</th>
+						<th>Model</th>
+						<th>Option</th>
+						<th>Name</th>
+						<th>Cosmetic Condition</th>
+						<th>Sell Price</th>
+						<th>Lease Time</th>
+						<th>CreateDate</th>
+						<th>Stock</th>
+						<th>Operation</th>
+					</tr>
+					[#list proEntity as productEntity]
+					<tr style='cursor: pointer;'>
+						<td>${productEntity.productBrandEntity.nameEn}</td>
+						<td>${productEntity.proNo}</td>
+						<td>${productEntity.poption}</td>
+						<td>${productEntity.proNameEn}</td>
+						<td class="t">${productEntity.qualityStatus} into new</td>
+    					<td id="pp">[#if
+                  priceType??] 
+                  [#if priceType=='VIP']
+                   [#if productEntity.proVipPrice??
+                  && productEntity.proVipPrice != 0]
+                  ${productEntity.proVipPrice}
+                  [#else] TEL [/#if] [/#if]
+                  
+                   [#if priceType=='同行'] 
+                   
+                   [#if
+                  productEntity.proPeer?? && productEntity.proPeer != 0]
+                 <!--  ${productEntity.proPeer*Session.sysConfig}${message("PriceUnit."+productEntity.proPeerLimit)} -->
+                   ${productEntity.proPeer}
+                  [#else] TEL [/#if] [/#if]
+                  
+                   [#if priceType=='客户'] [#if
+                  productEntity.proMemberPrice?? && productEntity.proMemberPrice != 0]$
+                  ${productEntity.proMemberPrice}
+                  [#else] TEL [/#if] [/#if] 
+                  
+                  [#else] [#if productEntity.proCustomPrice??
+                  && productEntity.proCustomPrice != 0]$
+                  ${productEntity.proCustomPrice}<!-- ${message("PriceUnit."+productEntity.proCustomPriceLimit)} -->
+                  [#else] TEL [/#if] [/#if] </td>
+                  
+                  
+    			  <td class="t">${productEntity.cycle!'-'} ${productEntity.cycleUnit}</td>
+						<td>${productEntity.modifyDate}</td>
+						<td>${ productEntity.proStock}</td>
+						<td><a
+							href='http://en.wl95.com/product/${productEntity.id}.jhtml'
+							class='fb'>Select</a></td>
+					</tr>
+					[/#list][#else] This time no subscription information! [/#if]
+				</table>
+				<div align="left"><pre>${Content}</pre><a href="http://en.wl95.com/subscribeInfo/toList.jspx?username=${username}&password=${password}">view more</a></div><!-- pre标签， 显示时可以保留文本中的格式（pre 元素可定义预格式化的文本。被包围在 pre 元素中的文本通常会保留空格和换行符）-->
+			</div>
+		</div>
+	</center>
+<script type="text/javascript">
+//对有小数的值进行，四舍五入
+$("td[id=pp]").each(function(){
+	var da=$(this).text();
+	if(isNaN(da)){//isNaN方法为，判断是否是数字，全为数字返回false，不全为数字返回true
+		$(this).html(da);
+	}else{
+		$(this).html("$"+Math.round(da));
+	}
+});
+</script>
+</body>
+</html>

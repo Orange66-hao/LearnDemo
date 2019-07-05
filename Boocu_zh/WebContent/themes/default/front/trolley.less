@@ -1,0 +1,64 @@
+@import 'main.less';
+@import "mainForm";
+
+@body-background-color:#f5f5f5;
+@body-content-background-color:#ffffff;
+@foot-background-color: #ffffff;
+@btn-color: #f15a29;
+@cover-width: 78px;
+
+.vendor{
+  margin-bottom: 25px;
+}
+
+
+.book-block{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  float:left;
+  margin-right: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  & .book-right{
+    width: 60px;
+  }
+  & .book-cover{
+    width: @cover-width;
+    height: @cover-width * 4 / 3;
+    margin-right: 10px;
+  }
+  & .book-name{
+    font-weight: bold;
+    height: 60px;
+    overflow: hidden;
+  }
+  & .book-author{
+    height: 40px;
+    overflow: hidden;
+  }
+}
+
+.book-count{
+  float:left;
+}
+.user-coin{
+  color: #b1b1b2;
+  & .money{
+    color: #b1b1b2;
+  }
+}
+.paytype-disp{
+  display: none;
+  &.active{
+    display:block;
+  }
+}
+
+.money{
+  color: #f15a29;
+}
+
+.pay-money{
+  font-size: 18px;
+  font-weight: bold;
+}

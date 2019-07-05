@@ -1,0 +1,147 @@
+<div class="usubd2" >
+				<div align="center">
+					<h1 style="font-size: 150%;">
+						<b>订阅管理</b>
+					</h1>
+				</div>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欢迎使用晧辰仪联网平台的订阅功能，您可以提交和修改您的订阅接收方式、订阅类型和订阅内容，Diy属于您的关注内容。
+				目前您的订阅状态： [#if items.size()=0] 尚未订阅/关闭订阅。 [/#if] [#if
+				items.size()>0] 已订阅成功
+				<div align="center">
+					<h1 style="font-size: 120%;">
+						<b>设置订阅接收</b>
+					</h1>
+				</div>
+				<div>
+					<div class="infoul1">
+						&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<div id="ss">&nbsp;</div>
+
+						邮件订阅：<input type="text" name="subscribe" id="email"
+							onkeyup="emailTest()" size="30" /> 接收频率：&nbsp; [#if
+						items[0].subscribeEmail==1] <label> <input type="radio"
+							name="radPl2" value=1 checked="checked" /> 每天一次
+						</label> [#else] <label><input type="radio" name="radPl2" value=1 />每天一次</label>
+						[/#if] [#if items[0].subscribeEmail==2] &nbsp; &nbsp; <label>
+							<input type="radio" name="radPl2" value=2 checked="checked" />
+							每周一次
+						</label> [#else] &nbsp; &nbsp; <label><input type="radio"
+							name="radPl2" value=2 /> 每周一次</label>[/#if] [#if
+						items[0].subscribeEmail==3] &nbsp; &nbsp; <label> <input
+							type="radio" name="radPl2" value=3 checked="checked" /> 每月一次
+						</label>[#else] &nbsp; &nbsp; <label><input type="radio"
+							name="radPl2" value=3 /> 每月一次[/#if] </label> &nbsp; &nbsp; [#if
+						items[0].subscribeEmail==0] <label> <input type="radio"
+							name="radPl2" value=0 checked="checked" /> 关闭
+						</label>[#else] <label> <input type="radio" name="radPl2" value=0 />
+							关闭
+						</label> [/#if]
+
+
+					</div>
+					<div class="infoul1">
+						<p>
+							手机订阅：<input type="text" name="mobile" id="mobile"
+								onkeyup="mobileTest()"> 接收频率：&nbsp; [#if
+							items[0].subscribeMobile==1] <label> <input type="radio"
+								name="radPl3" value=1 checked="checked" /> 每天一次
+							</label> [#else]<label> <input type="radio" name="radPl3" value=1
+								checked /> 每天一次
+							</label> [/#if] &nbsp; &nbsp; [#if items[0].subscribeMobile==2] <label>
+								<input type="radio" name="radPl3" value=2 checked="checked" />
+								每周一次
+							</label> [#else] <label> <input type="radio" name="radPl3"
+								value=2 /> 每周一次
+							</label>[/#if] &nbsp; &nbsp; [#if items[0].subscribeMobile==3] <label>
+								<input type="radio" name="radPl3" value=3 checked="checked" />
+								每月一次
+							</label> [#else] <label> <input type="radio" name="radPl3"
+								value=3 /> 每月一次
+							</label>[/#if] &nbsp; &nbsp; [#if items[0].subscribeMobile==0] <label>
+								<input type="radio" name="radPl3" value=0 checked="checked">
+								关闭
+							</label> [#else] <label> <input type="radio" name="radPl3"
+								value=0> 关闭
+							</label>[/#if]
+						</p>
+					</div>
+					<div style="height: 10px"></div>
+
+
+					<!--./infoul1-->
+					<div class="infoul1">
+						<p class="w">平台用户：接收频率&nbsp;：</p>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<p>
+							[#if items[0].subscribePlatform==1] <label> <input
+								type="radio" name="radPl" value=1 checked="checked" /> 每天一次
+							</label> [#else] <label> <input type="radio" name="radPl" value=1
+								checked /> 每天一次
+							</label> [/#if]
+						</p>
+						<p>
+							[#if items[0].subscribePlatform==2] <label> <input
+								type="radio" name="radPl" value=2 checked="checked" /> 每周一次
+							</label> [#else] <label> <input type="radio" name="radPl" value=2 />
+								每周一次
+							</label> [/#if]
+						</p>
+						<p>
+							[#if items[0].subscribePlatform==3] <label> <input
+								type="radio" name="radPl" value=3 checked="checked" /> 每月一次
+							</label> [#else] <label> <input type="radio" name="radPl" value=3 />
+								每月一次
+							</label> [/#if]
+						</p>
+						<p>
+							[#if items[0].subscribePlatform==0] <label> <input
+								type="radio" name="radPl" value=0 checked="checked" /> 关闭
+							</label> [#else] <label> <input type="radio" name="radPl" value=0 />
+								关闭
+							</label> [/#if]
+						</p>
+					</div>
+
+					<!-- <div class="infoul1">
+						<p class="w">订阅信息接收载体：</p>
+						<p>
+							<label> <input type="checkbox" name="ckZt" id="ckZt"
+								value=0 checked> 用户中心查看
+							</label>
+						</p>
+						<p>
+							<label> <input type="checkbox" name="ckZt" id="ckZt"
+								value=1 checked> 邮件接收
+							</label>
+						</p>
+					</div> -->
+
+					<!--./infoul1-->
+					<div class="btnd" align="center">
+						<a href="javascript:;" class="subbtn">保存设置</a>
+					</div>
+				</div>
+				[/#if]
+			</div>
+<script src="/statics/front/js/jquery.min.js"></script>
+<script>
+
+$(function (){ //页面加载完成执行的方法
+	
+	$.get("/member/currentMember.jspx",function(currentMember){
+		setVal("#email",currentMember.member.emailSubscribe,currentMember.member.email)
+		setVal("#mobile",currentMember.member.mobileSubscribe,currentMember.member.mobile)
+	},"json")
+	  
+
+});
+function setVal(id,Val1,Val2){
+	  if(Val1) {
+		  $(id).val(Val1);
+	  }else{
+		  $(id).val(Val2);
+	  }
+  }
+</script>

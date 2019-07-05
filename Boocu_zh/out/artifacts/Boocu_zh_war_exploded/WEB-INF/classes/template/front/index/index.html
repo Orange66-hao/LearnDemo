@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="买仪器，租仪器，修仪器，光谱分析仪 " />
+<meta name="description" content="光谱分析仪，眼图仪，光源，广播测量系统，误码仪，衰减器，传输分析仪，偏振器，滤波器，功率计，光纤端面检测分析仪，光纤光缆测试" />
+<title>晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+<style>
+.iprotjd li{position:relative;}
+.iprotjd li img{position:absolute;bottom:0;top:0;left:0;right:0;margin:auto;vertical-align: middle;max-width:140px;_height:expression(this.width > 140px ? "140px" : this.width);max-height:115px;_height:expression(this.height > 115px ? "115px" : this.height);}
+</style>
+<script type="text/javascript">
+//qq快速登录回转到该页面后,使其跳转到完善信息页面
+var access_token=window.location.hash.substring(1);
+var access_token2 = toParamMap(access_token).access_token;
+if(access_token2 != null && access_token2 != ''){
+    window.location.href='/doPost?accessToken='+access_token2;
+}
+
+var code = GetRequest()['code'];
+if(code != null && code != ''){
+    window.location.href='/doPostweixin?code='+code;
+}
+
+/* //获取url参数
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+} */
+//切割字符串转换参数表
+function toParamMap(str){
+     var map = {};
+     var segs = str.split("&");
+     for(var i in segs){
+         var seg = segs[i];
+         var idx = seg.indexOf('=');
+         if(idx < 0){
+             continue;
+         }
+         var name = seg.substring(0, idx);
+         var value = seg.substring(idx+1);
+         map[name] = value;
+     }
+     return map;
+ }
+ 
+function GetRequest() {   
+	   var url = location.search; //获取url中"?"符后的字串   
+	   var theRequest = new Object();   
+	   if (url.indexOf("?") != -1) {   
+	      var str = url.substr(1);   
+	      strs = str.split("&");   
+	      for(var i = 0; i < strs.length; i ++) {   
+	         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
+	      }   
+	   }   
+	   return theRequest;   
+	}   
+</script>
+</head>
+<body>
+[#include '/template/front/include/header.html'/]
+<!--./top-->
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+<!--content-->
+<div class="indexContent" id="all" >
+<div class="main"> 
+  <!--mainl-->
+  <div class="mainl"> 
+    <!--产品分类-->
+    <div class="maintit">
+       <h3>所有设备分类</h3>
+    </div>
+    <div class="maintyped index">
+      <ul >
+      	[#list products as product]
+      	[#assign secondNodes = product.children]
+        <li><a class="la" href="/product/listAll.jspx?proClass=${product.id}">${product.text}</a>
+          <div class="listbg"></div>
+          <div class="listd">
+          	[#list secondNodes as secondNode]
+          	[#assign thirdNodes = secondNode.children]
+            <div class="nlid">
+              <h4><a href="/product/listAll.jspx?proClass=${secondNode.id}" >${secondNode.text}</a></h4>
+              [#if secondNode.children??]
+              <p>
+	              [#list thirdNodes as thirdNode]
+	              <a href="/product/listAll.jspx?proClass=${thirdNode.id}">${thirdNode.text}</a>
+	              [/#list]
+              </p>
+              [/#if] 
+            </div>
+            [/#list]
+          </div>
+        </li>
+		[/#list]
+      </ul>
+    </div>
+    <!--./产品分类--> 
+    <!--新闻动态-->
+    <div class="maintit">
+       <h3>新闻动态</h3>
+   </div>
+    <div class="mainnewsd index">
+      <ul>
+      	[#list newsList as item]
+      	<li><a href="news/${item.id}.jhtml" target="_blank">${item.title}</a></li>
+      	[/#list]
+      </ul>
+    </div>
+    <!--./新闻动态--> 
+    <!--企业招聘-->
+    <div class="maintit">
+      <h3>企业招聘</h3>
+    </div>
+    <div class="mainhrd index">
+      <ul>
+      [#list recruitList as item]
+        <li><a href="hr/${item.id}.jhtml" target="_blank">${item.title}</a></li>
+        [/#list]
+      </ul>
+    </div>
+    <!--./企业招聘--> 
+  </div>
+  <!--./mainl--> 
+  
+  <!--mainr-->
+  <div class="mainr"> 
+    <!--ibanner-->
+    <div class="ibanner">
+      <div class="hd">
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+        </ul>
+      </div>
+      <div class="bd">
+        <ul>
+        [#list adverts as item ]
+          <li><a target="_blank" href="/statics/front/images/nullherf.jpg"><img class="lazy" src="${item.image}"></a></li>
+          [/#list]
+        </ul>
+      </div>
+    </div>
+    <!--./ibanner--> 
+    
+    <!--inewprod-->
+    <div class="inewpropd">
+      <div class="maintit">
+            <h3>最新热门仪器</h3> 
+      </div>
+      
+      
+      
+      
+      <div class="inewprod"> 
+        <!--inpnavd-->
+        <div class="inpnavd">
+          <ul>
+            <li class="on"><a href="javascript:;">销售</a></li>
+            <li><a href="javascript:;">求购</a></li>
+            <li><a href="javascript:;">租赁</a></li>
+            <li><a href="javascript:;">求租</a></li>
+            <li><a href="javascript:;">维修</a></li>
+            <li><a href="javascript:;">求修</a></li>
+          </ul>
+        </div>
+        <!--./inpnavd-->
+        
+        <div class="inewprotabuld"> 
+          
+          <!--inewprotabd-->
+          <div class="inewprotabd">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab">
+                <tr class="bgc">
+                  <th>品牌</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>名称</th>
+                  <th>销售价格</th>
+                  <th>成色</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list proSaleList.cont as item]
+                <tr s_href="proSaleList" onclick="window.open('productSale/${item.productSaleEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+                  <td show_title='showText'>${item.productBrandEntity.name}</td>
+                  <td show_title='showText'>${item.proNo!'-'}</td>
+                  <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+                  <td show_title='showText'>${item.proName}</td>
+                  <td show_title='showText'>
+                     	[#if priceType??]
+         		[#if priceType=='VIP']
+         			[#if item.proVipPrice?? && item.proVipPrice != 0] 
+         				${item.proVipPrice}${message("PriceUnit."+item.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if item.proPeer?? && item.proPeer != 0] 
+         				${item.proPeer}${message("PriceUnit."+item.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if item.proMemberPrice?? && item.proMemberPrice != 0] 
+         				${item.proMemberPrice}${message("PriceUnit."+item.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if item.proCustomPrice?? && item.proCustomPrice != 0] 
+         				${item.proCustomPrice}${message("PriceUnit."+item.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if]
+                  
+                  </td>
+                  <td show_title='showText'>${message("QualityStatus."+item.qualityStatus)}</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]        
+              </table>
+            </div>
+             <!-- <div class="mored"><a href="list_sale.html">查看更多55555&gt;&gt;</a></div> -->
+          </div>
+          <!--./inewprotabd--> 
+          
+          <!--inewprotabd-->
+          <div class="inewprotabd" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab">
+                <tr class="bgc">
+                  <th>品牌</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>名称</th>
+                  <th>成色</th>
+                  <th>状态</th>
+                  <th>交货周期</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list proBuyList.cont as item]
+                <tr s_href="proBuyList" onclick="window.open('productBuy/${item.productBuyEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+                  <td show_title='showText'>${item.productBrandEntity.name}</td>
+                  <td show_title='showText'>${item.proNo!'-'}</td>
+                  <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+                  <td show_title='showText'>${item.proName}</td>
+                  <td show_title='showText'>${message("QualityStatus."+item.qualityStatus)}</td>
+                  <td show_title='showText'>${message("Status."+item.status)}</td>
+                  <td show_title='showText'>${item.cycle!'-'}${message("DateType."+item.cycleUnit)}</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]        
+              </table>
+            </div>
+            <!--<div class="mored"><a href="list_saleo.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd--> 
+          
+          <!--inewprotabd-->
+          <div class="inewprotabd" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab">
+                <tr class="bgc">
+                  <th>品牌</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>名称</th>
+                  <th>成色</th>
+                  <th>出租价格</th>
+                  <th>交货周期</th>
+                  <th>发布时间</th>
+                </tr>
+               [#list proRentList.cont as item]
+               <tr s_href="proRentList" onclick="window.open('productRent/${item.productRentEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+               <td show_title='showText'>${item.productBrandEntity.name}</td>
+               <td show_title='showText'>${item.proNo!'-'}</td>
+               <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+               <td show_title='showText'>${item.proName}</td>
+               <td show_title='showText'>${message("QualityStatus."+item.qualityStatus)}</td>
+               <td>
+  				[#if priceType?? && priceType!='来宾']
+         		[#if priceType=='VIP']
+         			[#if item.proVipPrice?? && item.proVipPrice != 0] 
+         				${item.proVipPrice}${message("PriceUnit."+item.proVipPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='同行']
+         			[#if item.proPeer?? && item.proPeer != 0] 
+         				${item.proPeer}${message("PriceUnit."+item.proPeerLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         		[#if priceType=='客户']
+         			[#if item.proMemberPrice?? && item.proMemberPrice != 0] 
+         				${item.proMemberPrice}${message("PriceUnit."+item.proMemberPriceLimit)}
+         			[#else]
+         			电议
+           			[/#if]
+         		[/#if]
+         	[#else]
+       			[#if item.proCustomPrice?? && item.proCustomPrice != 0] 
+         				${item.proCustomPrice}${message("PriceUnit."+item.proCustomPriceLimit)}
+         		[#else]
+         			电议
+           		[/#if]
+           [/#if]
+				</td>
+               <td show_title='showText'>${item.cycle!'-'}${message("DateType."+item.cycleUnit)}</td>
+               <td show_title='showText'>${item.createDate?date}</td>
+               </tr>
+              	[/#list]
+              </table>
+            </div>
+            <!--<div class="mored"><a href="list_lease.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd--> 
+          
+          <!--inewprotabd-->
+          <div class="inewprotabd" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab">
+                <tr class="bgc">
+                  <th>品牌</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>名称</th>
+                  <th>起租日期</th>
+                  <th>租凭周期</th>
+                  <th>成色</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list proWantRentList.cont as item]
+                <tr s_href="proWantRentList" onclick="window.open('productWantRent/${item.productWantRentEntity.id}.jhtml','_blank')" style="cursor:pointer">
+                <td show_title='showText'>${item.productBrandEntity.name}</td>
+                <td show_title='showText'>${item.proNo!'-'}</td>
+                <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+                <td show_title='showText'>${item.proName}</td>
+                <td show_title='showText'>${item.productWantRentEntity.startRent!'-'}</td>
+                <td show_title='showText'>${item.productWantRentEntity.rentPeriod!'-'}${item.productWantRentEntity.rendPeriodunit}</td>
+                <td show_title='showText'>${message("QualityStatus."+item.qualityStatus)}</td>
+                <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]
+              </table>
+            </div>
+            <!--<div class="mored"><a href="list_leaseo.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd--> 
+          
+          <!--inewprotabd-->
+          <div class="inewprotabd" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab">
+                <tr class="bgc">
+                  <th>品牌</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>名称</th>
+                  <th>维修周期</th>
+                  <th>维修地点</th>
+                  <th>保修时间</th>
+                  <th>发布时间</th>
+                </tr>
+              [#list proRepairList.cont as item]
+            <tr s_href="proRepairList" onclick="window.open('productRepair/${item.productRepairEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+              <td show_title='showText'>${item.productBrandEntity.name}</td>
+              <td show_title='showText'>${item.proNo!'-'}</td>
+              <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+              <td show_title='showText'>${item.proName}</td>
+              <td show_title='showText'>${item.productRepairEntity.maintainPeriod!'-'}${message("DateType."+item.productRepairEntity.maintainPeriodunit)}</td>
+              <td show_title='showText'>${message("ProuseAddress."+item.prouseAddress)}</td>
+              <!-- <td show_title='showText'>${item.repairPeriod!'-'}${message("DateType."+item.productRepairEntity.repairPeriodUnit)}</td> -->
+              <td show_title='showText'>${item.repairPeriod!'-'}${message("DateType."+"day")}</td>
+              <td show_title='showText'>${item.createDate?date}</td>
+              </tr>
+              [/#list]
+              </table>
+            </div>
+            <!--<div class="mored"><a href="list_repair.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd--> 
+          
+          <!--inewprotabd-->
+          <div class="inewprotabd" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab">
+                <tr class="bgc">
+                  <th>品牌</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>名称</th>
+                  <th>维修周期</th>
+                  <th>使用地点</th>
+                  <th>数量</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list proWantRepairList.cont as item]
+                <tr s_href="proWantRepair" onclick="window.open('productWantRepair/${item.producWanRepairEntity.id}.jhtml','_blank')" style="cursor:pointer">
+                <td show_title='showText'>${item.productBrandEntity.name}</td>
+                <td show_title='showText'>${item.proNo!'-'}</td>
+                <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+                <td show_title='showText'>${item.proName!'-'}</td>
+                <td show_title='showText'>${item.producWanRepairEntity.maintainPeriod!'-'}${message("DateType."+item.producWanRepairEntity.maintainPeriodunit)}</td>
+                <td show_title='showText'>${message("ProuseAddress."+item.prouseAddress)}</td>
+                <td show_title='showText'>${item.proStock!'-'}</td>
+                <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]
+              </table>
+            </div>
+            <!--<div class="mored"><a href="list_repairo.html">查看更多&gt;&gt;</a></div>--> 
+          </div>
+          <!--./inewprotabd--> 
+          
+        </div>
+      </div>
+    </div>
+    <!--./inewprod--> 
+    
+    <!--iprotjnav-->
+    <div class="iprotjnav">
+      <ul>
+        <li class="on"><a href="javascript:;">低价销售</a></li>
+        <li><a href="javascript:;">高价求购</a></li>
+        <li><a href="javascript:;">限时出租</a></li>
+        <li><a href="javascript:;">短期求租</a></li>
+        <li><a href="javascript:;">专业维修</a></li>
+        <li><a href="javascript:;">难题求修</a></li>
+      </ul>
+    </div>
+    <!--./iprotjnav-->
+    
+    <div class="iprotjuld"> 
+      
+      <!--iprotjd-->
+      <div class="iprotjd">
+        <ul>
+          [#list sales as sale]
+          [#if sale.productType!]
+          [#if sale.productType.id==1]
+          <li><a href="/product/${sale.id}.jhtml" target="_blank"><img class="lazy" src="${sale.proOriginal1}"></a></li>
+          [/#if]
+          [/#if]
+      	  [/#list]
+        </ul>
+      </div>
+      <!--./iprotjd--> 
+      
+      <!--iprotjd-->
+      <div class="iprotjd" style="display:none;">
+        <ul>
+          [#list sales as sale]
+          [#if sale.productType.id==2]
+          <li><a href="/product/${sale.id}.jhtml" target="_blank"><img class="lazy" src="${sale.proOriginal1}"></a></li>
+          [/#if]
+      	  [/#list]
+        </ul>
+      </div>
+      <!--./iprotjd--> 
+      
+      <!--iprotjd-->
+      <div class="iprotjd" style="display:none;">
+        <ul>
+          [#list sales as sale]
+          [#if sale.productType.id==3]
+          <li><a href="/product/${sale.id}.jhtml" target="_blank"><img class="lazy" src="${sale.proOriginal1}"></a></li>
+          [/#if]
+      	  [/#list]
+        </ul>
+      </div>
+      <!--./iprotjd--> 
+      
+      <!--iprotjd-->
+      <div class="iprotjd" style="display:none;">
+        <ul>
+          [#list sales as sale]
+      	  [#if sale.productType??]
+          [#if sale.productType.id==4]
+          <li><a href="/product/${sale.id}.jhtml" target="_blank"><img class="lazy" src="${sale.proOriginal1}"></a></li>
+          [/#if]
+          [/#if]
+      	  [/#list]
+        </ul>
+      </div>
+      <!--./iprotjd--> 
+      
+      <!--iprotjd-->
+      <div class="iprotjd" style="display:none;">
+        <ul>
+          [#list sales as sale]
+      	  [#if sale.productType??]
+          [#if sale.productType.id==5]
+          <li><a href="/product/${sale.id}.jhtml" target="_blank"><img class="lazy" src="${sale.proOriginal1}"></a></li>
+          [/#if]
+          [/#if]
+      	  [/#list]
+        </ul>
+      </div>
+      <!--./iprotjd--> 
+      
+      <!--iprotjd-->
+      <div class="iprotjd" style="display:none;">
+        <ul>
+          [#list sales as sale]
+      	  [#if sale.productType??]
+          [#if sale.productType.id==6]
+          <li><a href="/product/${sale.id}.jhtml" target="_blank"><img class="lazy" src="${sale.proOriginal1}"></a></li>
+          [/#if]
+          [/#if]
+      	  [/#list]
+        </ul>
+      </div>
+      <!--./iprotjd--> 
+      
+    </div>
+    
+    <!--inewprod1-->
+    <div class="inewpropd1">
+      <div class="inewprod1"> 
+        <!--inpnavd1-->
+        <div class="inpnavd1">
+          <ul>
+           	<li class="on"><a href="javascript:;">测试方案</a></li>
+            <li><a href="javascript:;">方案需求</a></li>
+            <!--<li><a href="javascript:;">拍卖</a></li>
+            <li><a href="javascript:;">招投标</a></li>-->
+            <li><a href="javascript:;">产品测试</a></li>
+            <li><a href="javascript:;">测试需求</a></li>
+            <li><a href="javascript:;">计量校准</a></li>
+          </ul>
+        </div>
+        <!--./inpnavd1-->
+        
+        <div class="inewprotabuld1"> 
+          
+          <!--inewprotabd1-->
+          <div class="inewprotabd1">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+                 <tr class="bgc">
+                  <th>方案名称</th>
+                  <th>开发周期</th>
+                  <th>方案简介</th>
+                  <th>发布时间</th>
+                 </tr>
+                 [#list proAutoTestList.cont as item]
+                 <tr s_href="proAutoTest" onclick="window.open('productAutoTest/${item.autoTestEntity.id}.jhtml','_blank')" style="cursor:pointer">
+                  <td show_title='showText'>${item.autoTestEntity.projectName!'-'}</td>
+                  <td show_title='showText'>${item.autoTestEntity.developPeriod}${message("DateType."+item.autoTestEntity.developPeriodUnit)}</td>
+                  <td show_title='showText'>[#if item.autoTestEntity.projectIntroduction?length lt 38]${item.autoTestEntity.projectIntroduction}[#else]${item.autoTestEntity.projectIntroduction?replace("</?[^<]+>", "", "ri")?substring(0,38)}[/#if]</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]
+              </table>
+            </div>
+           <!-- <div class="mored"><a href="list_autotesto.html">查看更多&gt;&gt;</a></div>--> 
+          </div>
+          <!--./inewprotabd1--> 
+          
+          <!--inewprotabd1-->
+          <div class="inewprotabd1" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+                <tr class="bgc">
+                  <th>方案名称</th>
+                  <th>开发周期</th>
+                  <th>方案简介</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list projectNeedList.cont as item]
+                 <tr onclick="window.open('productProjectNeed/${item.projectNeedEntity.id}.jhtml','_blank')" style="cursor:pointer">
+                  <td show_title='showText'>${item.projectNeedEntity.projectName!'-'}</td>
+                  <td show_title='showText'>${item.projectNeedEntity.developPeriod}${message("DateType."+item.projectNeedEntity.developPeriodUnit)}</td>
+                  <td show_title='showText'>[#if item.projectNeedEntity.projectIntroduction?length lt 38]${item.projectNeedEntity.projectIntroduction}[#else]${item.projectNeedEntity.projectIntroduction?replace("</?[^<]+>", "", "ri")?substring(0,38)}[/#if]</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]
+              </table>
+            </div>
+           <!-- <div class="mored"><a href="list_auction.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd1--> 
+          
+          <!--inewprotabd1-->
+          <div class="inewprotabd1" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+               	<tr>
+                <th><img alt="" src="/statics/front/images/nullherf.jpg"></th>
+                </tr>
+<!--                 <tr class="bgc">
+                  <th>方案名称</th>
+                  <th>实施周期</th>
+                  <th>方案简介</th>
+                  <th>发布时间</th>
+                </tr>
+                <tr>
+                  <td>Keysight</td>
+                  <td>5周</td>
+                  <td>电流探头</td>
+                  <td>2014-12-12</td>
+                </tr>
+                <tr class="bgc">
+                  <td>Tektronix</td>
+                  <td>A6302</td>
+                  <td>高压差分探头</td>
+                  <td>2015-01-01</td>
+                </tr>
+                <tr>
+                  <td>Keysight</td>
+                  <td>5周</td>
+                  <td>电流探头</td>
+                  <td>2014-12-12</td>
+                </tr>
+                <tr class="bgc">
+                  <td>Tektronix</td>
+                  <td>A6302</td>
+                  <td>高压差分探头</td>
+                  <td>2015-01-01</td>
+                </tr>
+                <tr>
+                  <td>Keysight</td>
+                  <td>5周</td>
+                  <td>电流探头</td>
+                  <td>2014-12-12</td>
+                </tr> -->
+              </table>
+            </div>
+            <!--<div class="mored"><a href="list_auctiono.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd1--> 
+          
+          <!--inewprotabd1-->
+           <div class="inewprotabd1" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+                <tr>
+                <th><img alt="" src="/statics/front/images/nullherf.jpg"></th>
+                </tr>
+               <tr class="bgc">
+                  <th>方案名称</th>
+                  <th>实施周期</th>
+                  <th>方案简介</th>
+                  <th>发布时间</th>
+                </tr>
+                 <tr>
+                  <td>Keysight</td>
+                  <td>5周</td>
+                  <td>电流探头</td>
+                  <td>2014-12-12</td>
+                </tr>
+                <tr class="bgc">
+                  <td>Tektronix</td>
+                  <td>A6302</td>
+                  <td>高压差分探头</td>
+                  <td>2015-01-01</td>
+                </tr>
+              </table>
+            </div>
+           <div class="mored"><a href="list_protest.html">查看更多&gt;&gt;</a></div>
+          </div> 
+          <!--./inewprotabd1--> 
+          
+          <!--inewprotabd1-->
+          <div class="inewprotabd1" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+                <tr class="bgc">
+                  <th>产品名称</th>
+                  <th>测试周期</th>
+                  <th>检测报告</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list productTestList.cont as item]
+                 <tr s_href="productTest" onclick="window.open('productTest/${item.productTestEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+                  <td show_title='showText'>${item.proName}</td>
+                  <td show_title='showText'>${item.productTestEntity.testPeriod}${message("DateType."+item.productTestEntity.testPeriodUnit)}</td>
+                  <td show_title='showText'>${message("ReportType."+item.productTestEntity.reportType)}</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]
+              </table>
+            </div>
+            <!-- <div class="mored"><a href="list_protesto.html">查看更多&gt;&gt;</a></div>-->
+          </div>
+          <!--./inewprotabd1--> 
+          
+          <!--inewprotabd1-->
+          <div class="inewprotabd1" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+               <tr class="bgc">
+                  <th>产品名称</th>
+                  <th>测试周期</th>
+                  <th>检测报告</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list proRequireTestList.cont as item]
+                 <tr s_href="proRequireTest" onclick="window.open('productRequireTest/${item.requireTestEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+                  <td show_title='showText'>${item.proName}</td>
+                  <td show_title='showText'>${item.requireTestEntity.testPeriod}${(message("DateType."+item.requireTestEntity.testPeriodUnit))}</td>
+                  <td show_title='showText'>${message("ReportType."+item.requireTestEntity.reportType)}</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+               [/#list]
+              </table>
+            </div>
+            <!-- <div class="mored"><a href="list_metering.html">查看更多&gt;&gt;</a></div>--> 
+          </div>
+          <!--./inewprotabd1--> 
+          <!--inewprotabd1-->
+          <div class="inewprotabd1" style="display:none;">
+            <div class="tabd">
+              <table cellspacing="0" class="inewprotab1">
+               <tr class="bgc">
+                  <th>产品名称</th>
+                  <th>型号</th>
+                  <th>选件</th>
+                  <th>发布时间</th>
+                </tr>
+                [#list proCalibrationList.cont as item]
+                 <tr s_href="proCalibration" onclick="window.open('productCalibration/${item.calibrationEntity.id}.jhtml','_blank')" style="cursor:pointer;">
+                  <td show_title='showText'>${item.proName!'-'}</td>
+                  <td show_title='showText'>${item.proNo!'-'}</td>
+                  <td title='${item.poption}'>[#if item.poption?length lt 9]${item.poption!'-'}[#else]${item.poption?replace("</?[^<]+>", "", "ri")?substring(0,9)}[/#if]</td>
+                  <td show_title='showText'>${item.createDate?date}</td>
+                </tr>
+                [/#list]
+              </table>
+            </div>
+           <!-- <div class="mored"><a href="list_metering.html">查看更多&gt;&gt;</a></div>--> 
+          </div>
+          <!--./inewprotabd1--> 
+        </div>
+      </div>
+    </div>
+    <!--./inewprod--> 
+    
+  </div>
+  <!--./mainr--> 
+  
+</div>
+<!--品牌推荐-->
+<div class="ibrandpd main">
+  <div class="maintit">
+    <h3>品牌推荐</h3>
+  </div>
+  <div class="ibrand">
+    <ul>
+      [#list brands as brand]
+      <li><a href="#"><img class="lazy" src="/statics/front/images/grey.gif" data-original="${brand.image}" width="166" height="43"></a></li>
+      [/#list]
+    </ul>
+  </div>
+</div>
+<!--./品牌推荐--> 
+</div>
+
+<div class="logincontd loginformd" id="login" style="display:none; POSITION:absolute; left:50%; top:50%; width:600px; height:400px; margin-left:-300px; margin-top:-200px; border:1px solid #888; background-color:#edf; text-align:center">
+          <form name="n_loginForm" id="n_loginForm">
+            <div class="row">
+              <p class="l">用户名：</p>
+              <p class="r">
+                <input type="text" name="username" id="txtUsername" class="txt">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">密　码：</p>
+              <p class="r">
+                <input type="password" name="password" id="txtPassword" class="txt">
+              </p>
+              <p class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">验证码：</p>
+              <div class="r">
+                <p class="fl">
+                  <input type="text" name="captcha" id="captcha" class="txt">
+                </p>
+                <p class="fl"><a href="javascript:;"><img id="captchaImg" src="statics/front/images/temp/p8.jpg"></a></p>
+              </div>
+              <p  class="annotate"></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r"><input type="submit" value="登 录"  class="btn" id="normalBtn"></p>
+            </div>
+            <div class="row">
+              <p class="l">&nbsp;</p>
+              <p class="r linkd"><a href="/userForgetPass.jspx" class="wjmm">忘记密码</a>
+              <a href="/register.jhtml">注册新账号</a>
+              <a href="/help/${help.id}.jhtml">联系我们</a></p>
+            </div>
+          </form>
+</div>
+
+<!--./content--> 
+[#include '/template/front/include/footer.html' /]
+<script src="/statics/front/js/jquery.min.js"></script> 
+<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script> 
+<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script> 
+<script src="/statics/front/js/main.js"></script>
+<script src="/statics/front/js/pro.js"></script>
+<script src="/statics/front/js/title.js"></script>
+<script type="text/javascript">
+	$(".ibanner").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,delayTime:1000});
+
+	$(".inpnavd li").mouseenter(function(){
+	    $(".inpnavd li").removeClass("on");
+		$(this).addClass("on");
+		$(".inewprotabd").hide();
+		$(".inewprotabd").eq($(this).index()).fadeIn(200);
+	});
+
+	$(".iprotjnav li").mouseenter(function(){
+	    $(".iprotjnav li").removeClass("on");
+		$(this).addClass("on");
+		$(".iprotjd").hide();
+		$(".iprotjd").eq($(this).index()).fadeIn(200);
+	});
+
+	$(".inpnavd1 li").mouseenter(function(){
+	    $(".inpnavd1 li").removeClass("on");
+		$(this).addClass("on");
+		$(".inewprotabd1").hide();
+		$(".inewprotabd1").eq($(this).index()).fadeIn(200);
+	});
+
+	$("#prodClass").find("a").click(function(){
+		var proClass = $(this).attr("s_id");
+		$(".indexContent").hide();
+		$("#indexLoading").show();
+		$.ajax({
+			url:"/product/list.jspx",
+			dataType:"html",
+			type:"post",
+			data:{
+				proClass:proClass
+			},
+			success:function(data){
+				$.includePath = ''; 
+				$(".indexContent").html(data);
+				$.include(['/statics/front/js/jquery.min.js', '/statics/front/js/lazyload/jquery.lazyload.min.js', '/statics/front/js/jquery.SuperSlide.2.1.1.js','/statics/front/js/main.js']);
+				//动态加载css和js
+				$("#indexLoading").hide();
+				$(".indexContent").show();
+			}
+		});
+	});
+
+	     
+	   /* $.ajax({
+		  type: 'GET',
+		  url: 'https://graph.qq.com/oauth2.0/me?access_token='+map.access_token,
+		  async: false,
+		  dataType: "jsonp",
+		  jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+		  jsonpCallback:"callback",
+		  success: function(o){
+			    $.ajax({
+				  type: 'post',
+				  url:'/doPost',
+				  data:{
+					  accessToken:map.access_token,
+					  openID:o.openid
+				  },
+				  dataType: "json",
+				  success: function(e){
+					  alert(e);
+					  console.log(e);
+				  }
+			});  
+		  }
+	});    */
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - ${currentMember.realName}</title>
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<style type="text/css">
+#w1 {
+	display:none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+<script src="/statics/front/js/jquery.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="/statics/front/css/xcConfirm.css"/>
+<script type="text/javascript" src="/statics/front/js/xcConfirm.js"></script>
+</head>
+<body>
+<!--top-->
+[#include '/template/front/include/header.html' /]
+<!--./top--> 
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+<div class="indexContent">
+	<!--content-->
+	<div id="w1"></div>
+	<div id="w3" style="display:none;">
+		<div id="w" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true," style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff;">
+					您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+					<p style="padding-top:80px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_submit()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	    <div id="w2" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false" style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff">
+					您的账号未激活，请先登录注册邮箱激活，如果您是手机快捷注册用户，请在右下角对话框联系管理员给您审核激活
+					<p style="padding-top:105px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_close()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="main userd">
+	  <div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>订单管理</span></a></div>
+	  <!--usernav-->
+	  [#include '/template/front/include/usernav.html' /]
+	  <!--./usernav--> 
+	  
+	  <!--umainr-->
+	  <div class="umainr">
+	    <div class="umainrtitd"><span>询价单</span></div>
+	    
+	    <!--uprod-->
+	    <div class="uprod">
+	      <div class="uinqtabd">
+	        <table width="100%" cellspacing="0" class="uinqtab">
+	          <tr>
+	            <th width="38%">商品名称</th>
+	            <th width="13%">单价</th>
+	            <th width="13%">优惠价</th>
+	            <th width="23%">报价时间</th>
+	            <th width="13%">操作</th>
+	          </tr>
+	          [#list inquiry.cont as product]
+	          <tr>
+	            <td><a href="javascript:;" class="tit">${product.productEntity.productBrandEntity.name}${product.productEntity.proNo}${product.productEntity.proName}</a></td>
+	            <td><a href="javascript:;" [#if product.onePrice gt 0][#else]
+	            [#if product.status == 0]class="bj" onclick="inquiry(${product.id})"[#elseif product.status == 1]
+	            class="bj of"[/#if][/#if]>[#if product.onePrice > 0]${product.onePrice}
+	            [#else][#if product.status == 0 || product.status == 1]催促报价[/#if][/#if]</a></td>
+	            <td>￥${product.privilegePrice}</td>
+	            <td>${product.modifyDate}</td>
+	            <td><a href="javascript:;" s_id="${product.productEntity.id}" onclick="">加入收藏夹</a><br>
+	            <a href="javascript:;" onclick="addShopCart(${product.productEntity.id},${product.privilegePrice})">添加到购物车</a></td>
+	          </tr>
+	          [/#list] 
+	        </table>
+	        <div class="uexepaged">
+	          <div class="upagfr"> 
+	           <!--pagd-->
+	 			<div class="upagd" id="upagd">
+	 			[#if (inquiry.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${inquiry.pageNumber-1}">上一页</a>[/#if][#list -2..2 as item]
+				[#if (inquiry.pageNumber+item) gte 1 & (inquiry.pageNumber+item) lte inquiry.totalPages]<a href="javascript:void(0);" s_val="${inquiry.pageNumber+item}" class="${(item ==0)?string('on','')}">${inquiry.pageNumber+item}</a>[/#if]
+	 			[/#list][#if inquiry.pageNumber lt inquiry.totalPages]<a class="next" href="javascript:void(0);" s_val="${inquiry.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${inquiry.totalPages}页</span><span class="txtd">到
+	            <input type="text" name="txtPnum" id="txtPnum" class="txt">页</span><input type="button" class="btn" id="btn" href="javascript:;" value="确认" /></div>
+	 			<!--./pagd--> 
+	 			</div>
+		    </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+<!--foot--> 
+[#include '/template/front/include/footer2.html' /]
+<!--./foot--> 
+
+[#include '/template/front/include/jslist.html' /]
+<script type="text/javascript">
+//催促报价
+function inquiry(id){
+	$.post('/emailAsk/inquiry.jspx',{'id':id},function(data){
+		if(data&&data!=null){
+			alert("催促报价成功");
+			window.location.href="/emailAsk/getAskInfo.jhtml";
+		}else{
+			alert("催促报价失败，请稍候再试！")
+		}
+	});
+}
+
+function addShopCart(proId,onePrice){
+	if(onePrice <= 0){
+		window.wxc.xcConfirm("该商品暂时无法购买，请联系客服。。。", window.wxc.xcConfirm.typeEnum.info);
+	}else{
+		//var url = 
+		$.post("/shopCart/addShopCart.jspx",{"proId":proId,"price":onePrice,
+			"url":window.location.href,"from":1},
+			function(data){
+				if(data == "unlogin"){
+					var txt=  "你还未登陆，是否前往登陆页面？";
+					var option = {
+						title: "登陆提示",
+						btn: parseInt("0011",2),
+						onOk: function(){
+							window.location.href="/login.jspx";
+						}
+					}
+					window.wxc.xcConfirm(txt, "custom", option);
+				}else if(data == "ok"){
+					var txt=  "恭喜你添加成功，是否去购物车结算？";
+					var option = {
+						title: "添加成功",
+						btn: parseInt("0011",2),
+						onOk: function(){
+							window.location.href="/shopCart/toShopCart.jspx?isFirst=1";
+						}
+					}
+					window.wxc.xcConfirm(txt, "custom", option);
+				}else if(msg = "priceEx"){
+					window.wxc.xcConfirm("价格异常，暂时无法购买，请联系管理员！", window.wxc.xcConfirm.typeEnum.warning);
+				}else{
+					window.wxc.xcConfirm("添加失败，请稍后再试！", window.wxc.xcConfirm.typeEnum.error);
+				}
+		})
+	}
+}
+
+$("#upagd").find("#btn").click(function(){
+	var txt = $("#txtPnum").val();
+	var a1 = ${inquiry.totalPages};
+	if(txt > a1 || txt < 1){
+		return;
+	}
+	window.location.href="/emailAsk/getAskInfo.jhtml?page="+txt;
+});
+
+//分页
+$("#upagd").find("a").click(function(){
+		window.location.href="/emailAsk/getAskInfo.jhtml?page="+$(this).attr("s_val");
+});
+</script>
+</body>
+</html>

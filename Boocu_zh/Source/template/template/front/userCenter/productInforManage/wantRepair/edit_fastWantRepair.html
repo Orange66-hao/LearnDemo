@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+</head>
+<body>
+<!--top-->
+[#include '/template/front/include/header.html' /]
+<!--./top--> 
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+ <div class="indexContent">
+<!--content-->
+<div class="main userd">
+  <div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>快捷发布管理</span></a></div>
+  <!--usernav-->
+  [#include '/template/front/include/usernav.html' /]
+  <!--./usernav--> 
+  
+  <!--umainr-->
+  <div class="umainr">
+    <div class="umainrtitd"><span>快捷发布</span></div>
+    
+    <!--upublishd-->
+    <div class="upublishd">
+      <div class="upubnavd">
+        <ul>
+          <li><a href="/fastSale">产品销售</a></li>
+          <li><a href="/fastBuy">产品求购</a></li>
+          <li><a href="/fastRent">产品租赁</a></li>
+          <li><a href="/fastWantRent">产品求租</a></li>
+          <li><a href="/fastRepair">产品维修</a></li>
+          <li class="on"><a href="/fastWantRepair">产品求修</a></li>
+          <li><a href="#">计量校准</a></li>
+        </ul>
+      </div>
+      <!--./upronavd--> 
+      
+      <!--快捷发布-->
+      <div class="upformd">
+      	<form  id="perRegist" action="/" method="post" enctype="multipart/form-data" name="pubForm">
+      	<input type="text" name="memberId" id="memberId" value="${currentMember.id}" style="display:none;">
+          <div class="row">
+            <p class="l"><i class="x">*</i>品 牌：</p>
+            <p class="r">
+            	<input class="easyui-combobox" data-options="url:'/brand/get_brand_names.jspx',valueField:'id',textField:'text', width:307,[#if item.productBrandEntity??]value:'${item.productBrandEntity.id}'[/#if]" style="width:292px;height:36px;" name="brandId" id="brandId" >
+            </p>
+            <p class="rr">填写求购的产品品牌</p>
+          </div>
+          <div class="row">
+            <p class="l"><i class="x">*</i>型 号：</p>
+            <p class="r">
+              <input type="text" name="proNo" id="proNo" class="txt" value="${item.proNo}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">选 件：</p>
+            <p class="r">
+              <input type="text" name="poption" id="poption" class="txt" value="${item.poption}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l"><i class="x">*</i>名 称：</p>
+            <div class="r">
+              <p class="fl">
+                <input type="text" name="proName" id="proName" class="txt w2" value="${item.proName}">
+              </p>
+              <p class="fl pl15">英文名：</p>
+              <p class="fl">
+                <input type="text" name="proNameEn" id="proNameEn" class="txt w2" value="${item.proNameEn}">
+              </p>
+            </div>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">故障原因：</p>
+            <p class="r">
+              <input type="text" name="faultCause" id="faultCause" class="txt" value="${item.producWanRepairEntity.faultCause}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">故障现象：</p>
+            <p class="r">
+              <input type="text" name="bugloko" id="bugloko" class="txt" value="${item.producWanRepairEntity.bugloko}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">维修周期：</p>
+            <div class="r">
+              <p class="fl">
+                <input type="text" name="maintainPeriod" id="maintainPeriod" class="txt w7" value="${item.producWanRepairEntity.maintainPeriod}">
+              </p>
+              <p class="fl pl5">
+                <select name="maintainPeriodunit" id="maintainPeriodunit" class="txt sel w6">
+                  <option ${(item.producWanRepairEntity.maintainPeriodunit =='day')?string('selected','')} value="day">天</option>
+				  <option ${(item.producWanRepairEntity.maintainPeriodunit =='week')?string('selected','')} value="week">周</option>
+				  <option ${(item.producWanRepairEntity.maintainPeriodunit =='month')?string('selected','')} value="month">月</option>
+                </select>
+              </p>
+            </div>
+            <p class="rr"></p>
+          </div>
+                    <div class="row">
+            <p class="l">所在地：</p>
+            <div class="r">
+              <p class="fl">
+                <select name="prouseAddress" id="prouseAddress" class="easyui-combobox combo" style="width:125px;height:36px;">
+                  <option ${(item.prouseAddress =='inChina')?string('selected','')} value="inChina">中国</option>
+				  <option ${(item.prouseAddress =='outofChina')?string('selected','')} value="outofChina">国外</option>
+                </select>
+              </p>
+              <p class="fl pl5">
+				<input class="easyui-combobox combo " type="text" name="areaProvince" data-options="url:'/worldArea/get_province.jspx?id='+${(item.prouseAddress =='inChina')?string('0','1')},method:'get',valueField:'id',textField:'text',[#if item.areaProvince??]value:'${item.areaProvince}'[/#if]" style="width:125px;height:36px;" id="areaProvince"></input>
+              </p>
+              <p class="fl pl5">
+                <input class="easyui-combobox combo " type="text" name="areaCity" data-options="url:'/worldArea/get_city.jspx?id='+${(item.areaProvince != '')?string('${item.areaProvince}','0')},method:'get',valueField:'id',textField:'text',[#if item.areaCity??]value:'${item.areaCity}'[/#if]" style="width:125px;height:36px;" id="areaCity"></input>
+              </p>
+            <p class="rr">填写求修产品的所在地</p>
+            </div>
+          </div>
+          <div class="row">
+            <p class="l">备注：</p>
+            <p class="r">
+              <textarea name="remain" id="remain" class="txta">${item.remain}</textarea>
+            </p>
+          </div>
+          <div class="row plusd">
+            <p class="l">&nbsp;</p>
+            <div class="r">
+              <p><a href="javascript:;"></a></p>
+              <p>点此一键发布多条信息</p>
+            </div>
+          </div>
+          <div class="row tkd">
+            <p class="l">&nbsp;</p>
+            <p class="r">
+              <input type="checkbox" id="ckTK" name="ckTk" checked>
+              我已阅读并同意<a href="#" class="blue" target="_blank">《晧辰仪联网服务条款》</a> </p>
+          </div>
+          <div class="row">
+            <p class="l">&nbsp;</p>
+            <p class="r"><input type="submit" value="提交" class="subbtn" style="border: 0px;"></p>
+          </div>
+        </form>
+      </div>
+      <!--./upformd--> 
+      
+    </div>
+    <!--./upublishd--> 
+  </div>
+  <!--./umainr--> 
+</div>
+<!--./content--> 
+</div>
+<!--foot--> 
+[#include '/template/front/include/footer2.html' /]
+<!--./foot--> 
+
+[#include '/template/front/include/jslist.html' /]
+
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+[#-- validate 验证器 --]
+<script type="text/javascript" src="/statics/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/statics/validate/jquery.validate.method.min.js"></script>
+
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript">
+var $pubForm = $("#perRegist");
+$(function(){
+	//国内
+	$("#prouseAddress").combobox({
+		onSelect:function(){
+			var prouse = $(this).combobox('getValue');
+			if(prouse =="outofChina"){
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=1");
+			}else{
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=0");
+			}
+		}
+	});
+	//省
+	$("#areaProvince").combobox({
+		onSelect:function(){
+			$("#areaCountry").combobox('setValue', "");
+			$("#areaCity").combobox('setValue', "");
+			$("#areaCity").combobox('reload', "/worldArea/get_city.jspx?id="+$(this).combobox('getValue'));
+		}
+	});
+	var validate = $("#perRegist").validate({
+		rules:{
+			proNo:{
+				required:true
+			},
+			poption:{
+				required:true
+			},
+			proName:{
+				required:true
+			},
+			faultCause:{
+				required:true
+			},
+			bugloko:{
+				required:true
+			}
+			
+		},
+		messages:{
+			proNo:{
+				required:"请填写求修产品的型号"
+			},
+			poption:{
+				required:"请填写求修产品的选件"
+			},
+			proName:{
+				required:"请填写求修产品的名称"
+			},
+			faultCause:{
+				required:"请填写求修产品的故障原因"
+			},
+			cycle:{
+				required:"请填写求修产品的故障现象"
+			}
+		},
+		errorPlacement:function(error,element){
+			element.closest(".row").find(".rr").text(error.text());
+		},
+		unhighlight:function(element){
+			$(element).closest(".row").find(".rr").text("");
+		},
+		submitHandler:function(form){
+			if( $ ("#brandId").combobox ('getValue')==""){
+				alert("请填写产品品牌");
+				return false;
+			}
+			$(this).find(".subbtn").prop("disabled",true);
+			$.ajax({
+				url:"/save_editWantFastRepair.jspx?id="+${item.id},
+				data:$pubForm.serialize(),
+				dataType:"json",
+				cache:false,
+				type:"post",
+				beforeSend:function(){
+					$pubForm.find(".subbtn").val("修改求修中...");
+				},
+				success:function(result){
+					if(result.result == 1){
+						alert("修改求修成功!")
+						window.location = "/wantRepairInfor";
+					}
+				},
+				error:function(){
+					alert("出现错误, 请重试");
+				}
+			});
+		}
+	});
+});
+</script>
+
+</body>
+</html>

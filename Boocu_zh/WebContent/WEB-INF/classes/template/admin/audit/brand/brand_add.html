@@ -1,0 +1,61 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="addForm" method="post" class="validate">
+			<table>
+			   <tr>
+					<th>品牌名称(中文)55</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="name" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>品牌名称(英文)</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="nameEn" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>商标</th>
+					<td><input id="exap" type="hidden" name="image" />
+						<img class="picImg" id="img" src="" style="width:80px;height:80px" />
+						<input class="button blueButton" type="button" id="btnPreViewImg" value="上传图片" />
+					</td>
+				</tr>
+			   <tr>
+					<th>国家</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="country" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="sort" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>字母区域</th>
+					<td><select id="area" name="area" ></select>
+					</td>
+				</tr>
+			   <tr>
+					<th>是否推荐</th>
+					<td><input type="checkbox" value="1" name="isRecommend"/>是
+					</td>
+				</tr>
+			   <tr>
+					<th>状态</th>
+					<td><input type="checkbox" value="1" name="status" />启用
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script>
+initAjaxUploadImg('btnPreViewImg','exap','img');
+var areaArr = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+for(var index in areaArr){
+	$("#area").append("<option>"+areaArr[index]+"</option>")
+}
+</script>

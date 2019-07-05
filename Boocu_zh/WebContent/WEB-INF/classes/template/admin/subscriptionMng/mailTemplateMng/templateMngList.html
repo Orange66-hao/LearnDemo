@@ -1,0 +1,209 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+</meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body {
+	margin: 0px;
+	font-family: Arial, "宋体", Verdana, sans-serif;
+	font-size: 12px;
+}
+
+html, body {
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+dl, dd {
+	margin: 0px
+}
+
+ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.prosortd {
+	clear: both;
+	margin-left: 10px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.prosortd p {
+	float: left;
+	padding-right: 160px;
+	font-size: 14px;
+}
+</style>
+
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+<script type="text/javascript"
+	src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet"
+	type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+<script type="text/javascript"
+	src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+
+	<div id="bookinfo" style="display: none;"></div>
+	<div id="loading"></div>
+	<div class="main">
+		<form id="memberform">
+			<div class="">
+				<table>
+					<tr>
+						<th>Email使用模板</th>
+						<td><input class="easyui-combobox combo" type="text"
+							s_value="${item.template}" name="template" id="newsareaId"
+							data-options="url:'/admin/template/getTemplate.jspx',method:'get',valueField:'id',required:'true',
+						textField:'text', width:307,editable:false"
+							style="height: 30px"></input></td>
+					</tr>
+					<tr>
+						<th>
+							邮件模式：
+                        </th>
+						<td>
+                            <label>发送单个邮件  <input  type="radio" name="singleOrMultiple" value="1" onclick="showInput(1)" checked></label>
+                            <label>发送多个邮件：<input type="radio"  name="singleOrMultiple" value="2" onclick="showInput(2)"></label>
+                        </td>
+
+					</tr>
+					<tr id="multiple" style="display: none">
+						<th>发送用户组</th>
+						<td><input class="easyui-combobox"
+							data-options="url:'/admin/member/memberGrade/get_memberGrade_names.jspx',valueField:'id',textField:'text', width:307,editable:false"
+							name="gradeid" style="height: 30px;"></td>
+					</tr>
+					<tr id="single">
+						<th>邮箱账号</th>
+						<td><input type="text"
+							name="mail" style="height: 30px;"></td>
+					</tr>
+					<tr>
+						<th>邮件主题</th>
+						<td><input class="input_text easyui-validatebox" type="text"
+                                name="subject" data-options="required:true"></input></td>
+					</tr>
+					<tr>
+						<th>邮件内容</th>
+						<td><textarea style="width: 100px;"
+								class="ckeditor" id="context"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><a class="button blueButton" id="send"
+							onclick="submitForm()">发送</a></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+		<div id="divdia" style="display: none;"></div>
+
+	</div>
+	<script type="text/javascript">
+        function showInput(val) {
+            if(val==1){
+                $("#multiple").hide();
+                $("#single").show()
+            }else{
+                $("#single").hide()
+                $("#multiple").show();
+            }
+        }
+		function submitForm ()
+        {
+	        var formflag = $ ("#memberform").form ().form ('validate');
+	        var template = $ ('[name=template]').val ();
+	        var gradeId = $('[name=gradeid]').val();
+	       /*  alert(formflag)
+	        alert(template)
+	         alert(gradeId) */
+	         var context=CKEDITOR.instances.context.getData();
+	        if (formflag)
+	        {
+		        $.Loading.show ("正在发送");
+		        var options =
+		        {
+		            url : "/admin/template/sendEmail.jspx" ,
+		            type : "POST",
+		            dataType : 'json',
+		            data:{"context":context},
+		            success : function (result)
+		            {
+			            if (result.result == 1)
+			            {
+				            $.Loading.show (result.message);
+				            alert(result.message)
+			            }
+			            if (result.result == 0)
+			            {
+				            $.Loading.error (result.message);
+			            }
+			            $.Loading.hide ();
+		            },
+		            error : function (e)
+		            {
+			            alert ("出现错误 ，请重试");
+		            }
+		        };
+		        $ ("#memberform").ajaxSubmit (options);
+	        }
+        }
+
+        $ ('#newsareaId').combobox (
+        {
+	        onSelect : function (record)
+	        {
+		        var ckEditor = CKEDITOR.instances.context;
+		        var peo = $ ('#newsareaId').combobox ('getValue');
+		        $.ajax (
+		        {
+		            url : '/admin/template/getTemplateContext.jspx',
+		            data :
+		            {
+			            'mailId' : peo
+		            },
+		            type : 'post',
+		            success : function (result)
+		            {
+			            ckEditor.setData (result.message);
+		            }
+		        })
+	        }
+        });
+	</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿@charset "utf-8";
+/*ibanner*/
+.ibanner{ width:930px; height:394px; overflow:hidden; position:relative; }
+.ibanner .hd{ height:19px; overflow:hidden; position:absolute; right:15px; bottom:10px; z-index:1; }
+.ibanner .hd ul{ overflow:hidden; zoom:1; float:left;  }
+.ibanner .hd ul li{ float:left; margin-left:6px; width:19px; height:19px; line-height:19px; text-align:center; background:#8D8D8D; color:#fff; cursor:pointer; font-family:Arial; font-size:12px; border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%; }
+.ibanner .hd ul li.on{ background:#2D519F; }
+.ibanner .bd{ position:relative; height:100%; z-index:0;   }
+.ibanner .bd li{ zoom:1; vertical-align:middle; }
+.ibanner .bd img{ width:930px; height:394px; display:block;  }
+
+/*最新热门仪器*/
+.inewprotabuld{ clear:both; height:370px; overflow:hidden; }
+.inewpropd{ clear:both; margin:10px 0; overflow:hidden; zoom:1; font-family:"Microsoft Yahei","微软雅黑"; }
+.inewprod{ clear:both; width:895px; padding:10px 17px; margin-top:10px; background-color:#F6F9FF; border-radius:10px;-webkit-border-radius:10px;-moz-border-radius:10px; }
+.inewprod .inpnavd{ clear:both; width:895px; height:45px; line-height:45px; background:url(../images/ico6.png) center no-repeat; font-size:19px; font-weight:bold; }
+.inewprod .inpnavd ul{ width:888px; margin:0 auto; }
+.inewprod .inpnavd li{ float:left; width:148px; text-align:center; }
+.inewprod .inpnavd li a{ color:#fff; }
+.inewprod .inpnavd li.on{ background:url(../images/ico6_o.png) center no-repeat; }
+
+.inewprotabd{ clear:both; padding-bottom:10px; overflow:hidden; }
+.inewprotabd .tabd{ height:326px; overflow:hidden; }
+.inewprotabd .mored{ clear:both; text-align:right; padding-top:10px; }
+.inewprotabd .mored a{ color:#0070ff; }
+
+.inewprotab{ width:100%; border:0; background-color:#fff; margin-top:-1px; }
+.inewprotab th, .inewprotab td{ padding:8px 0; line-height:18px; border:2px #EFF6FF solid; text-align:center; }
+.inewprotab th{ font-weight:bold; }
+.inewprotab .bgc{ background-color:#C9E9FE; }
+
+/*品牌推荐*/
+.ibrandpd{ clear:both; }
+.ibrand{ clear:both; margin:10px 0; overflow:hidden; zoom:1; }
+.ibrand ul{ width:1211px; padding-left:2px; }
+.ibrand li{ float:left; width:166px; height:43px; margin:0 5px 5px 0; border:1px #c5c5c5 solid; overflow:hidden; }
+.ibrand li img{ width:166px; height:43px; }
+
+/*产品推荐*/
+.iprotjnav{ clear:both; clear:both; height:25px; line-height:25px; border:1px #E7E7E7 solid; border-bottom:0; background:url(../images/ico4_1.png) repeat-x; font-family:"Microsoft Yahei","微软雅黑"; position:relative; }
+.iprotjnav ul{ position:absolute; top:-1px; left:-1px; width:936px; height:25px; line-height:25px; text-align:center; }
+.iprotjnav li{ float:left; width:150px; margin-right:6px; }
+.iprotjnav li.on{ width:148px; border:1px #0B4F9F solid; border-bottom:0; background:url(../images/ico4_2.png) repeat-x; }
+.iprotjnav li.on a{ color:#fff; }
+.iprotjnav, .iprotjnav li.on{ border-radius:3px 3px 0 0;-webkit-border-radius:3px 3px 0 0;-moz-border-radius:3px 3px 0 0; }
+
+.iprotjuld{ clear:both; height:124px; overflow:hidden; }
+.iprotjd{ clear:both; overflow:hidden; zoom:1; }
+.iprotjd ul{ clear:both; width:936px; }
+.iprotjd li{ float:left; width:140px; height:115px; padding:4px; margin-right:6px; border:1px #ddd solid; border-top:0; border-radius:0 0 12px 12px;-webkit-border-radius:0 0 12px 12px;-moz-border-radius:0 0 12px 12px; }
+.iprotjd li img{ width:140px;  }
+
+/*产品推荐列表*/
+.inewprotabuld1{ clear:both; height:370px; overflow:hidden; }
+.inewpropd1{ clear:both; margin:10px 0; overflow:hidden; zoom:1; font-family:"Microsoft Yahei","微软雅黑"; }
+.inewprod1{ clear:both; width:895px; padding:10px 17px; margin-top:10px; background-color:#F6F9FF; border-radius:10px;-webkit-border-radius:10px;-moz-border-radius:10px; }
+.inewprod1 .inpnavd1{ clear:both; width:895px; height:45px; line-height:45px; background:url(../images/ico6.png) center no-repeat; font-size:19px; font-weight:bold; }
+.inewprod1 .inpnavd1 ul{ width:888px; margin:0 auto; }
+.inewprod1 .inpnavd1 li{ float:left; width:148px; text-align:center; }
+.inewprod1 .inpnavd1 li a{ color:#fff; }
+.inewprod1 .inpnavd1 li.on{ background:url(../images/ico6_o.png) center no-repeat; }
+
+.inewprotabd1{ clear:both; padding-bottom:10px; overflow:hidden; }
+.inewprotabd1 .tabd{ height:326px; overflow:hidden; }
+.inewprotabd1 .mored{ clear:both; text-align:right; padding-top:10px; }
+.inewprotabd1 .mored a{ color:#0070ff; }
+
+.inewprotab1{ width:100%; border:0; background-color:#fff; margin-top:-1px; }
+.inewprotab1 th, .inewprotab1 td{ padding:8px 0; line-height:18px; border:2px #EFF6FF solid; text-align:center; }
+.inewprotab1 th{ font-weight:bold; }
+.inewprotab1 .bgc{ background-color:#C9E9FE; }

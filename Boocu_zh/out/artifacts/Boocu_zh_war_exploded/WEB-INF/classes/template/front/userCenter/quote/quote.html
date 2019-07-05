@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - ${currentMember.realName}</title>
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<style type="text/css">
+#w1 {
+	display:none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+</head>
+<body>
+<!--top-->
+[#include '/template/front/include/header.html' /]
+<!--./top--> 
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+<div class="indexContent">
+	<!--content-->
+	<div id="w1"></div>
+	<div id="w3" style="display:none;">
+		<div id="w" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true," style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff;">
+					您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+					<p style="padding-top:80px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_submit()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	    <div id="w2" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false" style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff">
+					您的账号未激活，请先登录注册邮箱激活!
+					<p style="padding-top:105px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_close()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="main userd">
+	  <div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>订单管理</span></a></div>
+	  <!--usernav-->
+	  [#include '/template/front/include/usernav.html' /]
+	  <!--./usernav--> 
+	  
+	  <!--umainr-->
+	  <div class="umainr">
+	    <div class="umainrtitd"><span>报价单</span></div>
+	    <div class="uquonavd">
+	      <ul>
+	        <li [#if status ==0]class="on"[/#if] data-status="0"><a href="/quote/getQuoteInfo.jspx?status=0">未报价</a></li>
+        	<li [#if status ==2]class="on"[/#if] data-status="2"><a href="/quote/getQuoteInfo.jspx?status=2">已报价</a></li>
+	      </ul>
+	    </div>
+	    
+	    <!--uprod-->
+	    <div class="uprod">
+	      <div class="uinqtabd">
+	        <table width="100%" cellspacing="0" class="uinqtab">
+	          <tr>
+	            <th width="38%">商品名称</th>
+	            <th width="13%">单价</th>
+	            <th width="13%">优惠价</th>
+	            <th width="23%">报价时间</th>
+	            <!-- 
+	            <th width="13%">操作</th>
+	             -->
+	          </tr>
+	          [#list quote.cont as product]
+	          <tr>
+	            <td><a href="javascript:;" class="tit">${product.proName}</a></td>
+	            <td>[#if product.originalPrice == -1]电议[#else]￥${product.originalPrice}[/#if]</td>
+	            <td>[#if product.status == 0]<a href="javascript:;" onclick="giveBox(${product.id})" class="bj">报价</a>[#else]<a href="javascript:;">￥${product.privilegePrice}</a>[/#if]</td>
+	            <td>${product.modifyDate}</td>
+	            <!-- 
+	            <td><a href="javascript:;" s_id="${product.id}" onclick="">加入收藏夹</a><br>
+	            <a href="javascript:;" s_id="${product.id}" onclick="">添加到购物车</a></td>
+	             -->
+	          </tr>
+	          [/#list] 
+	        </table>
+	        <div class="uexepaged">
+          <div class="upagfr"> 
+           <!--pagd-->
+ 			<div class="upagd" id="upagd">
+ 			[#if (quote.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${quote.pageNumber-1}">上一页</a>[/#if][#list -2..2 as item]
+			[#if (quote.pageNumber+item) gte 1 & (quote.pageNumber+item) lte quote.totalPages]<a href="javascript:void(0);" s_val="${quote.pageNumber+item}" class="${(item ==0)?string('on','')}">${quote.pageNumber+item}</a>[/#if]
+ 			[/#list][#if quote.pageNumber lt quote.totalPages]<a class="next" href="javascript:void(0);" s_val="${quote.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${quote.totalPages}页</span><span class="txtd">到
+            <input type="text" name="txtPnum" id="txtPnum" class="txt">页</span><input type="button" class="btn" id="btn" href="javascript:;" value="确认" /></div>
+ 			<!--./pagd--> 
+ 			</div>
+		      </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div id="divdia" style="display:none;background:#666;position:fixed; width:100%; height:100%;left:0px;top:0px;
+	z-index:1;filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity:0.5;opacity: 0.5;"></div>
+	
+	<div id="giveBox" style="display:none;position: fixed;left: 40%;top: 30%;background: #FFFFFF;border: 1px solid #DBE0E4;
+	overflow: hidden;border-radius: 5px;width: 380px;min-height: 200px;z-index:99999999999;padding-top:20px;">
+		<form id="quoteForm" action="" method="post">
+			<div style="margin-left: auto;margin-right: auto;overflow:hidden;margin-top:20px;">
+				<p style="float:left;width:100px;text-align:right;margin-left:20px;">优惠价：</p><p style="float:left;">
+				<input type="text" name="price" id="price" onfocus="hideTip()" onblur="checkPrice()" value="" style="width:200px;height:30px;border:1px solid #ccc;"></p><p class='rr'></p>
+				<input type="hidden" id="quoteId" name="id"/>
+			</div>
+			<div style="text-align:center;margin-top:30px;">
+				<input type="button" value="关闭" onclick="closeQuote()" style="background:#EA8B43;width:80px; height:35px;color:#fff;border:0px;font-size:16px;line-height:35px;"/>
+				<input type="button" value="确认" onclick="quote()" style="background:#5BD271;width:80px; height:35px;color:#fff;border:0px;font-size:16px;line-height:35px;margin-left:30px;"/>
+			</div>
+			<div id="errtip" style="text-align:center;margin-top:30px;display: none;"><span style="color: red">输入金额不合法!</span></div>
+		</form>
+	</div>
+	
+</div>
+<!--foot--> 
+[#include '/template/front/include/footer2.html' /]
+<!--./foot--> 
+
+[#include '/template/front/include/jslist.html' /]
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+var status = ${status};
+
+//金额校验正则
+var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+function hideTip(){
+	//隐藏提示
+	$("#errtip").hide();
+}
+
+function checkPrice(){
+	var price = $("#price").val();
+	if(!reg.test(price)){
+		$("#errtip").show();
+	}
+}
+//选项卡
+$(".uquonavd li").click(function(){
+   $(".uquonavd li").removeClass("on");
+   $(this).addClass("on");
+});
+
+//报价
+function quote(){
+	var price = $("#price").val();
+	var id = $("#quoteId").val();
+	if(reg.test(price)){
+		$.post("/quote/quote.jspx",{'id':id,'price':price},
+		function(result){
+			if(result=="ok"){
+				alert("报价成功！");
+				closeQuote();
+				//刷页面
+				window.location.href="/quote/getQuoteInfo.jspx?status="+status;
+			}else{
+				alert("报价失败，请稍后再试。")
+			}
+		});
+	}else{
+		$("#errtip").show();
+	}
+}
+
+function giveBox(id){
+	$("#divdia").show();
+	$("#giveBox").show();
+	$("#quoteId").val(id);
+}
+
+function closeQuote(){
+	$("#divdia").hide();
+	$("#giveBox").hide();
+	$("#price").val("");
+	hideTip();
+}
+$("#upagd").find("#btn").click(function(){
+	var txt = $("#txtPnum").val();
+	var a1 = ${quote.totalPages};
+	if(txt > a1 || txt < 1){
+		return;
+	}
+	window.location.href="/quote/getQuoteInfo.jspx?status="+status+"&page="+txt;
+});
+
+//分页
+$("#upagd").find("a").click(function(){	
+		window.location.href="/quote/getQuoteInfo.jspx?status="+status+"&page="+$(this).attr("s_val");
+});
+</script>
+</body>
+</html>

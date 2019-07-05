@@ -1,0 +1,759 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=9">
+	</meta>
+	<title>云图商城-后台管理</title>
+	<style type="text/css">
+		body {
+			margin: 0px;
+			font-family: Arial, "宋体", Verdana, sans-serif;
+			font-size: 12px;
+		}
+
+		html, body {
+			padding: 0;
+			margin: 0;
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
+
+		dl, dd {
+			margin: 0px
+		}
+
+		ul {
+			list-style-type: none;
+			margin: 0px;
+			padding: 0px;
+		}
+
+		.input_text2{
+			border: 1px solid #D7D7D7;
+			border-radius: 3PX;
+			/*height: 14PX;*/
+			padding: 7px 0 7px 5px;
+			line-height: 14PX;
+			font-size: 12px;
+			display: inline-block;
+			width:150px;
+		}
+
+		.input_text2:focus {
+			border: 1px solid #06F;
+			box-shadow: inset 0 1px 2px rgba(0, 102, 255, 0.3);
+		}
+
+	</style>
+	<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+	<script type="text/javascript"
+			src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript"
+			src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+	<script type="text/javascript" src="/statics/js/area_sql.js"></script>
+	<link rel="stylesheet" type="text/css"
+		  href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css" />
+	<link rel="stylesheet" type="text/css"
+		  href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+	<script type="text/javascript"
+			src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+	<script type="text/javascript"
+			src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript"
+			src="/adminthemes/new/js/jquery.blockUI.js"></script>
+	<script type="text/javascript"
+			src="/adminthemes/new/js/jquery.loading.js"></script>
+	<link href="/adminthemes/new/css/main.css" rel="stylesheet"
+		  type="text/css" />
+	<link href="/adminthemes/new/css/style.css" rel="stylesheet"
+		  type="text/css" />
+	<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+	<script type="text/javascript"
+			src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+	<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+
+
+
+	[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+
+<div id="bookinfo" style="display: none;"></div>
+<div id="loading"></div>
+<div class="main">
+	<form id="memberform">
+		<div id="tb" style="height: auto">
+			<a href="javascript:append()" class="button blueButton"
+			   data-options="iconCls:'icon-add',plain:true">添加</a>
+<!--			<a href="javascript:void(0)" class="easyui-linkbutton"
+			   data-options="plain:true" onclick="del()">删除</a>-->
+
+			<span style="float: right;">
+				<!-- <span >
+				行业分类：
+				<input style="width: 240px; height: 30px;"
+										class="input_text easyui-combotree"
+										url="/admin/suIndustyClass/combotreeData.json" name="su_industry_class_show" data-options="multiple:true"
+										id="su_industry_class_show" />
+				</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				<span >
+				主营产品：
+				<input style="width: 240px; height: 30px;"
+										class="input_text easyui-combotree"
+										url="/admin/suMajor/combotreeData.json" name="major_product_show" data-options="multiple:true"
+										id="major_product_show" />
+				</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				<span >
+				常用仪器及品牌型号：
+				<input style="width: 240px; height: 30px;"
+										class="input_text easyui-combotree"
+										url="/admin/basedata/suproductclass/combotreeData.json" name="su_productclass_show"
+										id="su_productclass_show" data-options="multiple:true"/>
+				</span> -->
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<span >
+				<span>
+				性质：
+					<select id="type_all" name="type_all" class="input_text"  style="width: 80px; height: 32px;">
+						<option value=''>全部
+						<option value='1'>进口生产厂商
+						<option value='2'>国产生产厂商
+						<option value='3'>进口代理商
+						<option value='4'>国产代理商
+						<option value='5'>进口经销商
+						<option value='6'>国产经销商
+						<option value='7'>二手同行
+						<option value='8'>系统集成商
+					</select>
+				</span>
+				<span >
+				品牌：
+				<input style="width: 70px; height: 32px;"
+					   class="input_text easyui-combobox" url="/admin/basedata/brand/get_brand_names.jspx"
+					   name="su_brand_all" data-options="multiple:false,cascadeCheck:false,valueField:'id',textField:'text',editable:true"
+					   id="su_brand_all"/>
+				</span>
+				<span >
+				<span >
+				公司名：
+				<input style="width: 100px; height: 32px;"
+					   class="input_text easyui-combobox"
+					   url="/admin/suCompanyName/get_sumember_names.jspx" name="searchKeyword"
+					   id="searchKeyword" data-options="multiple:false,cascadeCheck:false,valueField:'text',textField:'text',editable:true"/>
+				</span>
+				行业分类：
+					<!-- <input style="width: 200px; height: 30px;"
+                                class="easyui-combobox"
+                                url="/admin/suIndustyClass/combotreeData.json" name="su_industry_class_all" data-options="valueField:'id',multiple:true,textField:'text',editable:true"
+                                id="su_industry_class_all"/> -->
+				 <input style="width: 70px; height: 16px;"
+						class="input_text easyui-validatebox"
+						name="su_industry_class_all" data-options="editable:true"
+						id="su_industry_class_all"/>
+				</span>
+				<span >
+				主营设备名称：
+					<!-- <input style="width: 200px; height: 30px;"
+                                class="easyui-combobox"
+                                url="/admin/suMajor/get_major_names.jspx" name="major_product_all" data-options="multiple:true,valueField:'id',textField:'text',editable:false"
+                                id="major_product_all"/> -->
+					<input style="width: 80px; height: 30px;"
+						   class="easyui-combobox"
+						   url="/admin/basedata/productclass/combotreeData.json?getSanji=true" name="major_product_all" data-options="multiple:false,valueField:'id',textField:'text',editable:true"
+						   id="major_product_all"/>
+				</span>
+				<span >
+				主营设备型号：
+				 <input style="width: 90px; height: 16px;"
+						class="input_text easyui-validatebox"
+						name="major_product_type_all" data-options="editable:true"
+						id="major_product_type_all" />
+				</span>
+				<span >
+				常用仪器名称：
+					 <input style="width: 80px; height: 30px;"
+                                class="easyui-combobox"
+                                url="/admin/basedata/productclass/combotreeData.json" name="su_productclass_all" data-options="multiple:false,valueField:'id',textField:'text',editable:false"
+                                id="su_productclass_all"/>
+							 <!--<input style="width: 80px; height: 16px;"
+									class="input_text easyui-validatebox"
+									name="su_productclass_all" data-options="editable:true"
+									id="su_productclass_all"/>-->
+				</span>
+				<span >
+				常用仪器型号：
+					 <input style="width: 80px; height: 16px;"
+							class="input_text easyui-validatebox"
+							name="su_productclass_type_all" data-options="editable:true"
+							id="su_productclass_type_all"/>
+				</span>
+				<span>
+					联系人：
+						 <!--<input style="width: 60px; height: 16px;" class="input_text easyui-validatebox" name="search_contact" data-options="editable:true" id="search_contact"/>-->
+						<input style="width: 80px; height: 30px;"
+							   class="easyui-combobox"
+							   url="/admin/suContacts/get_sumember_names.jspx" name="search_contact" data-options="valueField:'id',textField:'text',editable:true"
+							   id="search_contact"/>
+				</span>
+				<span >
+				采购责任人：
+				<input style="width: 60px; height: 30px;"
+					   class="easyui-combobox"
+					   url="/admin/suMember/get_sumember_names.jspx" name="mode_blame_buy" data-options="valueField:'id',textField:'text',editable:true"
+					   id="mode_blame_buy"/>
+				</span>
+				<span >
+				跟单责任人：
+				<input style="width: 60px; height: 30px;"
+					   class="easyui-combobox"
+					   url="/admin/suMember/get_sumember_names.jspx" name="mode_blame" data-options="valueField:'id',textField:'text',editable:true"
+					   id="mode_blame"/>
+				</span>
+				<span>
+				创建时间：
+					<select id="create_date_all" name="create_date_all" class="input_text"  style="width: 60px; height: 32px;">
+						<option value='all' selected="selected">全部
+						<option value='3'>三天内
+						<option value='7'>本周内
+						<option value='30'>本月内
+					</select>
+				</span>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<span id="simpleSearch">
+					<!-- <input id="searchKeyword" class="input_text" type="text" value="" size="30" style="width: 300px;"
+					placeholder="请输入公司名称" name="searchKeyWord">  -->
+					<a href="javascript:void(0)" class="easyui-linkbutton"
+					   data-options="plain:true" onclick="searchIndustryClass();">搜索</a>
+				</span>
+			</span>
+
+		</div>
+
+		<div class="clear height10"></div>
+		<div class="shadowBoxWhite tableDiv">
+			<table class="easyui-datagrid" id="dataList"
+				   data-options="url:'/admin/SuModelCollection/getGroupData.jspx',pageList: [5,10,15,20],pageSize:10,fitColumns:'true',rownumbers:'true'"  nowrap="false"
+				   pagination="true" sortName="modify_date" sortOrder="desc" idField="id" treeField="name" checkbox="true">
+				<thead>
+				<tr>
+					<th data-options="field:'id',checkbox:true"></th>
+					<th data-options="field:'su_industry_class',hidden:true"></th>
+					<th data-options="field:'su_industry_class_name',width:$(this).width()*0.11,sortable:'true' ,align: 'center'">行业分类</th>
+					<th data-options="field:'type',width:$(this).width()*0.07,sortable:'true',align: 'center'" formatter="formatType">性质</th>
+					<th data-options="field:'brand',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'brand_name',width:$(this).width()*0.15,sortable:'true',align: 'center'" formatter="formatup">品牌</th>
+					<th data-options="field:'name_id',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'name',width:$(this).width()*0.15,sortable:'true' ,align: 'center'" formatter="companyOperation">公司名称</th>
+					<!--<th data-options="field:'su_productclass_bran',hidden:true" formatter="formatup"></th>
+                    <th data-options="field:'su_productclass_brand',width:$(this).width()*0.25,sortable:'true',align: 'center'" formatter="formatup">品牌名称</th>-->
+					<!--<th data-options="field:'major_product',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'major_product_name',width:$(this).width()*0.30,sortable:'true',align: 'center'" formatter="formatup">主营设备名称</th>
+					<th data-options="field:'major_product_typ',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'major_product_type',width:$(this).width()*0.25,sortable:'true',align: 'center'" formatter="formatup">主营设备品牌型号</th>-->
+					<th data-options="field:'mc_brand_and_models',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'mc_model',width:$(this).width()*0.25,sortable:'true',align: 'center'" formatter="mc_brand_modelOperation">主营设备品牌型号</th>
+					<th data-options="field:'suproductclass',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'suproductclass_name',width:$(this).width()*0.30,sortable:'true',align: 'center'" formatter="formatup">主营设备名称</th>
+					<th data-options="field:'su_productclass',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'su_productclass_name',width:$(this).width()*0.25,sortable:'true',align: 'center'" formatter="formatup">常用仪器名称</th>
+					<th data-options="field:'su_productclass_typ',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'su_productclass_type',width:$(this).width()*0.25,sortable:'true',align: 'center'" formatter="formatup">常用仪器品牌型号</th>
+					<!-- <th data-options="field:'su_model',hidden:true" formatter="formatup"></th>
+                    <th data-options="field:'su_model_name',width:$(this).width()*0.2,sortable:'true',align: 'center'" formatter="formatup">型号</th> -->
+					<th data-options="field:'subscribe_content',hidden:true"></th>
+					<th data-options="field:'su_subscribe_content',width:$(this).width()*0.15,sortable:'true' ,align: 'center'">订阅内容</th>
+
+					<th data-options="field:'contact',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'contact_name',width:$(this).width()*0.09,sortable:'true',align: 'center'" formatter="contactOperation">联系人</th>
+					<th data-options="field:'blame1',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'blame_buy',width:$(this).width()*0.12,sortable:'true',align: 'center'" formatter="">采购责任人</th>
+					<th data-options="field:'blame',hidden:true" formatter="formatup"></th>
+					<th data-options="field:'blame_name',width:$(this).width()*0.12,sortable:'true',align: 'center'" formatter="">跟单责任人</th>
+					<th data-options="field:'grade',width:$(this).width()*0.06,sortable:'true',align: 'center'" formatter="formatupgrade">等级</th>
+					<th data-options="field:'measurement_time',width:$(this).width()*0.11,sortable:'true',align: 'center'" formatter="formatupmeasurement_time">计量时间</th>
+					<th data-options="field:'is_accept_email',width:$(this).width()*0.11,sortable:'true',align: 'center'" formatter="formatIsAcceptEmail">订阅邮件</th>
+					<th data-options="field:'rate',width:$(this).width()*0.11,sortable:'true',align: 'center'" formatter="formatRate">订阅周期</th>
+					<th data-options="field:'su_website',width:$(this).width()*0.18,sortable:'true',align: 'center'" formatter="formatup">公司网站</th>
+					<th data-options="field:'modify_date',width:$(this).width()*0.11,sortable:'true',align: 'center'" formatter="formdate">更新时间</th>
+					<th
+							data-options="field:'action',width:$(this).width()*0.10,align:'center'"
+							formatter="formatOperation">操作</th>
+				</tr>
+				</thead>
+			</table>
+		</div>
+	</form>
+	<div id="divdia" style="display: none;"></div>
+	<div id="divdia2" style="display: none;"></div>
+	<div id="divdia3" style="display: none;"></div>
+
+</div>
+<script type="text/javascript">
+    //下拉树实现自定义查询效果
+    $('#searchKeyword').combobox({
+        filter: function(q, row){
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) >= 0;//这里改成>=即可在任意地方匹配
+        }
+    });
+    $('#su_brand_all').combobox({
+        /*url:'/admin/basedata/brand/get_brand_names.jspx?',
+        onLoadSuccess:function(){
+            $('#su_brand_all').combobox('setValues','${item.su_brand}'.split(','));
+        }*/
+        filter: function(q, row){
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) >= 0;//这里改成>=即可在任意地方匹配
+        }
+    });
+    //下拉树实现自定义查询效果
+    $('#mode_blame').combobox({
+        filter: function(q, row){
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) >= 0;//这里改成>=即可在任意地方匹配
+        }
+    });
+
+
+
+
+
+
+    function submitForm(map) {
+        var data = {};
+        data.id=$("#id").val();
+
+        data.website=$("#su_website_coll").val();//公司网站
+
+        var type2=$("#type").val();//性质
+        data.type=type2.toString();
+
+        //data.su_industry_class=$("#su_industry_class_coll").combobox('getValues').toString();
+        data.su_industry_class=$("#su_industry_class_coll").val();
+
+        //data.major_product=$("#major_product_coll").combotree('getValues').toString();//主营产品名称,获取combotree的id
+        //data.major_product=$("#major_product_coll").val();
+
+        data.major_product_type=$("#major_product_type_coll").val();//主营产品型号
+
+        //data.su_productclass=$("#su_productclass_coll").combobox('getValues').toString();
+        data.su_productclass=$("#su_productclass_coll").val();//常用仪器名称
+
+        data.su_productclass_type=$("#su_productclass_type_coll").val();//常用仪器型号
+
+        var su_brand2=$("#su_brand_coll").combobox('getValues');//品牌
+        data.su_brand=su_brand2.toString();
+
+        data.subscribe_content=$("#su_subscribe_content_coll").val();//订阅内容
+
+        var contact2=$("#contact").combobox('getValues');
+        data.contact=contact2.toString();
+
+        data.su_brand6=[];
+        $.each($("#addForm table input[name='brand']"),function (i, e) {
+            data.su_brand6.push(e.value)
+        })
+        data.su_model6=[];
+        $.each($("#addForm table input[name='model']"),function (i,e) {
+            data.su_model6.push(e.value)
+        })
+        data.su_productclass_number6=[];
+        $.each($("#addForm table input[name='number']"),function (i,e) {
+            data.su_productclass_number6.push(e.value)
+        })
+        data.su_productclass_name6=[];
+        $.each($("#addForm table input[name='su_productclass_name']"),function (i,e) {
+            data.su_productclass_name6.push(e.value)
+        })
+        /* 	var su_model2=$("#su_model_coll").combobox('getValues');
+        data.su_model=su_model2.toString(); */
+        var blame1=$("#blame_buy").combobox('getValues');//采购责任人
+        data.blame_buy=blame1.toString();
+
+        var blame2=$("#blame").combobox('getValues');//跟单责任人
+        data.blame=blame2.toString();
+
+        var grade2=$("#grade").val();//等级
+        data.grade=grade2.toString();
+
+        var measurement_time2=$("#measurement_time").val();//计量时间
+        data.measurement_time=measurement_time2.toString();
+
+        data.name=$("#name").combobox('getValue');
+        var formflag = $(map["formId"]).form().form('validate');
+
+        var AcceptEmail=$("#isAcceptEmail").val();
+        if(AcceptEmail!=undefined&&AcceptEmail!=null){
+            data.isAcceptEmail=AcceptEmail.toString();
+        }
+
+        var rate1=$("#rate").val();
+        if(rate1!=undefined&&rate!=null){
+            data.rate=rate1.toString();
+        }
+        console.log(data);
+        if (formflag && condition_company) {
+            $.Loading.show(map["loadshow"]);
+            var options = {
+                url : map["url"],
+                type : "POST",
+                dataType : 'json',
+                data:data,
+                success : function(result) {
+                    if (result.result == 1) {
+                        $.Loading.show(result.message);
+                        $(map["divDialog"]).dialog('close');
+                        $(map["gridreload"]).datagrid('reload');
+                    }
+                    if (result.result == 0) {
+                        $.Loading.error(result.message);
+                    }
+                    $.Loading.hide();
+                },
+                error : function(e) {
+                    alert("出现错误 ，请重试");
+                }
+            };
+            $.ajax(options);
+        }
+    }
+
+
+    function append(id) {
+        var map = {}; // Map map = new HashMap();
+        if (!id) {
+            map["href"] = "/admin/SuModelCollection/add_sumodelcollection.jspx";
+            map["formId"] = "#addForm";
+            map["url"] = "/admin/SuModelCollection/doAdd_memberGrade.jspx?ajax=yes";
+            map["title"] = "添加信息";
+            map["loadshow"] = "正在添加......";
+        } else {
+            map["href"] = "/admin/SuModelCollection/edit_memberGrade.jspx?id=" + id;
+            map["formId"] = "#editForm";
+            map["url"] = "/admin/SuModelCollection/doEdit_memberGrade.jspx?ajax=yes";
+            map["title"] = "修改信息";
+            map["loadshow"] = "正修改......";
+        }
+        map["divDialog"] = "#divdia";
+        map["gridreload"] = "#dataList";
+        addDialog(map);
+    }
+
+    function addDialog(map) {
+        $(map["divDialog"]).show();
+        $(map["divDialog"]).dialog({
+            title : map["title"],
+            width : 950,
+            height : 865,
+            closed : false,
+            cache : false,
+            href : map["href"],
+            modal : true,
+            buttons : [ {
+                text : '保存',
+                iconCls : 'icon-ok',
+                handler : function() {
+                    if (checkaddForm()) {
+                        return;
+					}
+                    for(instance in CKEDITOR.instances){
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+                    var savebtn = $(this);
+                    var disabled=savebtn.hasClass("l-btn-disabled");
+                    if(!disabled){
+                        submitForm(map,savebtn);
+                    }
+                }
+            }, {
+                text : '清空',
+                handler : function() {
+                    clearForm(map);
+                }
+            } ]
+        });
+    }
+
+    function clearForm(map) {
+        $(map["formId"]).form('clear');
+    }
+
+    function formatOperation(value, row, index) {
+        var val = "<a class='edit' title='修改' href='javascript:void(0);' onclick='append("+row.id+")' ></a>";
+        return val;
+    }
+    function formatIsAcceptEmail(value, row, index) {
+        if(value == 1){
+            return "是";
+        }
+        if(value == 0){
+            return "否";
+        }
+
+    }
+    function formatRate(value, row, index) {
+        if(value == 1){
+            return "当天";
+        }
+        if(value == 2){
+            return "当周";
+        }
+        if(value == 3){
+            return "当月";
+        }
+
+    }
+    function formatType(value, row, index) {
+        if(value == 1){
+            return "进口生产厂商";
+        }
+        if(value == 2){
+            return "国产生产厂商";
+        }
+        if(value == 3){
+            return "进口代理商";
+        }
+        if(value == 4){
+            return "国产代理商";
+        }
+        if(value == 5){
+            return "进口经销商";
+        }
+        if(value == 6){
+            return "国产经销商";
+        }
+        if(value == 7){
+            return "二手同行";
+        }
+        if(value == 8){
+            return "系统集成商";
+        }
+
+    }
+
+    function formatupgrade(value, row, index) {
+        if(value == 1){
+            return "一级";
+        }
+        if(value == 2){
+            return "二级";
+        }
+        if(value == 3){
+            return "三级";
+        }
+        if(value == 4){
+            return "四级";
+        }
+        if(value == 5){
+            return "五级";
+        }
+        if(value == 6){
+            return "六级";
+        }
+        if(value == 7){
+            return "七级";
+        }
+        if(value == 8){
+            return "八级";
+        }
+        if(value == 9){
+            return "九级";
+        }
+
+    }
+
+    function formatupmeasurement_time(value, row, index) {
+        if(value == 1){
+            return "一月";
+        }
+        if(value == 2){
+            return "二月";
+        }
+        if(value == 3){
+            return "三月";
+        }
+        if(value == 4){
+            return "四月";
+        }
+        if(value == 5){
+            return "五月";
+        }
+        if(value == 6){
+            return "六月";
+        }
+        if(value == 7){
+            return "七月";
+        }
+        if(value == 8){
+            return "八月";
+        }
+        if(value == 9){
+            return "九月";
+        }
+        if(value == 10){
+            return "十月";
+        }
+        if(value == 11){
+            return "十一月";
+        }
+        if(value == 12){
+            return "十二月";
+        }
+
+    }
+
+    function formatup(value, row, index) {
+        if (value == null) {
+            return "";
+        }
+        var va=value+"";
+        return va.replace(/^,+/,"").replace(/,+$/,"");
+    }
+
+    //查看常用仪器品牌型号的详细信息
+    function mc_brand_modelOperation(value, row, index) {//row是easyUI里面的一个属性，指代所选择的行
+        var str='';
+        if (row.mc_brand_and_models!=undefined) {//这里需要判断一下，不然客户信息无法显示出来
+            $.each( row.mc_brand_and_models, function(i, n){//将有多个联系人的数据，用a标签拼接成多个，用逗号隔开
+                var val = "<a class='details' title='查看' href='javascript:void(0);' onclick='newTab(\""
+                    + row.mc_model[i]
+                    + "-信息\",\"/admin/mcBrandAndModel/edit_memberGrade.jspx?brandAndModel_type=brandAndModelshow&id="
+                    +n + "\")' >"+row.mc_brand_name[i]+' '+row.mc_model[i]+"</a>";
+                str=str+val+',';
+            });
+        }
+        return str.replace(/^,+/,"").replace(/,+$/,"");//正则去掉末尾的逗号
+    }
+    //查看联系人的详细信息
+    function contactOperation(value, row, index) {
+        var str='';
+        $.each( row.contact, function(i, n){//将有多个联系人的数据，用a标签拼接成多个，用逗号隔开
+            var val = "<a class='details' title='查看' href='javascript:void(0);' onclick='newTab(\""
+                + row.contact_name[i]
+                + "-信息\",\"/admin/suContacts/edit_memberGrade.jspx?contact_type=contactshow&id="
+                +n + "\")' >"+row.contact_name[i]+"</a>";
+            str=str+val+',';
+        });
+        return str.replace(/^,+/,"").replace(/,+$/,"");//正则去掉末尾的逗号
+
+    }
+    //查看公司的详细信息
+    function companyOperation(value, row, index) {
+        var str='';
+        $.each( row.name_id, function(i, n){//将有多个联系人的数据，用a标签拼接成多个，用逗号隔开
+            var val = "<a class='details' title='查看' href='javascript:void(0);' onclick='newTab(\""
+                + row.name[i]
+                + "-信息\",\"/admin/suCompanyName/edit_memberGrade.jspx?company_type=companyshow&id="
+                +n + "\")' >"+row.name[i]+"</a>";
+            str=str+val+',';
+        });
+        return str.replace(/^,+/,"").replace(/,+$/,"");//正则去掉末尾的逗号
+
+    }
+
+    function formnull(value, row, index) {
+        if(value == 'undefined'){
+            return null;
+        }
+        return value;
+    }
+    function formdate(value, row, index) {
+        if(value != null){
+            return new Date(value).format("yyyy-MM-dd");
+        }
+
+    }
+    function showTemplate(value, row, index) {
+        return "<a class='details' title='查看' href='javascript:void(0);' onclick='newTab(\""
+            + row.templatename
+            + "-模版内容\",\"/admin/userGroupMng/getTemplateContext.jspx?template="
+            + row.templateId + "\")' >"+row.templatename+"</a>";
+    }
+
+    function del() {
+        var rows = $('#dataList').datagrid("getSelections");
+        if (rows.length < 1) {
+            $.Loading.error("请选择要删除的帮助信息");
+            return;
+        }
+        if (!confirm("确认删除选中的信息？")) {
+            return;
+        }
+        var gradeId=[];
+        for(var i=0;i<rows.length;i++){
+            gradeId[i]=rows[i].id;
+        }
+        var options = {
+            url : "/admin/SuModelCollection/del_memberGrade.jspx?ajax=yes&&gradeId="+gradeId,
+            type : "POST",
+            success : function(result) {
+
+                if (result.result == 1) {
+                    $.Loading.success(result.message);
+                    $('#dataList').datagrid('clearChecked');
+                    $('#dataList').datagrid('reload');
+                }else{
+                    $.Loading.error(result.message);
+                }
+            },
+            error : function(e) {
+                $.Loading.error("出现错误 ，请重试");
+            }
+        };
+        $('#dataList').ajaxSubmit(options);
+    }
+
+    function clearForsuontact(map) {
+        $(map["formId"]).form('clear');
+    }
+
+    function searchIndustryClass(){
+        var type = $("#type_all").val();
+        var keyword = $("#searchKeyword").combobox('getValues');
+        var su_brand = $("#su_brand_all").combobox('getValues');
+        var su_industry_class = $("#su_industry_class_all").val();
+        // var major_product = $("#major_product_all").val();
+        var major_product = $("#major_product_all").combobox('getValues');//主营设备名称
+        var major_product_type = $("#major_product_type_all").val();//主营设备型号
+        var su_productclass = $("#su_productclass_all").combobox('getValues');//常用仪器名称
+        var su_productclass_type = $("#su_productclass_type_all").val();//常用仪器型号
+        var search_contact = $("#search_contact").combobox('getValues');//联系人
+        var mode_blame_buy = $("#mode_blame_buy").combobox('getValues');//采购责任人
+        var mode_blame = $("#mode_blame").combobox('getValues');//跟单责任人
+        var create_date = $("#create_date_all").val();
+        /* var su_industry_class = $("#su_industry_class_show").combotree('getValues');
+        var major_product = $("#major_product_show").combotree('getValues');
+        var su_productclass = $("#su_productclass_show").combotree('getValues'); */
+        /* $("#dataList").datagrid("reload",{
+            keyword:keyword,
+            major_product:major_product.toString(),
+            su_industry_class:su_industry_class.toString()
+        }); */
+        $("#dataList").datagrid('options').queryParams = {
+            type:type,
+            keyword:keyword.toString(),
+            su_brand:su_brand.toString(),
+            su_industry_class:su_industry_class,
+            major_product:major_product.toString(),//主营产品名称
+            major_product_type:major_product_type,//主营产品型号
+            su_productclass:su_productclass,//常用仪器名称
+            su_productclass_type:su_productclass_type,//常用仪器型号
+            search_contact:search_contact.toString(),//联系人
+            mode_blame_buy:mode_blame_buy.toString(),//采购责任人
+            mode_blame:mode_blame.toString(),//跟单责任人
+            create_date:create_date/* ,
+					major_product:major_product.toString(),
+					su_industry_class:su_industry_class.toString(),
+					su_productclass:su_productclass.toString() */
+        };
+        $("#dataList").datagrid('reload');
+    }
+
+</script>
+</body>
+</html>

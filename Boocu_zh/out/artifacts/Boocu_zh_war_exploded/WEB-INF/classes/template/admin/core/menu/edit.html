@@ -1,0 +1,111 @@
+
+<div class="input">
+	<form class="validate" id="editForm">
+		<input type="hidden" name="id" value="${menu.id!}" />
+		<table cellspacing="1" cellpadding="3" width="100%" class="form-table">
+			<tr>
+				<th><label class="text">名称</label></th>
+				<td>
+					<input type="text" name="title" id="name" maxlength="60" value="${menu.title!}" dataType="string" isrequired="true" />
+				</td>
+			</tr>
+			<tr>
+				<th><label class="text">类型</label></th>
+				<td>
+					<select name="menutype">
+						<option value="0" [#if menu.mentype==0] selected [/#if]>应用</option>
+						<option value="1"  [#if menu.mentype==1] selected [/#if]>系统</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><label class="text">上级菜单</label></th>
+				<td>
+					<select name="pid" id="pid">
+						<option value="0">顶级菜单</option>
+						
+						[#list menuList as menu1]
+						 
+							<option value="${menu1.id!}"  [#if menu.parent != null && menu.parent == menu1] selected [/#if]>&nbsp;&nbsp;&nbsp;&nbsp;${menu1.title!}</option>
+							
+							[#list menu1.children as menu2]
+								<option value="${menu2.id!}"    [#if menu.parent != null && menu.parent == menu2] selected [/#if]>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${menu2.title!}</option>
+								
+								[#list menu2.children as menu3]
+								<option value="${menu3.id!}"   [#if menu.parent != null && menu.parent == menu3] selected [/#if]>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${menu3.title!}</option>
+								
+								[#list menu3.children as menu4]
+								<option value="${menu4.id!}"   [#if menu.parent != null && menu.parent == menu4] selected [/#if]>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${menu4.title!}</option>
+								[/#list] 
+								
+								
+								[/#list] 
+							
+							[/#list] 
+						 
+							
+						[/#list] 
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><label class="text">url</label></th>
+				<td>
+					<input type="text" name="url" id="url"	value="${menu.url!}" dataType="string" isrequired="true" size="100" />
+				</td>
+			</tr>
+			<tr>
+				<th><label class="text">target</label></th>
+				<td>
+					<input type="text" name="target" id="target" value="${menu.target!}" />
+				</td>
+			</tr>
+			<tr>
+				<th><label class="text">排序</label></th>
+				<td>
+					<input type="text" name="order" value="${menu.order}" style="width: 50px" dataType="int"	isrequired="true" />
+				</td>
+			</tr>
+		<!-- 	<tr>
+				<th><label class="text">允许导出</label></th>
+				<td>
+					<select name="canexp">
+						<option value="1"selected>是</option>
+						<option value="0">否</option>
+					</select>
+				</td>
+			</tr>	
+			
+			<tr style="height:70px;">
+				<th><label class="text">图标</label></th>
+				<td>
+				
+					<div class="icon_wrap">
+					 	<input type="hidden" name="icon" value="/adminthemes/new/images/menu_01.gif">
+					 	<img src="/adminthemes/new/images/menu_01.gif" />
+					 	<span>正常态</span>
+				 	</div>
+				 	
+				 	<div class="icon_wrap">
+					 	<input type="hidden" name="icon_hover" value="/adminthemes/new/images/menu_01.gif">
+					 	<img src="/statics/images/menuicon/default.png" />
+					 	<span>悬停态</span>
+				 	</div>
+				 	点击图标更换
+				</td>
+			</tr> -->	
+								
+		</table>
+		<div class="submitlist" align="center">
+			<table>
+				<tr>
+					<td>
+						<input type="button" value=" 确定 " class="submitBtn"	id="saveEditBtn" />
+						<input name="reset" type="reset" value=" 重置 " class="submitBtn" />
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+ 

@@ -1,0 +1,49 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>会员名</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="username" data-options="required:true" value="${item.username}" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>真实姓名</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="realName" data-options="required:true" value="${item.realName}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>用户类型</th>
+					<td><input type="radio" name="userType" ${(item.userType =='buyer')?string('checked','')} value="buyer" />买家
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><input type="radio" name="userType" ${(item.userType =='seller')?string('checked','')} value="seller" />卖家
+				</tr>
+				<tr>
+					<th></th>
+					<td><input type="radio" name="userType" ${(item.userType =='business')?string('checked','')} value="business" />买家和卖家
+				</tr>
+				<tr>
+					<th>用户等级</th>
+					<td><input class="easyui-combobox" data-options="url:'/admin/member/memberGrade/get_memberGrade_names.jspx',valueField:'id',textField:'text', width:307, [#if item.memberGradeEntity??]value:'${item.memberGradeEntity.id}'[/#if]" name="memberGradeId" style="height:30px;">
+					</td>	
+				</tr>
+				<tr>
+					<th>邮件签名</th>
+					<td><input class="easyui-combobox" data-options="url:'/admin/Mailsignature/get_mailsignature_names.jspx',valueField:'id',textField:'text', panelHeight:'auto',width:307, [#if item.mailSignatureId=0]value:'' [#else]value:'${item.mailSignatureId}' [/#if]" name="mailSignatureId" style="height:30px;">
+					</td>	
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,204 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>嘉捷惠-后台管理</title>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-form-2.33.js"></script>
+ [#include '/template/front/include/csslist.html' /]
+
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript" src="/editor/ckeditor362/ckeditor.js"></script>
+<style>
+.regna_v1{ clear:both; width:210px; height:50px; line-height:50px; font-size:18px; background-color:#C2E4FF; }
+.regna_v1 li{ float:left; width:100%; text-align:center; }
+.regna_v1 li a{ height:50px; color:#00a1fc; display:block; }
+.regna_v1 li.on a{ background-color:#fff; box-shadow:0 0 2px 2px #bbb; -webkit-box-shadow:0 0 2px 2px #bbb; -moz-box-shadow:0 0 2px 2px #bbb;  }
+.regna_v1 li a:hover{ text-decoration:none; }
+</style>
+</head>
+<body>
+  <!--umainr-->
+  <div style="top:-30px;">
+    <div class="mainregd" style="top:-20px;">
+    <!--./regnav--> 
+    <div class="regna_v1">
+      <ul>
+        <li class="on"><a href="javascript:;">企业用户信息</a></li>
+      </ul>
+    </div>
+    <!--企业注册-->
+    <div class="regformd">
+      <form  id="enRegist" action="/" method="post" enctype="multipart/form-data" name="regForm" id="regForm">
+        <input type="text" name="memberShip" id="memberShip2" value="enterprise" style="display:none;">
+        <div class="row">
+          <p class="l"><i class="x">*</i>企业登录名：</p>
+          <p class="r">
+            <input type="text" name="username" id="username" value="${item.username}" class="txt" readonly="readonly">
+          </p>
+          <p class="rr"></p>
+        </div>
+        <div class="row" style="display:none;">
+          <p class="l"><i class="x">*</i>密 码：</p>
+          <p class="r">
+            <input type="password" name="password" id="password1" class="txt" value="${item.password}">
+          </p>
+          <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>邮箱：</p>
+          <p class="r">
+            <input type="text" name="email" id="email" value="${item.email}" class="txt" readonly="readonly">
+          </p>
+          <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l"><i class="x">*</i>公司名称：</p>
+          <p class="r">
+            <input type="text" name="coName" id="coName" value="${item.coName}" class="txt">
+          </p>
+           <p class="rr">和营业执照保持一致</p>
+        </div>
+        <div class="row">
+          <p class="l">职 务：</p>
+          <p class="r">
+            <input type="text" name="wordPost" id="wordPost" value="${item.wordPost}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">联系人：</p>
+          <p class="r">
+            <input type="text" name="realName" id="realName" value="${item.realName}" class="txt">
+          </p>
+        </div>
+        <div class="row">
+          <p class="l">常用仪器：</p>
+          <div class="r">
+            <p class="fl w1">
+              <input type="text" name="brandName" id="brandName" value="${item.brandName}" class="txt txt1" placeholder="品牌">
+            </p>
+            <p class="fl w1">
+              <input type="text" name="productClassName" id="productClassName" value="${item.productClassName}" class="txt txt1" placeholder="型号">
+            </p>
+            <p class="fl w1">
+              <input type="text" name="proName" id="proName" class="txt txt1" value="${item.proName}" placeholder="名称">
+            </p>
+             <p class="rr"></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">公司地址：</p>
+          <p class="r">
+            <input type="text" name="address" id="address" value="${item.address}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">详细地址：</p>
+          <p class="r">
+            <input type="text" name="deAddress" id="deAddress" value="${item.deAddress}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">主营产品：</p>
+          <p class="r">
+            <input type="text" name="mainProduct" id="mainProduct" value="${item.mainProduct}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+        	<p class="l">营业执照号码：</p>
+        	<p class="r">
+        		<input type="text" name="licenseNo" id="licenseNo" value="${item.licenseNo}" class="txt">
+        	</p>
+        	<p class="rr">和营业执照须保持一致</p>
+        </div>
+        <div class="row sf">
+          <p class="l">营业执照：</p>
+          <div class="r">
+            <p class="fl w2 licenseImg" name="licenseImg" id="licenseImg">
+            </p>
+             <p class="rr"></p>
+            <p class="fl w3"><img src="/statics/front/images/temp/p9_1.jpg"></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">固定电话：</p><!-- 拼成固话 todo -->
+          <div class="r">
+            <p class="fl w4">
+              <input type="text" name="txtAre" id="txtAre" class="txt txt1" value="${item.txtAre}" placeholder="区号">
+            </p>
+            <p class="fl w5">
+              <input type="text" name="txtTel" id="txtTel" class="txt txt1" value="${item.txtTel}" placeholder="电话">
+            </p>
+            <p class="fl w4">
+              <input type="text" name="txtExt" id="txtExt" class="txt txt1" value="${item.txtExt}" placeholder="分机">
+            </p>
+             <p class="rr"></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="l">手机号码：</p>
+          <p class="r">
+            <input type="text" name="mobile" id="mobile" value="${item.mobile}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">公司传真：</p>
+          <p class="r">
+            <input type="text" name="fax" id="fax" value="${item.fax}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">公司网址：</p>
+          <p class="r">
+            <input type="text" name="url" id="url" value="${item.url}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">QQ号码：</p>
+          <p class="r">
+            <input type="text" name="qq" id="qq" value="${item.qq}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+        <div class="row">
+          <p class="l">微信号：</p>
+          <p class="r">
+            <input type="text" name="weixin" id="weixin" value="${item.weixin}" class="txt">
+          </p>
+           <p class="rr"></p>
+        </div>
+      </form>
+    </div>
+    <!--./regformd--> 
+    
+  </div>
+    <!--./userd4--> 
+  </div>
+<script>
+//初始化上传图片
+$(".licenseImg").attr("url","/fileUpload/img.jspx").each(function(){
+	$(this).imgUpload();
+});
+$("#licenseImg").find("input").val("${item.licenseImg}");
+$("#licenseImg").find(".picImg").attr("src", "${item.licenseImg}");
+</script>
+</body>

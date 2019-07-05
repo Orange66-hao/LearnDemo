@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心 - 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+<script src="/statics/front/js/laydate.js"  ></script>
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+</head>
+<body>
+<!--top-->
+[#include '/template/front/include/header.html' /]
+<!--./top--> 
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+ <div class="indexContent">
+<!--content-->
+<div class="main userd">
+  <div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>快捷发布管理</span></a></div>
+  <!--usernav-->
+  [#include '/template/front/include/usernav.html' /]
+  <!--./usernav--> 
+  
+  <!--umainr-->
+  <div class="umainr">
+    <div class="umainrtitd"><span>快捷发布</span></div>
+    
+    <!--upublishd-->
+    <div class="upublishd">
+      <div class="upubnavd">
+        <ul>
+          <li><a href="/fastSale">产品销售</a></li>
+          <li><a href="/fastBuy">产品求购</a></li>
+          <li><a href="/fastRent">产品租赁</a></li>
+          <li class="on"><a href="/fastWantRent">产品求租</a></li>
+          <li><a href="/fastRepair">产品维修</a></li>
+          <li><a href="/fastWantRepair">产品求修</a></li>
+          <li><a href="#">计量校准</a></li>
+        </ul>
+      </div>
+      <!--./upronavd--> 
+      
+      <!--快捷发布-->
+      <div class="upformd">
+      	<form  id="perRegist" action="/" method="post" enctype="multipart/form-data" name="pubForm">
+      	<input type="text" name="memberId" id="memberId" value="${currentMember.id}" style="display:none;">
+          <div class="row">
+            <p class="l"><i class="x">*</i>品 牌：</p>
+            <p class="r">
+            	<input class="easyui-combobox" data-options="url:'/brand/get_brand_names.jspx',valueField:'id',textField:'text', width:307,[#if item.productBrandEntity??]value:'${item.productBrandEntity.id}'[/#if]" style="width:292px;height:36px;" name="brandId" id="brandId" >
+            </p>
+            <p class="rr">填写求购的产品品牌</p>
+          </div>
+          <div class="row">
+            <p class="l"><i class="x">*</i>型 号：</p>
+            <p class="r">
+              <input type="text" name="proNo" id="proNo" class="txt" value="${item.proNo}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">选 件：</p>
+            <p class="r">
+              <input type="text" name="poption" id="poption" class="txt" value="${item.poption}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l"><i class="x">*</i>名 称：</p>
+            <div class="r">
+              <p class="fl">
+                <input type="text" name="proName" id="proName" class="txt w2" value="${item.proName}">
+              </p>
+              <p class="fl pl15">英文名：</p>
+              <p class="fl">
+                <input type="text" name="proNameEn" id="proNameEn" class="txt w2" value="${item.proNameEn}">
+              </p>
+            </div>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">起租日期：</p>
+            <p class="r">
+              <input name="startRent" id="startRent" placeholder="请输入日期" class="laydate-icon" onclick="laydate()" value="${item.productWantRentEntity.startRent?date}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row" id="reference" style="display:none;">
+            <p class="l">全新参考价格：</p>
+            <div class="r">
+              <p class="fl">
+                <input type="text" name="referencePrice" id="referencePrice" class="txt w3" value="${item.referencePrice}">
+              </p>
+              <p class="fl pl5">
+                <select name="referencepricetype" id="referencepricetype" class="txt sel w4">
+                  <option ${(item.referencepricetype =='yuan')?string('selected','')} value="yuan">元</option>
+				  <option ${(item.referencepricetype =='millionyuan')?string('selected','')} value="millionyuan">万元</option>
+                </select>
+              </p>
+              <p class="fl pl5">
+                <select name="referencePriceLimit" id="referencePriceLimit" class="txt sel w4">
+                  <option ${(item.referencePriceLimit =='rmb')?string('selected','')} value="rmb">人民币</option>
+				  <option ${(item.referencePriceLimit =='dollar')?string('selected','')} value="dollar">美元</option>
+                </select> 
+              </p>
+              <p class="rr">填写销售的全新参考价格</p>
+            </div>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">成 色：</p>
+            <p class="r">
+              <select name="qualityStatus" id="qualityStatus" class="txt sel w1">
+                <option ${(item.qualityStatus =='all')?string('selected','')} value="all">全新</option>
+				<option ${(item.qualityStatus =='nine')?string('selected','')} value="nine">九成新</option>
+				<option ${(item.qualityStatus =='eight')?string('selected','')} value="eight">八成新</option>
+				<option ${(item.qualityStatus =='seven')?string('selected','')} value="seven">七成新</option>
+				<option ${(item.qualityStatus =='six')?string('selected','')} value="six">六成新</option>
+				<option ${(item.qualityStatus =='five')?string('selected','')} value="five">五成新</option>
+				<option ${(item.qualityStatus =='belowfive')?string('selected','')} value="belowfive">五成新以下</option>
+              </select>
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">要求：</p>
+            <p class="r">
+              <input type="text" name="required" id="required" class="txt" value="${item.productWantRentEntity.required}">
+            </p>
+            <p class="rr"></p>
+          </div>
+          <div class="row">
+            <p class="l">求租预算：</p>
+            <div class="r">
+              <p class="fl">
+                <input type="text" name="magdebrugBudget" id="magdebrugBudget" class="txt w3" value="${item.productWantRentEntity.magdebrugBudget}">
+              </p>
+              <p class="fl pl5">
+                <select name="magdebrugBudgetLimit" id="magdebrugBudgetLimit" class="txt sel w4">
+                  <option ${(item.productWantRentEntity.magdebrugBudgetLimit =='yuan')?string('selected','')} value="yuan">元</option>
+				  <option ${(item.productWantRentEntity.magdebrugBudgetLimit =='millionyuan')?string('selected','')} value="millionyuan">万元</option>
+                </select>
+                </select>
+              </p>
+              <p class="fl pl5">
+                <select name="magdebrugBudgetType" id="magdebrugBudgetType" class="txt sel w4">
+                  <option ${(item.productWantRentEntity.magdebrugBudgetType =='rmb')?string('selected','')} value="rmb">人民币</option>
+				  <option ${(item.productWantRentEntity.magdebrugBudgetType =='dollar')?string('selected','')} value="dollar">美元</option>
+                </select>
+              </p>
+            </div>
+            <p class="rr">面议请填0</p>
+          </div>
+          <div class="row">
+            <p class="l">租赁周期：</p>
+            <div class="r">
+              <p class="fl"> 
+                <input type="text" name="rentperiod" id="rentperiod" class="txt w7" value="${item.productWantRentEntity.rentperiod}">
+              </p>
+              <p class="fl pl5">
+                <select name="rentperiodunit" id="rentperiodunit" class="txt sel w6">
+                  <option ${(item.productWantRentEntity.rentperiodunit =='day')?string('selected','')} value="day">天</option>
+				  <option ${(item.productWantRentEntity.rentperiodunit =='week')?string('selected','')} value="week">周</option>
+				  <option ${(item.productWantRentEntity.rentperiodunit =='month')?string('selected','')} value="month">月</option>
+                </select>
+              </p>
+            </div>
+            <p class="rr"></p>
+          </div>
+         <div class="row">
+            <p class="l">所在地：</p>
+            <div class="r">
+              <p class="fl">
+                <select name="prouseAddress" id="prouseAddress" class="easyui-combobox combo" style="width:125px;height:36px;">
+                  <option ${(item.prouseAddress =='inChina')?string('selected','')} value="inChina">中国</option>
+				  <option ${(item.prouseAddress =='outofChina')?string('selected','')} value="outofChina">国外</option>
+                </select>
+              </p>
+              <p class="fl pl5">
+				<input class="easyui-combobox combo " type="text" name="areaProvince" data-options="url:'/worldArea/get_province.jspx?id='+${(item.prouseAddress =='inChina')?string('0','1')},method:'get',valueField:'id',textField:'text',[#if item.areaProvince??]value:'${item.areaProvince}'[/#if]" style="width:125px;height:36px;" id="areaProvince"></input>
+              </p>
+              <p class="fl pl5">
+                <input class="easyui-combobox combo " type="text" name="areaCity" data-options="url:'/worldArea/get_city.jspx?id='+${(item.areaProvince != '')?string('${item.areaProvince}','0')},method:'get',valueField:'id',textField:'text',[#if item.areaCity??]value:'${item.areaCity}'[/#if]" style="width:125px;height:36px;" id="areaCity"></input>
+              </p>
+            <p class="rr">填写求租产品的所在地</p>
+            </div>
+          </div>
+          <div class="row">
+            <p class="l">备注：</p>
+            <p class="r">
+              <textarea name="remain" id="remain" class="txta">${item.remain}</textarea>
+            </p>
+          </div>
+          <div class="row plusd">
+            <p class="l">&nbsp;</p>
+            <div class="r">
+              <p><a href="javascript:;"></a></p>
+              <p>点此一键发布多条信息</p>
+            </div>
+          </div>
+          <div class="row tkd">
+            <p class="l">&nbsp;</p>
+            <p class="r">
+              <input type="checkbox" id="ckTK" name="ckTk" checked>
+              我已阅读并同意<a href="#" class="blue" target="_blank">《晧辰仪联网服务条款》</a> </p>
+          </div>
+          <div class="row">
+            <p class="l">&nbsp;</p>
+            <p class="r"><input type="submit" value="提交" class="subbtn" style="border: 0px;"></p>
+          </div>
+        </form>
+      </div>
+      <!--./upformd--> 
+      
+    </div>
+    <!--./upublishd--> 
+  </div>
+  <!--./umainr--> 
+</div>
+<!--./content--> 
+</div>
+<!--foot--> 
+[#include '/template/front/include/footer2.html' /]
+<!--./foot--> 
+
+[#include '/template/front/include/jslist.html' /]
+
+
+
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+[#-- validate 验证器 --]
+<script type="text/javascript" src="/statics/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/statics/validate/jquery.validate.method.min.js"></script>
+
+<script type="text/javascript" src="/adminthemes/new/js/ajaxupload.3.9.js"></script>
+<script type="text/javascript">
+var $pubForm = $("#perRegist");
+$(function(){
+	var qualityStatus = $("#qualityStatus").val();
+	if(qualityStatus != 'all'){
+		$("#reference").fadeIn();
+	}else{
+		$("#reference").fadeOut();
+	}
+	//成色
+	$("#qualityStatus").change(function(){
+		var qualityStatus = $("#qualityStatus").val();
+		if(qualityStatus != 'all'){
+			$("#reference").fadeIn();
+		}else{
+			$("#reference").fadeOut();
+		}
+	});
+	//国内
+	$("#prouseAddress").combobox({
+		onSelect:function(){
+			var prouse = $(this).combobox('getValue');
+			if(prouse =="outofChina"){
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=1");
+			}else{
+				$("#areaCity").combobox('setValue', "");
+				$("#areaProvince").combobox('setValue', "");
+				$("#areaProvince").combobox('reload', "/worldArea/get_province.jspx?id=0");
+			}
+		}
+	});
+	//省
+	$("#areaProvince").combobox({
+		onSelect:function(){
+			$("#areaCountry").combobox('setValue', "");
+			$("#areaCity").combobox('setValue', "");
+			$("#areaCity").combobox('reload', "/worldArea/get_city.jspx?id="+$(this).combobox('getValue'));
+		}
+	});
+	var validate = $("#perRegist").validate({
+		rules:{
+			proNo:{
+				required:true
+			},
+			poption:{
+				required:true
+			},
+			proName:{
+				required:true
+			},
+			magdebrugBudget:{
+				required:true
+			},
+			rentperiod:{
+				required:true
+			},
+			startRent:{
+				required:true
+			}
+			
+		},
+		messages:{
+			proNo:{
+				required:"请填写求租的产品型号"
+			},
+			poption:{
+				required:"请填写求租产品的选件"
+			},
+			proName:{
+				required:"请填写求租产品的名称"
+			},
+			magdebrugBudget:{
+				required:"请填写求租产品的求租预算"
+			},
+			rentperiod:{
+				required:"请填写求租产品的租赁周期"
+			},
+			startRent:{
+				required:"请填写求租产品的起租日期"
+			}
+		},
+		errorPlacement:function(error,element){
+			element.closest(".row").find(".rr").text(error.text());
+		},
+		unhighlight:function(element){
+			$(element).closest(".row").find(".rr").text("");
+		},
+		submitHandler:function(form){
+			if( $ ("#brandId").combobox ('getValue')==""){
+				alert("请填写产品品牌");
+				return false;
+			}
+			$(this).find(".subbtn").prop("disabled",true);
+			$.ajax({
+				url:"/save_editFastWantRent.jspx?id="+${item.id},
+				data:$pubForm.serialize(),
+				dataType:"json",
+				cache:false,
+				type:"post",
+				beforeSend:function(){
+					$pubForm.find(".subbtn").val("修改求租中...");
+				},
+				success:function(result){
+					if(result.result == 1){
+						alert("修改求租成功!")
+						window.location = "/wantRentInfor";
+					}
+				},
+				error:function(){
+					alert("出现错误, 请重试");
+				}
+			});
+		}
+	});
+});
+</script>
+
+</body>
+</html>

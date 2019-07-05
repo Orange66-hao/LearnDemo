@@ -1,0 +1,138 @@
+@import 'main.less';
+
+@body-background-color:#f5f5f5;
+@body-content-background-color:#ffffff;
+@foot-background-color: #ffffff;
+@btn-color: #f15a29;
+
+.wrapper{
+  padding: 30px 0;
+  background: @body-background-color;
+  &  .container{
+    padding-bottom: 20px;
+    background: @body-content-background-color;
+    & > * {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+  }
+}
+
+.car-breadcrumb{
+  .breadcrumb{
+    background: @body-content-background-color;
+    margin-bottom: 0px;
+    padding: 16px 0;
+    font-size: 14px;
+    color: #5b5b5d;
+    & a{
+      color: #5b5b5d;
+    }
+    & > li + li::before{
+      content: "> ";
+      color: #5b5b5d;
+    }
+    & > .active{
+      color: #5b5b5d;
+      pointer-events: none;
+    }
+  }
+}
+
+.subtitle-bar {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  & .title{
+    font-size: 18px;
+    color: #313133;
+  }
+  & > *{
+    height: 50px;
+    vertical-align: middle;
+
+  }
+}
+
+.btn-primary{
+  border-color: @btn-color !important;
+  background-color: @btn-color !important;
+}
+.money{
+  color: @btn-color;
+}
+
+@width1: 78px;
+
+.right-list {
+  & > li {
+    padding-left: 20px;
+    border-bottom: @divider-border;
+    background-color: inherit;
+    &.item{
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    &.checked{
+      background-color: #f5f5f5;
+    }
+    &.firstli {
+      position: relative;
+      background-color: inherit;
+      height: 45px;
+      line-height: 45px;
+      & .price-title{
+        position: absolute;
+        right: 80px;
+        top: 0px;
+      }
+    }
+    &.nobook{
+      margin-top: 30px;
+      margin-bottom: 30px;
+      line-height: 50px;
+    }
+    & > label {
+      *display: inline;
+      font-weight: normal;
+      width: @container-width - 140px;
+
+      & .book-cover {
+        margin-left: 20px;
+        margin-right: 10px;
+        & > img {
+          width: @width1;
+          height: @width1 * 4 / 3;
+        }
+      }
+      & .book-price{
+        height: @width1 * 4 / 3;
+        line-height: @width1 * 4 / 3;
+      }
+    }
+    & .btns{
+      margin-right: 20px;
+      height: @width1 * 4 / 3;
+      position: relative;
+      & > *{
+        right: 0px;
+        position: absolute;
+        top: 50%;
+        margin-top: -17px;
+      }
+    }
+  }
+}
+
+.list-foot{
+  margin-top: 20px;
+  border-top: @divider-border;
+  border-bottom: @divider-border;
+  line-height: 50px;
+  height: 50px;
+  & .foot-btns{
+    margin-left: 20px;
+  }
+}

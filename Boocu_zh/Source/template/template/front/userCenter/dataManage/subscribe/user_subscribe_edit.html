@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>订阅信息 - 晧辰仪联网</title> [#include
+'/template/front/include/csslist.html' /]
+<style type="text/css">
+
+</style>
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="/adminthemes/new/js/easy-ui/themes/icon.css" />
+<link rel="stylesheet"
+	href="/statics/front/css/postbirdAlertBox.min.css" />
+<link rel="stylesheet" href="/statics/front/css/tabs.css"
+	type="text/css" />
+<style type="text/css">
+.wlid {
+	float: left;
+	padding: 0 20px 0 5px;
+	margin-right: 8px;
+	height: 20px;
+	line-height: 20px;
+	border: 1px #ccc solid;
+	position: relative;
+}
+
+.wlid p.ico {
+	position: absolute;
+	right: 2px;
+	top: 3px;
+	width: 13px;
+	height: 13px;
+}
+
+.ico a {
+	width: 13px;
+	height: 13px;
+	background: url(/statics/front/images/ico7.png) no-repeat;
+	display: inline-block;
+}
+
+.cribb a {
+	height: 25px;
+	line-height: 25px;
+	padding: 0 20px;
+	background: url(/statics/front/images/ico28.jpg) repeat-x;
+	color: #0c48ac;
+	border-radius: 25px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	display: inline-block;
+}
+
+.cribb {
+	clear: both;
+	padding: 10px 0;
+	margin-left: 120px;
+}
+</style>
+
+
+<script type="text/javascript"
+	src="/statics/front/js/postbirdAlertBox.min.js"></script>
+<script src="/statics/front/js/jquery.min.js"></script>
+<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script>
+<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script>
+<script src="/statics/front/js/main.js"></script>
+<script src="/statics/front/js/pro.js"></script>
+<script type="text/javascript" src="/statics/front/js/tabs.js"></script>
+<script type="text/javascript">
+	var arg1 = [];
+	var arg2 = [];
+	var arg3 = [];
+	var arg4 = [];
+	var arg5 = [];
+	var arg6 = [];
+	var arg7 = [];
+	var arg8 = [];
+	var arg9 = [];
+	var arg10 = [];
+	var arg11 = [];
+	var arg12 = [];
+	var arg13 = [];
+	
+	var varg1 = [];
+	var varg2 = [];
+	var varg3 = [];
+	var varg4 = [];
+	var varg5 = [];
+	var varg6 = [];
+	var varg7 = [];
+	var varg8 = [];
+	var varg9 = [];
+	var varg10 = [];
+	var varg11 = [];
+	var varg12 = [];
+	var varg13 = [];
+	
+	a = "${items}"
+	
+	function emptyAll(msg){
+		val = []
+		val.push(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13)
+		arg1.splice(0, arg1.length)
+		arg2.splice(0, arg2.length)
+		arg3.splice(0, arg3.length)
+		arg4.splice(0, arg4.length)
+		arg5.splice(0, arg5.length)
+		arg6.splice(0, arg6.length)
+		arg7.splice(0, arg7.length)
+		arg8.splice(0, arg8.length)
+		arg9.splice(0, arg9.length)
+		arg10.splice(0, arg10.length)
+		arg11.splice(0, arg11.length)
+		arg12.splice(0, arg12.length)
+		arg13.splice(0, arg13.length)
+		empty(val, msg)
+	}
+
+	function httpPost(url,proType) {
+		//动态生成form表单
+		var temp = document.createElement("form");
+		temp.action = url;
+		temp.method = "post";
+		temp.style.display = "none";
+		
+		var opt = document.createElement("textarea");
+		opt.name = 'proType';
+		opt.value = proType;
+		temp.appendChild(opt);
+		
+		document.body.appendChild(temp);
+		temp.submit();
+	}
+	
+	function addPro(args,proType) {//给分类新增分类订阅按钮提添加点击事件 onclick="addPro(varg1,1~13)
+		httpPost("/subscribe/toProClass.jspx",JSON.stringify(proType));
+	}
+	
+	
+	function empty(args,msg){
+	    if(args.length==0){
+            PostbirdAlertBox.alert({
+                'title': '提 示',
+                'content': '没有可以删除的订阅内容',
+                'okBtn': '好的',
+                'contentColor': 'blue'
+            });
+            return false;
+		}
+			//alert (result.cont);
+			PostbirdAlertBox.confirm({
+			    'title': '提     示',
+			    'content': msg,
+			    'okBtn': '确 定',
+			    'contentColor': 'red',
+			    'onConfirm': function () {
+			        console.log("OK - 回调触发后隐藏提示框");
+			        /* alert("OK - 回调触发后隐藏提示框"); */
+			        for(var i in args) {
+			        	 $.ajax ({
+					            url: '/subscribe/deleteSubscribe.jspx',
+					            data:{
+						            'delId' : args[i]
+					            },
+					            traditional : true,
+					            type : 'post',
+					            success : function (result){
+					            	location.href = "/subscribeInfo/infoManage.jspx?productType=0"
+						            //args.splice(0, args.length)
+					            }
+							});
+			        }
+			       
+			    },
+			    'onCancel': function () {
+			        /* console.log("Cancel-回调触发后隐藏提示框");
+			        alert("Cancel-回调触发后隐藏提示框"); */
+			    }
+			});
+			
+	}
+	
+  function check(id, reg, text){ //整合的方法
+       	temp = $(id).val();//获取标签里面的值
+       	
+       	var flag = reg.test(temp); //true
+       	if(!flag){ //不满足规则就提示信息
+       		$("#ss").html(text);
+       	}else { //符合规则就什么都不显示
+       		$("#ss").html('&nbsp;');
+       	}
+       
+  }
+  function emailTest(){
+	  check("#email",  /^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$/, '<font color="red">请输入正确的邮箱格式</font>')
+      
+  }
+  function mobileTest(){
+	  check("#mobile", /^1[3|4|5|7|8][0-9]{9}$/, '<font color="red">请输入正确的手机号码</font>')
+  }
+ 
+  $(function() { //页面加载完成执行的方法
+	  	setVal("#email", "${currentMember.emailSubscribe}","${currentMember.email}")
+		setVal("#mobile", "${currentMember.mobileSubscribe}","${currentMember.mobile}")
+	});
+	function setVal(id, Val1, Val2) {
+		if (Val1) {
+			$(id).val(Val1);
+		} else {
+			$(id).val(Val2);
+		}
+	}
+  
+  
+</script>
+</head>
+<body>
+	[#include '/template/front/include/header.html' /] 
+	<div class="listloadingd" id="indexLoading"></div>
+	<!--./top-->
+	<!--content-->
+		
+	<!-- 取消了从订阅信息页面跳转到发布信息页面 -->
+	<div class="indexContent">
+			<div id="w1"></div>
+			<div id="w3" display="none">
+				<div id="w" class="easyui-window" title="提  示"
+					data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true,"
+					style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+					<div class="easyui-layout" data-options="fit:true">
+						<div data-options="region:'center'"
+							style="padding: 10px; background: #fff;">
+							您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核！
+							<p style="padding-top: 80px; margin-left: 110px;">
+								<a class="easyui-linkbutton" href="javascript:void(0)"
+									onclick="window_submit()" style="width: 80px">确 认</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div id="w2" class="easyui-window" title="提  示"
+					data-options="closed:true,resizable:false,minimizable:false,maximizable:false"
+					style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+					<div class="easyui-layout" data-options="fit:true">
+						<div data-options="region:'center'"
+							style="padding: 10px; background: #fff">
+							您的账号未激活，请先登录注册邮箱激活，如果您是手机快捷注册用户，请在首页对话框联系管理员给您审核激活
+							<p style="padding-top: 105px; margin-left: 110px;">
+								<a class="easyui-linkbutton" href="javascript:void(0)"
+									onclick="window_close()" style="width: 80px">确 认</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="main userd">
+			<div class="umaintitd">
+				当前位置：首页 &gt; 会员中心 &gt; <span>产品信息管理</span>
+			</div>
+			[#include '/template/front/include/usernav.html' /]
+			<!--umainr-->
+			<div class="umainr">
+
+				<div class="usubnavd">
+					<ul>
+						<!-- <li><a href="/subscribeInfo/toList.jspx">订阅信息</a></li> -->
+						<li class="on"><a href="/subscribeInfo/infoManage.jspx">订阅管理</a></li>
+					</ul>
+				</div>
+				<div class='mytabs' id="mytabs">
+					<ul class='horizontal'>
+						<li rel="tab-3" class="selectActive">销售订阅</li>
+						<li rel="tab-3">求购订阅</li>
+						<li rel="tab-3">租赁订阅</li>
+						<li rel="tab-3">求租订阅</li>
+						<li rel="tab-3">维修订阅</li>
+						<li rel="tab-3">求修订阅</li>
+						<li rel="tab-3">测试方案</li>
+						<li rel="tab-3">方案需求</li>
+						<!--<li rel="tab-3">招标订阅</li>-->
+						<li rel="tab-3">产品测试</li>
+						<li rel="tab-3">测试需求</li>
+						<li rel="tab-3">计量校准</li>
+					</ul>
+					[#include '/template/front/userCenter/dataManage/subscribe/T1.html' /]
+				</div>
+			</div>
+	</div>
+	[#include '/template/front/include/footer.html' /]
+	<input hidden="true" id="type" value="${type}">
+	<script type="text/javascript"
+		src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+	//点击取消订阅
+	function cancelremove(id,obj){
+		var o=obj.prev().html().trim();
+		
+			
+			PostbirdAlertBox.confirm({
+			    'title': '提     示',
+			    'content': '确定要取消订阅'+o+'吗?',
+			    'okBtn': '确 定',
+			    'contentColor': 'red',
+			    'onConfirm': function () {
+			        console.log("OK - 回调触发后隐藏提示框");
+			        /* alert("OK - 回调触发后隐藏提示框"); */
+			        $.ajax ({
+			            url: '/subscribe/deleteSubscribe.jspx',
+			            data:{
+				            'delId' : id
+			            },
+			            traditional : true,
+			            type : 'post',
+			            success : function (result){
+				            //alert (result.cont);
+			            	location.href = "/subscribeInfo/infoManage.jspx?productType=0"
+			            }
+					});
+			    },
+			    'onCancel': function () {
+			        /* console.log("Cancel-回调触发后隐藏提示框");
+			        alert("Cancel-回调触发后隐藏提示框"); */
+			    	
+			    }
+			});
+		
+		 
+	}
+		$(".addprod").click(function(){
+		var userClass="${currentMember.userType}";
+		var enabled = "${currentMember.enabled}"
+		if(enabled == "1"){
+			$("#w3").show();
+			$("#w2").window('open');
+			$("#w1").show();
+		}else{
+			if(userClass =="buyer" || userClass =="" || enabled =="2"){
+				$("#w3").show();
+				$("#w").window('open');
+				$("#w1").show();
+			}else if(userClass =="seller" || userClass =="business"){
+				window.location.href="/user_pub_sale";
+			}
+		}
+	});
+		var currentIndex=1;
+        //修改频率信息
+        $ ('.subbtn').click (function ()
+        {
+	        var subscribeEmail = $ ('input[name="radPl2"]:checked').val();
+
+	        if(subscribeEmail==2){
+                console.log($('#weekCheckBoxList input[name="week"]'))
+                subscribeEmail+="-";
+                $.each($('#weekCheckBoxList input[name="week"]'),function (index,ele) {
+                    if(ele.checked){
+                        subscribeEmail+=ele.value+","
+                    }
+                })
+                console.log(subscribeEmail)
+            }else if(subscribeEmail==3){
+                subscribeEmail+="-";
+                console.log($('#monthCheckBoxList input[name="month"]'))
+                $.each($('#monthCheckBoxList input[name="month"]'),function (index,ele) {
+                    if(ele.checked){
+                        subscribeEmail+=ele.value+","
+                    }
+                })
+                console.log(subscribeEmail)
+			}
+            if(subscribeEmail.charAt(0)==2&&subscribeEmail.length==2){
+                console.log(true)
+                alert("邮箱频率周一到周日至少选择一个时间")
+                return false;
+            }
+            if(subscribeEmail.charAt(0)==3&&subscribeEmail.length==2){
+                console.log(true)
+                alert("邮箱频率1号到31号至少选择一个时间")
+                return false;
+            }
+	        var subscribeMobile = $ ('input[name="radPl3"]:checked').val();
+            if(subscribeMobile==2){
+                console.log($('#weekCheckBoxList1 input[name="week"]'))
+                subscribeMobile+="-";
+                $.each($('#weekCheckBoxList1 input[name="week"]'),function (index,ele) {
+                    if(ele.checked){
+                        subscribeMobile+=ele.value+","
+                    }
+                })
+                console.log(subscribeMobile)
+            }else if(subscribeMobile==3){
+                subscribeMobile+="-";
+                console.log($('#monthCheckBoxList1 input[name="month"]'))
+                $.each($('#monthCheckBoxList1 input[name="month"]'),function (index,ele) {
+                    if(ele.checked){
+                        subscribeMobile+=ele.value+","
+                    }
+                })
+                console.log(subscribeMobile)
+            }
+            if(subscribeMobile.charAt(0)==2&&subscribeMobile.length==2){
+                console.log(true)
+                alert("手机频率周一到周日至少选择一个时间")
+                return false;
+            }
+            if(subscribeMobile.charAt(0)==3&&subscribeMobile.length==2){
+                console.log(true)
+                alert("手机频率1号到31号至少选择一个时间")
+                return false;
+            }
+	        var isNew = $('input[name="isNew"]').attr("checked")?true:false;
+            var isSecondHand = $ ('input[name="isSecondHand"]').attr("checked")?true:false;
+            var isImport = $ ('input[name="isImport"]').attr("checked")?true:false;
+            var isChinese = $ ('input[name="isChinese"]').attr("checked")?true:false;
+
+	         if(!isNew&&!isSecondHand){
+	             console.log(true)
+	            alert("全新和二手两个条件至少选择一个")
+				return false;
+			}
+            if(!isImport&&!isChinese){
+                alert("国产和进口两个条件至少选择一个")
+                return false;
+            }
+            //订阅的邮箱和手机号
+	        var emailSubscribe = $ ("#email").val();
+	        var mobileSubscribe = $ ("#mobile").val();
+
+	        if(/^(([^()[\]\\.,;:\s@\"]+(\.[^()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailSubscribe)&&emailSubscribe!="" || /^1[3|4|5|7|8][0-9]{9}$/.test(mobileSubscribe)&&mobileSubscribe!=""){
+                $.ajax (
+                    {
+                        url : '/subscribe/updateInfo.jspx',
+                        data :
+                            {
+                                "type":currentIndex,
+                                "subscribeEmail":subscribeEmail,
+                                "subscribeMobile":subscribeMobile,
+                                "emailSubscribe":emailSubscribe,
+                                "mobileSubscribe":mobileSubscribe,
+                                "isNew": isNew,
+                                "isSecondHand":isSecondHand,
+                                "isImport":isImport,
+                                "isChinese":isChinese
+                            },
+                        type : 'POST',
+                        success : function (result)
+                        {
+                            PostbirdAlertBox.alert({
+                                'title': '提 示',
+                                'content': result.cont,
+                                'okBtn': '好的',
+                                'contentColor': 'blue',
+                                'onConfirm': function () {
+                                }
+                            });
+                        }
+                    });
+	        }else {
+                PostbirdAlertBox.alert({
+                    'title': '提 示',
+                    'content': "邮箱或手机号填写错误",
+                    'okBtn': '好的',
+                    'contentColor': 'blue',
+                    'onConfirm': function () {
+                    }
+                });
+			}
+        })
+        function checkRadio () {
+
+        }
+        
+        $ (function ()
+        {
+	        var type = $ ("#type").val ();
+	        $ ('.usubtype').find ('input:eq(' + type + ')').attr ('checked', true);
+	        $ ('.usubtype').find ("input").bind ('change', function ()
+	        {
+		        checkRadio ();
+	        })
+
+        })
+        //选项卡
+        $ (".upronavd li").click (function ()
+        {
+	        $ (".upronavd li").removeClass ("on");
+	        $ (this).addClass ("on");
+	        $ (".uprotabd").hide ();
+	        $ (".uprotabd").eq ($ (this).index ()).fadeIn (200);
+        });
+        
+        //全选
+        $ (".ckall").click (function ()
+        {
+	        if ($ (this).attr ("checked"))
+	        {
+		        $ (".usubeuld").find ("input[name='ckId']").attr ("checked", "checked");
+	        }
+	        else
+	        {
+		        $ (".usubeuld").find ("input[name='ckId']").removeAttr ("checked");
+	        }
+        });
+        tabs_takes.init("mytabs");
+        $("#mytabs>ul>li:first").click();
+        if(${typePage-1}!=-1){
+      		$("#tabs>ul>li:eq(${typePage})").click();
+      	}
+        if(${typePage}==10){
+        	$("#tabs>ul>li:eq(9)").click();
+        }
+        if(${typePage}==11){
+        	$("#tabs>ul>li:eq(10)").click();
+        }
+        if(${typePage}==12){
+        	$("#tabs>ul>li:eq(11)").click();
+        }
+        if(${typePage}==13){
+        	$("#tabs>ul>li:eq(12)").click();
+        }
+	</script>
+	
+</body>
+</html>

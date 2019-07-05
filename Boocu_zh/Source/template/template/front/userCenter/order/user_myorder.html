@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的订单 - ${currentMember.realName}</title>
+[#include '/template/front/include/csslist.html' /]
+<style type="text/css">
+#w1 {
+	display:none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/statics/front/css/xcConfirm.css"/>
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+[#include '/template/front/include/jslist.html' /]
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ 	<!--content-->
+	<div id="w1"></div>
+	<div id="w3" style="display:none;">
+		<div id="w" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true," style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff;">
+					您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+					<p style="padding-top:80px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_submit()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	    <div id="w2" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false" style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff">
+					您的账号未激活，请先登录注册邮箱激活!
+					<p style="padding-top:105px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_close()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!--content-->
+<div class="main userd">
+	<div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">
+	  		会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>我的订单</span></a></div>
+  <!--usernav-->
+  [#include '/template/front/include/usernav.html' /]
+  <!--usernav-->
+  <!--umainr-->
+  <div class="umainr">
+    <div class="umainrtitd"><span>我的订单</span></div>
+    <div class="uorderd"> 
+      
+      <!--uotitd-->
+      <div class="uotitd">
+        <div class="l">
+          <p><a href="/order/toOrderPage.jspx?isFirst=${isFirst}">所有订单</a></p>
+          <p>待付款：<a href="javascript:;" class="b">${waitPay}</a></p>
+          <p>待发货：<a href="javascript:;" class="b">${waitSend}</a></p>
+          <p>待收货：<a href="javascript:;" class="b">${waitRecv}</a></p>
+          <p class="last">已购买的商品：<a href="javascript:;" class="b">${complate}</a></p>
+        </div>
+      </div>
+      <!--./uotitd--> 
+      
+      <!--uosearchd-->
+      <div class="uosearchd">
+      	<input type="hidden" id="isfirst" value="${isFirst}"/>
+        <form name="uosearchForm" id="uosearchForm" method="post" action="/order/toOrderPage.jspx">
+          <div class="keyinpd">
+            <p>
+              <input type="text" name="txtKey" id="txtKey" class="txt" placeholder="请输入订单编号" value="${txtKey}">
+            </p>
+            <p><a class="btn" href="javascript:;" onclick="$('#uosearchForm').submit()">订单搜索</a></p>
+            <p><a class="link" href="javascript:;"><span>精简筛选条件</span><i></i></a></p>
+          </div>
+          <div class="uosjjd">
+            <div class="row">
+              <div class="fl dw1">
+                <p class="fl">订单状态：</p>
+                <p class="fl">
+                  <select name="selOType" id="selOType" onchange="$('#uosearchForm').submit()" class="sel">
+                    <option [#if status ==2] selected="selected" [/#if] value="-2">全部订单</option>
+                    <option [#if status ==0] selected="selected" [/#if] value="0">待付款</option>
+                    <option [#if status ==1234] selected="selected" [/#if] value="1234">待发货</option>
+                    <option [#if status ==6] selected="selected" [/#if] value="6">待收货</option>
+                    <option [#if status ==9] selected="selected" [/#if] value="9">交易完成</option>
+                    <option [#if status ==510] selected="selected" [/#if] value="510">申请退款/退货中</option>
+                    <option [#if status ==1112] selected="selected" [/#if] value="1112">退款/退货完成</option>
+                    <option [#if status ==13] selected="selected" [/#if] value="13">交易关闭</option>
+                  </select>
+                </p>
+              </div>
+              <div class="fl dw3">
+                <p class="fl">卖家名称：</p>
+                <p class="fl">
+                  <input type="text" name="txtName" id="txtName" value="${txtName}" class="txt">
+                </p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--./uosearchd--> 
+      
+      <!--uotabd-->
+      <div class="uotabd">
+        <table width="100%" border="0" cellspacing="0" class="uotab">
+          <tr class="b0 brad">
+            <th width="35%" class="bradl">产品名称</th>
+            <th width="10%">单价</th>
+            <th width="10%">数量</th>
+            <th width="15%">商品操作</th>
+            <th width="10%">实付款</th>
+            <th width="20%" class="bradr">交易状态</th>
+          </tr>
+          <tr class="b0">
+            <td colspan="6"><div class="texed"></div></td>
+          </tr>
+          
+          [#list orderEntities as order]
+          <tr class="bg bb0">
+            <td colspan="6"><div class="otitd">
+                <div class="l">
+                <!--  
+                  <p>
+                    <label>
+                      <input type="checkbox" name="ckId" id="ckId" value="${order.id}">
+                    </label>
+                  </p>
+                  -->
+                  <p>${order.createDate}<i></i>订单号：${order.orderNumber}</p>
+                </div>
+                <!-- 
+                <div class="r"><a href="javascript:;" onclick="delOrder(${order.id})"></a></div>
+                 -->
+              </div></td>
+          </tr>
+         
+          	[#list order.orderProduct as op]
+          	<tr>
+            <td><a href="#" target="_blank">${op.product.proName}</a></td>
+            <td>￥[#if op.price gte 1]${op.price?string("#.00")}[#else]${op.price}[/#if]</td>
+            <td>${op.count}</td>
+            <td><div class="ushd">
+                <h3><a href="javascript:;">申请售后</a></h3>
+                <p>运费险失效</p>
+                <div class="ushinfod">
+                  <h3>申请售后</h3>
+                  <h4>申请售后的具体事宜请联系我公司客服人员。</h4>
+                  <p>深圳市晧辰电子科技有限公司<br>
+                                             公司地址：广东省深圳市南山区西丽街道牛成路221号8楼<br>
+                                             邮　　编：518055<br>
+                                             服务热线：0755－86016691 电话：13715327187<br>
+                                             传　　真：0755-86641139-816<br>
+                  E-mail:info@wl95.com</p>
+                </div>
+              </div></td>
+            [#if op_index == 0]
+            <td style="border-left: 1px solid #ccc;" rowspan="${order.orderProduct?size}">[#if order.payAmount gte 1]${order.payAmount?string("#.00")}[#else]${order.payAmount}[/#if]</td>
+            <td  rowspan="${order.orderProduct?size}"><span class="sg">[#if order.status == -1]订单取消[#elseif order.status == 0]等待支付
+            [#elseif order.status == 1]确认订单中[#elseif order.status == 2]仓库开始拣货
+            [#elseif order.status == 3]订单打包中[#elseif order.status == 4]通知快递公司揽件中
+            [#elseif order.status == 5]申请退款中[#elseif order.status == 6]等待收货
+            [#elseif order.status == 7]卖家取消订单[#elseif order.status == 8]已收货
+            [#elseif order.status == 9]交易完成[#elseif order.status == 10]申请退货中
+            [#elseif order.status == 11]退款完成[#elseif order.status == 12]退货完成
+            [#elseif order.status == 13]交易关闭[/#if]
+            </span><br>
+              <a href="javascript:;" onclick="toDetail(${order.id})">订单详情</a></td>
+          [/#if]
+          </tr>
+          [/#list]
+          <tr class="hrtr">
+            <td colspan="6"></td>
+          </tr>
+          [/#list] 
+        </table>
+        
+        <!--uexepaged-->
+        <div class="uexepaged">
+          <!--./uexed-->
+	        <div class="upagfr"> 
+	           <!--pagd-->
+	 			<div class="upagd" id="upagd">
+	 			[#if (orders.pageNumber-1) gte 1]<a class="prev" href="javascript:void(0);" s_val="${orders.pageNumber-1}">上一页</a>[/#if][#list -2..2 as item]
+				[#if (orders.pageNumber+item) gte 1 & (orders.pageNumber+item) lte orders.totalPages]<a href="javascript:void(0);" s_val="${orders.pageNumber+item}" class="${(item ==0)?string('on','')}">${orders.pageNumber+item}</a>[/#if]
+	 			[/#list][#if orders.pageNumber lt orders.totalPages]<a class="next" href="javascript:void(0);" s_val="${orders.pageNumber+1}">下一页</a>[/#if]<span class="tnum">共${orders.totalPages}页</span><span class="txtd">到
+	            <input type="text" name="txtPnum" id="txtPnum" class="txt">页</span><input type="button" class="btn" id="btn" href="javascript:;" value="确认" /></div>
+	 			<!--./pagd--> 
+	 		</div>
+        </div>
+        <!--./uexepaged--> 
+        
+      </div>
+      <!--./uotabd--> 
+      
+    </div>
+    <!--./uorderd--> 
+    
+  </div>
+  <!--./umainr--> 
+</div>
+<!--./content--> 
+[#include '/template/front/include/footer2.html' /]
+<script type="text/javascript" src="/statics/front/js/xcConfirm.js"></script>
+<script type="text/javascript" src="/statics/front/js/order.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	var isfirst = $("#isfirst").val();
+	if(isfirst != 1){
+		//不是第一次进来就显示搜索条件
+		$(".uosearchd .keyinpd .link").trigger("click");		
+	}
+});
+
+//精简条件
+$(".uosearchd .keyinpd .link").click(function(){
+	var formObj=$(".uosjjd");
+	if(!formObj.is(":hidden")){
+		formObj.slideUp(200);	
+		$(this).removeClass("on");
+	}else{
+		formObj.slideDown(200);	
+		$(this).addClass("on");
+	}
+});
+
+//全选
+$(".ckall").click(function(e){
+    if($(this).attr("checked")){
+		$("input[name='ckId']").attr("checked","checked");
+		$(".ckall").attr("checked","checked");
+	}else{
+		$("input[name='ckId']").removeAttr("checked");
+		$(".ckall").removeAttr("checked");
+	}
+});
+
+function toDetail(id){
+	var timestamp = new Date().getTime();
+	var guids = guid();
+	window.location.href="/order/toOrderDetail.jspx?timestamp="+timestamp+"&orderId="+id+"&guid="+guids;
+}
+
+//审请售后
+$(".uotabd .ushd h3 a").click(function(){
+	$(".ushinfod").hide();
+	$(this).parent().parent().find(".ushinfod").fadeIn(100);
+});
+
+function delOrder(id){
+	/*
+	$.post("/order/batchDel.jspx",{"ids":id+","},
+	function(data){
+		if(data == "ok"){
+			window.wxc.xcConfirm("删除成功！", window.wxc.xcConfirm.typeEnum.success,{onOk:function(){
+				window.location.href="/order/toOrderPage.jspx";
+			}});
+		}else{
+			window.wxc.xcConfirm("删除失败，请稍后再试！", window.wxc.xcConfirm.typeEnum.error);
+		}
+	});
+	*/
+}
+
+function searchOrder(){
+	var kw = $("#txtKey").val();
+	
+}
+
+function closeUshinfow(){
+	$(".ushinfod").hide();
+}
+$(document).click(function(){ 
+	if (!$(event.srcElement).is(".uotabd .ushd, .uotabd .ushd *")){
+		closeUshinfow();
+	}
+});
+</script>
+</body>
+</html>

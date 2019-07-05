@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:cache="http://www.springframework.org/schema/cache"
+		xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/cache 
+       	http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context
+      	http://www.springframework.org/schema/context/spring-context.xsd
+       ">
+	<context:property-placeholder location="classpath:/config/db/config.properties" ignore-resource-not-found="true" ignore-unresolvable="true" />
+
+    <!--<cache:annotation-driven cache-manager="cacheManager" proxy-target-class="true"/>-->
+ 	<!-- 配置缓存集成 -->
+	<cache:annotation-driven cache-manager="cacheManager" />
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="java.lang.System" />
+		<property name="targetMethod" value="setProperty" />
+		<property name="arguments">
+			<list>
+				<value>system.project_name</value>
+				<value>${system.project_name}</value>
+			</list>
+		</property>
+	</bean>
+ 
+	<!-- 配置EhCache管理 -->
+	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<!-- 配置文件 -->
+		<property name="configLocation" value="classpath:config/ehcache/ehcache-config.xml" />
+		<!-- 是否共享 -->
+		<property name="shared" value="true" />
+	</bean>
+
+	<!-- 配置缓存管理 -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<!-- EhCache管理 -->
+		<property name="cacheManager" ref="ehCacheManager" />
+	</bean>
+	
+	
+</beans>

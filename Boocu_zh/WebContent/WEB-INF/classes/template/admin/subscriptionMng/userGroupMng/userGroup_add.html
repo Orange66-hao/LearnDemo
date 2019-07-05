@@ -1,0 +1,28 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="addForm" method="post" class="validate">
+			<table>
+				<tr>
+					<th>用户组名称</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+						name="gradename" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>价格类型</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+						name="priceType" data-options="required:true"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>Email使用模板</th>
+					<td><input class="easyui-combobox combo" type="text"
+						s_value="${item.template}" name="template" id="newsareaId"
+						data-options="url:'/admin/userGroupMng/getTemplate.jspx',method:'get',valueField:'id',
+						textField:'text', width:307, onLoadSuccess:function(){loadSec('#newsareaId');}"
+						style="height: 30px"></input></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

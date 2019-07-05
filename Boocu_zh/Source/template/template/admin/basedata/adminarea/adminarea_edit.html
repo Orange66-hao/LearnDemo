@@ -1,0 +1,41 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+			 <tr>
+					<th>代码</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.AREACODE}"
+						name="AREACODE" data-options="required:true" ></input>
+					</td>
+				</tr>
+			  <tr>
+					<th>名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" value="${item.AREANAME}"
+						name="AREANAME" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>英文名称</th>
+					<td><input class="input_text" type="text" value="${item.ifabroad}"
+						name="ifabroad" data-options="required:true" ></input>
+					</td>
+				</tr>
+			   <tr>
+					<th>区域</th>
+					<td><select class="input_text" value="${item.AREANAMEEN}" name="AREANAMEEN">
+						<option value="中国" ${(item.AREANAMEEN=="中国")?string('selected',"")}>中国</option>	
+						<option value="国外" ${(item.AREANAMEEN=="国外")?string('selected',"")}>国外</option>		
+					</select>
+
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

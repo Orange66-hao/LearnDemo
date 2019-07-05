@@ -1,0 +1,24 @@
+<div class=""
+	style="background-color: white; margin-top: 20px; margin-left: 20px;">
+	<div class="" style="border-style: none;">
+		<table>
+			<tr>
+				<th>发件人:</th>
+				<td>${mes.sendEntity.username}</td>
+				<th>发送时间:</th>
+				<td>${mes.createDate}</td>
+			</tr>
+			<tr>
+				<th>标题:</th>
+				<td>${mes.messageEntity.message_title}</td>
+			</tr>
+			<tr>
+				<th>内容:</th>
+				<td colspan="3"><textarea class="ckeditor"
+						style="padding-left: 10px;" rows="15" cols="50"
+						readonly="readonly">${mes.messageEntity.message_context}
+						</textarea></td>
+			</tr>
+		</table>
+	</div>
+</div>

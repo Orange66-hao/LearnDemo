@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新闻详情 - 晧辰仪联网</title>
+[#include '/template/front/include/csslist.html' /]
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+ <!--loading-->
+ <div class="listloadingd" id="indexLoading" ></div>
+ <!--./loading-->
+<!--content-->
+<div class="indexContent">
+<div class="main">
+  <div class="mainbanner"><img class="lazy" src="/statics/images/grey.gif" data-original="/statics/images/mbanner1.jpg" width="1210" height="200"></div>
+  
+  <!--newsdetailsd-->
+  <div class="newsdetailsd">
+  [#assign news = newsEntity]
+    <div class="ndetailstitd">
+      <p><a href="/" style="text-decoration:none;">首页</a> / <a href="/news/list.jspx" style="text-decoration:none;">新闻中心</a> / <span><a href="javascript:;" style="color:#0047d9;text-decoration:none;">正文</a></span></p>
+    </div>
+    <h3>${news.title}</h3>
+    <div class="timed">发布时间：${news.createDate}<i></i>发布者：${news.creatuser}<i></i>阅读：${news.readtime}</div>
+    <!--文章内容-->
+    <div class="ndinfod">
+      <p>${news.content}</p>
+        </div>
+    <!--./文章内容--> 
+  </div>
+  <!--./newsdetailsd--> 
+</div>
+</div>
+<!--./content--> 
+
+[#include '/template/front/include/footer.html' /]
+
+[#include '/template/front/include/jslist.html' /]
+</body>
+</html>

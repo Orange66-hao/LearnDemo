@@ -1,0 +1,29 @@
+@import 'main.less';
+.foot-bar{
+  background: #FFFFFF;
+}
+.prompt.container{
+& .box{
+  padding: 50px 300px;
+}
+
+
+}
+
+.breadcrumb{
+  background-color:#ffffff;
+  margin-bottom: 0px;
+  padding: 16px 0px;
+  font-size: 14px;
+  color: #5b5b5d;
+  & a{
+    color: #5b5b5d;
+  }
+  & > li + li::before{
+    content: "> ";
+    color: #5b5b5d;
+  }
+  & > .active{
+    color: #5b5b5d;
+  }
+}

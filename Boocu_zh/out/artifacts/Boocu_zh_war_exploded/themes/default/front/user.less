@@ -1,0 +1,162 @@
+@import 'userCommon.less';
+@form_text_width:80px;
+@form_row_height:30px;
+@form_row_padding:0px;
+
+@form_row_content_height:@form_row_height - @form_row_padding*2;
+
+@form_input_width:350px;
+@form_input_padding:10px;
+@form_input_height:@form_row_content_height;
+
+@form_submit_marginLeft:@form_text_width + @form_input_padding;
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+  width:100px;
+  border: none ;
+  background: #0476d9;
+  color: #FFFFFF;
+
+  text-align: center;
+  height: 30px;
+}
+.fileUpload span{
+  line-height: 30px;
+}
+
+.userpic img{
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+.userpic{
+  width: 120px;
+  height: 120px;
+
+}
+.fileUpload input.upload {
+  width:100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.fileinput{
+  & input{
+    width: 80px;
+    height: 40px;
+    background: #ffff00;
+  }
+
+  position: relative;
+}
+.filebutton{
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  background: purple;
+}
+
+.wrapper form{
+  padding: 20px 0 150px 20px;
+  & label.error{
+    padding-left: 10px;
+    color: red;
+  }
+  & .onError{
+    color: red;
+    font-weight: bold;
+  }
+}
+.form-text,.form-input,.form-message{
+  float: left;
+}
+.form-row{
+  padding-top:50px;
+  clear:both;
+  & .form-text{
+    text-align: right;
+    width: @form_text_width;
+    line-height: @form_row_height;
+
+  }
+  & .form-input{
+    width: auto;
+    padding: 0 10px;
+    input{
+      width: @form_input_width;
+      height: @form_input_height;
+      border: 1px solid #d2d2d9;
+
+    }
+    & .error-message{
+      padding-left: 20px;
+    }
+    select{
+      height: @form_row_content_height;
+      margin-right: 10px;
+    }
+  }
+
+  & input[type='submit']{
+    border: none ;
+    background: #0476d9;
+    color: #FFFFFF;
+    padding: 5px 45px;
+    margin-left: @form_submit_marginLeft;
+  }
+}
+
+.userbind-row{
+  padding:30px 50px 0;
+}
+.uploadpsd-row{
+  margin: 50px 0 0 150px;
+  width: 280px;
+  & *{
+    margin: 10px auto;
+  }
+}
+.clear{
+  clear: both;
+
+
+}
+.auth_name{
+
+  & .pull-left,& .pull-right{
+    height: 30px;
+    line-height: 30px;
+  }
+  & .iicon{
+    margin-right: 10px;
+    background:url("images/webicon-yuntu.png");
+    background-color: #0476d9;
+    width: 32px;
+    height: 32px;
+    padding: 2px;
+    border-radius: 4px;
+  }
+
+  & .QQ_icon{
+    background-position:5px -51px ;
+  }
+
+  & .SinaWeibo_icon{
+    background-position:-60px -51px ;
+  }
+  & .WeiXin_icon{
+    background-position:-127px -51px ;
+  }
+}
+
+.auth_data{
+  margin-left: 20px;
+}

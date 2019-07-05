@@ -1,0 +1,78 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+							   name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>公司名</th>
+					<td><input class="input_text easyui-validatebox" type="text" id="co_name"
+							   name="name" data-options="required:true" value="${item.name}"></input>
+					</td>
+					<td><span class="rr" style="color: red;"></span></td>
+				</tr>
+				<tr>
+					<th>地址</th>
+					<td>
+						<input class="input_text easyui-validatebox" type="text"
+							   id="address"	name="address"  value="${item.address}"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>电话</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+							   id="phone"	name="phone"  value="${item.phone}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-numberbox" type="text"
+							   name="sort" id="cn_sort" data-options="required:true" value="${item.sort}"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>备注</th>
+					<td><input class="input_text" type="text" id="co_remark"
+							   name="remark"  value="${item.remark}" ></input>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+    var condition_companyname=true;
+    $("#co_name").blur(function(){
+        var name=$("#co_name").val();
+        var edit_name="${item.name}";
+        $.ajax({
+            url:"/admin/suCompanyName/register.jspx",
+            data:{name:name,edit_name:edit_name},
+            dataType:"json",
+            type:"post",
+            success:function(msg){
+                if(msg.cont == 'false'){
+                    $(".rr").text('该公司名已存在！');
+                    $("#name").val();
+                    condition_companyname=false;
+                    return false;
+                }
+                if(msg.cont == 'true'){
+                    $(".rr").text('');
+                    condition_companyname=true;
+                    return true;
+                }
+            },
+            error:function(){
+                alert("网络异常,请重试!");
+                return false;
+            }
+        });
+    });
+</script>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" > </meta>
+<title>云图商城-后台管理</title>
+<style type="text/css">
+body{
+	margin:0px;
+	font-family:Arial,"宋体",Verdana,sans-serif;
+	font-size:12px;
+}
+html,body {padding: 0;margin: 0; overflow-x:hidden; overflow-y:auto;}
+dl,dd{margin:0px}
+ul{
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+	
+}
+</style>
+<script type="text/javascript" src="/adminthemes/new/js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/gray/easyui.css"/>    
+<link rel="stylesheet" type="text/css" href="/adminthemes/new/js/easy-ui/themes/icon.css"/>  
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/easy-ui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/adminthemes/new/js/jquery.loading.js"></script>
+<link href="/adminthemes/new/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/adminthemes/new/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/frontthemes/js/easyuiUtil.js"></script>
+<script type="text/javascript" src="/adminthemes/js/BooCu.js"></script>
+
+[#include '/template/admin/include/common.html']
+
+</head>
+<body>
+<div id="loading"></div>
+<div class="main">
+	<div class="easyui-tabs">
+		<div title="采购询价" style="padding:10px;">
+			<div id="tb" style="height: auto">
+				<a href="javascript:void(0)" id="noA" class="button blueButton" data-options="plain:true" onclick="showNo()">未报价</a>
+				<a href="javascript:void(0)" id="hadA" class="button" data-options="plain:true" onclick="showHad()">已报价</a>
+			</div>
+			<div class="clear height10"></div>
+			<div class="shadowBoxWhite tableDiv">
+				<div id="noproc">
+					<table class="easyui-datagrid"
+						data-options="url:'/admin/userInquiry/inquiryDataJson.json',pageList: [5,10,15,20],pageSize:10"
+						pagination="true" id="nodata" sortName="id" sortOrder="desc">
+						<thead>
+							<tr>
+							 	<th data-options="field:'url'"></th>
+							 	<th data-options="field:'askUserId'"></th>
+							 	<th data-options="field:'status'"></th>
+							 	<th data-options="field:'proName',width:200,align:'center'" formatter="linkto">商品名称</th>
+							 	<th data-options="field:'askUserName',width:200,align:'center'" formatter="toUser">用户名</th>
+								<th data-options="field:'onePrice',width:200,align:'center'">单价</th>
+								<th data-options="field:'privilegePrice',width:200,align:'center'" formatter="quote">优惠价</th>
+								<th data-options="field:'createDate',width:250,align:'center'">询价时间</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="hadproc">
+					<table class="easyui-datagrid"
+						data-options="url:'/admin/userInquiry/inquiryDataJson.json?status=2',pageList: [5,10,15,20],pageSize:10"
+						pagination="true" id="haddata" sortName="id" sortOrder="desc">
+						<thead>
+							<tr>
+								<th data-options="field:'url'"></th>
+							 	<th data-options="field:'askUserId'"></th>
+							 	<th data-options="field:'proName',width:200,align:'center'" formatter="linkto">商品名称</th>
+							 	<th data-options="field:'askUserName',width:200,align:'center'" formatter="toUser">用户名</th>
+								<th data-options="field:'onePrice',width:200,align:'center'">单价</th>
+								<th data-options="field:'privilegePrice',width:200,align:'center'">优惠价</th>
+								<th data-options="field:'createDate',width:250,align:'center'">询价时间</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="divdia" style="display:none;background:#666;position:fixed; width:100%; height:100%;left:0px;top:0px;
+	z-index:1;filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity:0.5;opacity: 0.5;"></div>
+	
+	<div id="giveBox" style="display:none;position: fixed;left: 30%;top: 10%;background: #FFFFFF;border: 1px solid #DBE0E4;
+	overflow: hidden;border-radius: 5px;width: 380px;min-height: 200px;z-index:99999999999;padding-top:20px;">
+		<form id="editForm" action="" method="post">
+			<div style="margin-left: auto;margin-right: auto;overflow:hidden;margin-top:20px;">
+				<p style="float:left;width:100px;text-align:right;margin-left:20px;">优惠价：</p><p style="float:left;">
+				<input type="text" name="price" id="pprice" value="" style="width:200px;height:30px;border:1px solid #ccc;"></p><p class='rr'></p>
+				<input type="hidden" id="askId" name="id"/>
+			</div>
+			<div style="text-align:center;margin-top:30px;">
+				<input type="button" value="关闭" onclick="closeEdit()" style="background:#EA8B43;width:80px; height:35px;color:#fff;border:0px;font-size:16px;line-height:35px;"/>
+				<input type="button" value="确认" onclick="submitEdit()" style="background:#5BD271;width:80px; height:35px;color:#fff;border:0px;font-size:16px;line-height:35px;margin-left:30px;"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	//初始化数据集
+	$(function(){
+		//隐藏的div
+		$("#hadproc").hide();
+		//隐藏priId
+		$("#nodata").datagrid('hideColumn', 'url'); 
+		$("#nodata").datagrid('hideColumn', 'askUserId');
+		$("#nodata").datagrid('hideColumn', 'status');
+
+		$("#haddata").datagrid('hideColumn', 'url'); 
+		$("#haddata").datagrid('hideColumn', 'askUserId');
+	});
+	
+	function closeEdit(){
+		$("#divdia").hide();
+		$("#giveBox").hide();
+		$("#pprice").val("");
+	}
+
+	function submitEdit(){
+		var price = $("#pprice").val();
+		var askId = $("#askId").val();
+		//今天校验正则
+		var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+		if(reg.test(price)){
+			$.post("/admin/userInquiry/give.jspx",{"price":price,"id":askId},
+			function(result){
+				if(result=="ok"){
+					alert("报价成功！");
+					closeEdit();
+					//刷页面
+					$("#nodata").datagrid('reload');
+				}else{
+					alert("报价失败，请稍后再试。")
+				}
+			});
+		}else{
+			alert("输入金额不合法!")
+		}
+	}
+
+	//计数器，判断要不要刷新表格
+	var hadf = true;
+	
+	function showHad(){
+		$("#hadproc").show();
+		$("#noproc").hide();
+		
+		$("#noA").removeClass("blueButton");
+		$("#hadA").addClass("blueButton");
+		
+		if(hadf){
+			$("#haddata").datagrid('reload');
+		}
+		hadf = false
+	}
+	
+	function showNo(){
+		$("#noproc").show();
+		$("#hadproc").hide();
+		
+		$("#noA").addClass("blueButton");
+		$("#hadA").removeClass("blueButton")
+	}
+	
+	function giveBox(id){
+		$("#divdia").show();
+		$("#giveBox").show();
+		$("#askId").val(id);
+	}
+	
+	function toUser(value, row, index) {
+		var val = "<a class='details' title='查看' href='javascript:void(0);' onclick='newTab(\""
+			+ row.askUserName
+			+ "-信息\",\"/admin/member/memberAudit/look_memberAudit.jspx?id="
+			+ row.askUserId + "\")' >"+row.askUserName+"</a>";
+		return val;
+	}
+	
+	//报价
+	function quote(value, row, index) {
+		var val = "<a class='details' title='报价' href='javascript:void(0);' onclick='giveBox(\""+row.id+"\")'>报价</a>";
+		return val;
+	}
+	
+	function linkto(value, row, index) {
+		var val = "<a class='details' title='商品名称' href='javascript:void(0);' onclick='window.open(\""+row.url+"\")'>"+row.proName+"</a>";
+		return val;
+	}
+</script>
+</body>
+</html>

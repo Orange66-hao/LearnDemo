@@ -1,0 +1,189 @@
+
+<table width="100%" border="0" cellspacing="0" class="uotab">
+	<tr class=" collth">
+		<th width="5%"></th>
+		<th width="35%" class="bradl">产品名称</th>
+		<th width="15%">单价</th>
+		<th width="15%">数量</th>
+		<th width="15%">总价</th>
+		<th width="15%" class="bradr">操作</th>
+	</tr>
+	[#list page.cont as list]
+	<!--row-->
+	<tr>
+		<td><label> <input type="checkbox" name="ckId" id="ckId"
+				value="${list.id}">
+		</label></td>
+		<td><div class="ucolld">
+				<div class="picd">
+					<a href="#" target="_blank"><img class="lazy" src=[#if list.productEntity.proOriginal1!]${list.productEntity.proOriginal1}[#else]/statics/front/images/nopic.jpg[/#if] data-original="images/temp/p3_1.jpg"
+						width="140" height="115"></a>
+				</div>
+				<div class="infod">
+					<h3>
+						<a href="#" target="_blank">${list.productEntity.proNo}
+							${list.productEntity.proName}</a>
+					</h3>
+					<p>
+						收藏人气：${list.productEntity.collectionCount} 人<br>
+						收藏时间：${list.createDate}
+					</p>
+					<ul>
+						<li class="bg1"></li>
+						<li class="bg2"></li>
+						<li class="bg3"></li>
+					</ul>
+				</div>
+			</div></td>
+		<td id="price">${list.productEntity.referencePrice}</td>
+		<td id="stock">${list.productEntity.proStock}</td>
+		<td id="total prices">[#if
+			list.productEntity.referencePrice==NULL] 0
+			[/#if][#if list.productEntity.referencePrice!=NULL]${list.productEntity.referencePrice*list.productEntity.proStock}[/#if]</td>
+		<td><!-- <a href="javascript:;" class="gwc">加入购物车</a> --><br> <a
+			href="javascript:void(0);" class="isDel" onclick="isDel(${list.id});">删除</a></td>
+	</tr>
+	<tr class="hrtr">
+		<td colspan="6"></td>
+	</tr>
+	<!--./row-->
+	[/#list]
+</table>
+
+<!--uexepaged-->
+<div class="uexepaged">
+	<div class="uexed">
+		<p>
+			<label> <input type="checkbox" name="ckAll" id="ckAll"
+				class="ckall"> 全选
+			</label>
+		</p>
+		<ul>
+			<li><a href="javascript:void(0);" class="del">永久删除</a></li>
+		</ul>
+	</div>
+	<!--./uexed-->
+	<div class="upagfr">
+		<!--upagd-->
+		<div class="upagd">
+			[#if (page.pageNumber-1) gte 1]<a class="prev"
+				href="/collection/searchInfo?pageNum=${page.pageNumber-1}"
+				s_val="${page.pageNumber-1}">上一页</a>[/#if] [#list -2..2 as item]
+			[#if (page.pageNumber+item) gte 1 & (page.pageNumber+item) lte
+			page.totalPages]<a href="javascript:void(0);"
+				s_val="${page.pageNumber+item}"
+				class="${(item ==0)?string('on','')}">${page.pageNumber+item}</a>[/#if]
+			[/#list] [#if page.pageNumber lt page.totalPages]<a class="next"
+				href="javascript:void(0);" s_val="${page.pageNumber+1}">下一页</a>[/#if]<span
+				class="tnum">共${page.totalPages}页</span><span class="txtd">到
+				<input type="text" name="txtPnum" id="txtPnum" class="txt">
+				页
+			</span><input type="button" class="btn" id="btn" href="javascript:void(0);"
+				value="确认" />
+		</div>
+	</div>
+	<!--./upagd-->
+</div>
+<!--./uexepaged-->
+<script src="/statics/front/js/jquery.min.js"></script>
+<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script>
+<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script>
+<script src="/statics/front/js/main.js"></script>
+<script src="/statics/front/js/pro.js"></script>
+
+<script type="text/javascript">
+
+	//提交表单
+	function submitPost() {
+		$(".prould").html("");
+		$(".upagd").html("");
+		$(".prolistpd .listloadingd").show();
+		$.ajax({
+			url : "/collection/searchInfo",
+			data : $("#uosearchForm").serialize(),
+			datatype : "html",
+			type : "post",
+			success : function(data) {
+				$(".uotabd").html(data);
+				$(".prolistpd .listloadingd").hide();
+			}
+		});
+	}
+	$(".upagd").find("a").click(
+			function() {
+				if ($(this).attr("s_val")) {
+					$("#uosearchForm").find("input[name='pageNum']").attr(
+							"value", $(this).attr("s_val"));
+					if (!$(this).hasClass("on")) {
+						submitPost();
+						$(document).scrollTop(300);
+						$("#uosearchForm").find("input[name='pageNum']").attr(
+								"value", "");
+					}
+				}
+
+			});
+	//单个收藏删除
+	function isDel(id) {
+		$.ajax({
+			url : "/collection/isDel",
+			data : {
+				"collId" : id
+			},
+			type : "post",
+			success : function(data) {
+				alert(data.cont);
+				submitPost();
+			}
+		});
+	}
+	
+	//永久删除
+	$(".del").click(function() {
+		var checks = [];
+		$('input[name="ckId"]:checked').each(function() {
+			checks.push($(this).val());
+		});
+		if (checks.length == 0) {
+			alert("请选择要永久删除的收藏信息..");
+			return;
+		}
+		$.ajax({
+			url : "/collection/delColl",
+			data : {
+				collId : checks
+			},	traditional:true,
+			type : "post",
+			success : function(data) {
+				alert("删除成功!");
+				submitPost();
+			},
+			error:function(data){
+				console.log(data);
+			}
+		});
+		
+	});
+	//全选
+	$(".ckall").click(function(e) {
+		if ($(this).attr("checked")) {
+			$("input[name='ckId']").attr("checked", "checked");
+			$(".ckall").attr("checked", "checked");
+		} else {
+			$("input[name='ckId']").removeAttr("checked");
+			$(".ckall").removeAttr("checked");
+		}
+	});
+	$(".upagd").find("#btn").click(function() {
+		var txt = $("#txtPnum").val();
+		var a1 = $
+		{
+			page.totalPages
+		}
+		;
+		if (txt > a1 || txt < 1) {
+			return;
+		}
+		window.location.href = "/collection/searchInfo?pageNum=" + txt;
+	});
+</script>

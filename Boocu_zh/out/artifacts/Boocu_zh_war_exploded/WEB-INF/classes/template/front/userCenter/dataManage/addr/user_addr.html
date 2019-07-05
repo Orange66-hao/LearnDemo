@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>收货地址 - ${currentMember.realName}</title>
+[#include '/template/front/include/csslist.html' /]
+<link rel="stylesheet" type="text/css" href="/statics/front/css/xcConfirm.css"/>
+<style type="text/css">
+#w1 {
+	display:none;
+	background: #000;
+	filter: alpha(opacity = 70);
+	opacity: 0.7;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 1001;
+}
+</style>
+</head>
+<body>
+[#include '/template/front/include/header.html' /]
+[#include '/template/front/include/jslist.html' /]
+<div class="listloadingd" id="indexLoading" ></div>
+	<!--content-->
+	<div id="w1" name="edit"></div>
+	<div id="w3" style="display:none;">
+		<div id="w" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true," style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff;">
+					您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+					<p style="padding-top:80px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_submit()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	    <div id="w2" class="easyui-window" title="提  示" data-options="closed:true,resizable:false,minimizable:false,maximizable:false" style="width:320px;height:220px;padding:5px;background:#3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="padding:10px;background:#fff">
+					您的账号未激活，请先登录注册邮箱激活，如果您是手机快捷注册用户，请在右下角对话框联系管理员给您审核激活
+					<p style="padding-top:105px;margin-left:110px;"><a class="easyui-linkbutton" href="javascript:void(0)" onclick="window_close()" style="width:80px">确  认</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+  <!--./usernav--> 
+  	<div class="main userd">
+	  <div class="umaintitd">当前位置：<a href="/" style="text-decoration:none;">首页</a> &gt; <a href="/user/user" style="text-decoration:none;">
+	  		会员中心 </a>&gt; <a href="javascript:void;" style="text-decoration:none;"><span>订单官管理</span></a></div>
+	  <!--usernav-->
+	  [#include '/template/front/include/usernav.html' /]
+	  <!--./usernav--> 
+  
+  <!--umainr-->
+  <div class="umainr">
+    <div class="umainrtitd"><span>收货地址</span></div>
+    <!--uaddrd-->
+    <div class="uaddrd">
+      <div class="upformd uaddrd1">
+        <form name="uaddrForm" id="uaddrForm" method="post" action="">
+          <div class="row">
+            <p class="l red">新增收货地址</p>
+            <p class="r">电话号码、手机号选填一项,其余均为必填项</p>
+          </div>
+          <div class="row">
+            <p class="l">所在地：</p>
+            <div class="r">
+              <p class="fl">
+                <select name="selCountry" id="selCountry" onchange="selCou()" class="txt sel w4">
+                  <option value="1">中国</option>
+                  <option value="0">国外</option>
+                </select>
+              </p>
+              <div class="fl">
+	              <p class="fl pl5">
+	                <select name="selProvince" id="selProvince" onchange="selProv()" class="txt sel w3">
+	                </select>
+	              </p>
+	              <p class="fl pl5">
+	                <select name="selCity" id="selCity" onchange="seleCity()" class="txt sel w3">
+	                </select>
+	              </p>
+	              <p id="selAreap" class="fl pl5">
+	                <select name="selArea" id="selArea" class="txt sel w3">
+	                </select>
+	              </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <p class="l ">详情地址：</p>
+            <p class="r">
+              <input type="text" name="txtAddr" id="txtAddr" class="txt w11" placeholder="建议您如实填写详细地址，例如街道名称，门牌号码，楼层和房间号">
+            </p>
+          </div>
+          <div class="row">
+            <p class="l ">邮政编码：</p>
+            <p class="r">
+              <input type="text" name="txtPostcode" id="txtPostcode" class="txt" placeholder="如您不清楚邮递，000000">
+            </p>
+          </div>
+          <div class="row">
+            <p class="l ">收货人姓名：</p>
+            <p class="r">
+              <input type="text" name="txtName" id="recivName" class="txt" placeholder="长度不超过25个字">
+            </p>
+          </div>
+          <div class="row">
+            <p class="l">手机号码：</p>
+            <div class="r">
+              <p class="fl">
+              	<input type="text" id="code_m" class="txt sel w3" value="+">
+              </p>
+              <p class="fl pl5">
+                <input type="text" name="txtName" id="recMobile" class="txt" placeholder="电话号码手机号码必须填一项">
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <p class="l">固定电话：</p>
+            <div class="r">
+              <p class="fl">
+              	<input type="text" id="code_tel" class="txt sel w3" value="+">
+              </p>
+              <p class="fl pl5">
+                <input type="text" name="txtQh" id="txtQh" class="txt w4" placeholder="区号">
+              </p>
+              <p class="fl pl5">
+                <input type="text" name="txtTel" id="txtTel" class="txt w3" placeholder="电话号码">
+              </p>
+              <p class="fl pl5">
+                <input type="text" name="txtTelf" id="txtTelf" class="txt w4" placeholder="分机">
+              </p>
+            </div>
+          </div>
+          <div class="row tkd">
+            <p class="l">&nbsp;</p>
+            <p class="r">
+              <input type="checkbox" name="ckTK" id="ckTK" checked="checked">设置为默认收货地址</p>
+              <input type="hidden" id="addrId" value="">
+          </div>
+          <div class="row">
+            <p class="l">&nbsp;</p>
+            <p class="r"><a href="javascript:;" onclick="submitAddr()" class="uadbtn">保 存</a></p>
+          </div>
+        </form>
+      </div>
+      <!--./uaddrd1-->
+      
+      <div class="uaddrd2">
+        <div class="vtitd">已经保存了${addrs?size}条地址，还能保存${20-addrs?size}条地址<span style="float: right;font-weight: bold;"><a style="color: red;"  href="/order/toOrderPage.jspx?isFirst=1"">前往我的订单</a></span></div>
+        <div class="uaddrtabd">
+          <table width="100%" border="0" cellspacing="0" class="uaddrtab">
+            <tr>
+              <th width="10%">收货人</th>
+              <th width="20%">所在地区</th>
+              <th width="25%">详细地址</th>
+              <th width="10%">邮编</th>
+              <th width="20%">电话/手机</th>
+              <th width="15%">操作</th>
+              <th width="10%">&nbsp;</th>
+            </tr>
+            
+            [#list addrs as addr]
+            <tr>
+              <td>${addr.recvName}</td>
+              <td>${addr.country} ${addr.province} ${addr.city} ${addr.area}</td>
+              <td>${addr.detail}</td>
+              <td>${addr.postCode}</td>
+              <td>[#if addr.codeM != "+" && addr.codeM != "" && addr.mobilePhone != "" && 
+              addr.codeTel != "+" && addr.codeTel !="" && addr.telQH != "" && addr.telNumber 
+              != "" && addr.telFj != ""]${addr.codeM} ${addr.mobilePhone} 
+              ${addr.codeTel} ${addr.telQH} ${addr.telNumber} ${addr.telFj}
+              [#elseif addr.codeM != "+" && addr.codeM != "" && addr.mobilePhone != ""]
+              ${addr.codeM} ${addr.mobilePhone}[#else]${addr.codeTel} ${addr.telQH} ${addr.telNumber} ${addr.telFj}[/#if]</td>
+              <td><span><a name="#edit" href="#" onclick="edita('${addr.id}','${addr.detail}','${addr.recvName}','${addr.postCode}','${addr.codeM}',
+              '${addr.mobilePhone}','${addr.codeTel}','${addr.telQH}','${addr.telNumber}','${addr.telFj}','${addr.isDefault}')">修改</a>/
+              <a href="javascript:;" onclick="delAddr(${addr.id},${addr.isDefault})">删除</a></span></td>
+              <td><a href="javascript:;" onclick="setDefAddr(${addr.id},${addr.isDefault})" class="btn">[#if addr.isDefault == 1]已是默认地址[#else]默认地址[/#if]</a></td>
+            </tr>
+            [/#list]
+          </table>
+        </div>
+      </div>
+      <!--./uaddrd2--> 
+    </div>
+    <!--./uaddrd--> 
+  </div>
+  <!--./umainr--> 
+</div>
+<!--./content--> 
+<script type="text/javascript" src="/statics/front/js/xcConfirm.js"></script>
+<script type="text/javascript" src="/statics/front/js/shopcart.js"></script>
+<!--foot--> 
+[#include '/template/front/include/footer2.html' /]
+<!--./foot--> 
+</body>
+<script type="text/javascript">
+	$(function(){
+		$.post("/worldArea/get_province.jspx",{"id":0},
+		function(data){
+			var pHtml = "";
+			for(var i=0;i<data.length;i++){
+				pHtml += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+			}
+			$("#selProvince").html(pHtml);
+			var prov = $("#selProvince option:selected").val();
+			$.post("/worldArea/get_city.jspx",{"id":prov},
+			function(data){
+				var pHtml = "";
+				for(var i=0;i<data.length;i++){
+					pHtml += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+				}
+				$("#selCity").html(pHtml);
+				var city = $("#selCity option:selected").val();
+				$.post("/worldArea/get_area.jspx",{"id":city},
+				function(data){
+					var pHtml = "";
+					for(var i=0;i<data.length;i++){
+						pHtml += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+					}
+					$("#selArea").html(pHtml)	
+				});
+			});
+		});
+	});
+	
+	function delAddr(id,isDef){
+		if(isDef == 1){
+			window.wxc.xcConfirm("默认收货地址不可删除！", window.wxc.xcConfirm.typeEnum.warning);
+		}else{
+			var txt=  "删除后不可恢复，确定删除？";
+			var option = {
+				title: "确定删除",
+				btn: parseInt("0011",2),
+				onOk: function(){
+					$.post("/addressManage/delAddr.jspx",
+					{"id":id},function(data){
+						if(data == "ok"){
+							window.wxc.xcConfirm("删除成功！", window.wxc.xcConfirm.typeEnum.success,{onOk:function(){
+								window.location.href="/addressManage/toAddressPage.jhtml";
+							}});
+						}else{
+							window.wxc.xcConfirm("删除失败！", window.wxc.xcConfirm.typeEnum.error);
+						}
+					})
+				}
+			}
+			window.wxc.xcConfirm(txt, "custom", option);
+		}
+	}
+	
+	function setDefAddr(id,isDefAddr){
+		if(isDefAddr == 1){
+			window.wxc.xcConfirm("已经是默认收货地址，无需再次设置。。。", window.wxc.xcConfirm.typeEnum.info);
+		}else{
+			$.post("/addressManage/setDefAddr.jspx",
+			{"id":id},function(data){
+				if(data == "ok"){
+					window.wxc.xcConfirm("设置成功！", window.wxc.xcConfirm.typeEnum.success,{onOk:function(){
+						window.location.href="/addressManage/toAddressPage.jhtml";
+					}});
+				}else if(data == "unlogin"){
+					window.wxc.xcConfirm("请先登录再设置默认收货地址！", window.wxc.xcConfirm.typeEnum.warning);
+				}else{
+					window.wxc.xcConfirm("设置失败！", window.wxc.xcConfirm.typeEnum.error);
+				}
+			});
+		}
+	}
+	
+	function selCou(){
+		var country = $("#selCountry option:selected").val();
+		if(country == 0){
+			$("#selAreap").hide();
+			$.post("/worldArea/get_province.jspx",
+			{"id":1},function(data){
+				var pHtml = "";
+				for(var i=0;i<data.length;i++){
+					pHtml += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+				}
+				$("#selProvince").html(pHtml);
+				selProv();
+			});
+		}else{
+			//中国
+			$("#selAreap").show();
+			$.post("/worldArea/get_province.jspx",{"id":0},
+			function(data){
+				var html = "";
+				for(var i=0;i<data.length;i++){
+					html += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+				}
+				$("#selProvince").html(html);
+			});
+		}
+	}
+	
+	function selProv(){
+		var prov = $("#selProvince option:selected").val();
+		$.post("/worldArea/get_city.jspx",{"id":prov},
+		function(data){
+			var pHtml = "";
+			for(var i=0;i<data.length;i++){
+				pHtml += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+			}
+			$("#selCity").html(pHtml)	
+		});
+	}
+	
+	function seleCity(){
+		var city = $("#selCity option:selected").val();
+		$.post("/worldArea/get_area.jspx",{"id":city},
+		function(data){
+			var pHtml = "";
+			for(var i=0;i<data.length;i++){
+				pHtml += "<option value='"+data[i].id+"'>"+data[i].text+"</option>";
+			}
+			$("#selArea").html(pHtml)	
+		});
+	}
+	
+  	function edita(id,detail,recvName,postCode,codeM,mobilePhone,codeTel,telQH,telNumber,telFj,isDefault){
+  		//赋值
+  		$("#addrId").val(id)
+  		$("#txtAddr").val(detail);
+  		$("#txtPostcode").val(postCode);
+  		$("#recivName").val(recvName);
+  		$("#code_m").val(codeM);
+  		$("#recMobile").val(mobilePhone);
+  		
+  		$("#code_tel").val(codeTel);
+  		$("#txtQh").val(telQH);
+  		$("#txtTel").val(telNumber);
+  		$("#txtTelf").val(telFj);
+  		if(isDefault == 1){
+  			//选中
+  			$("#ckTK").attr("checked",true);
+  		}else{
+  			$("#ckTK").attr("checked",false);
+  		}
+  	}
+	
+	/** 保存收货地址 */
+	function submitAddr(){
+		//country=1是中国 验证省市区   =0是国外 验证洲国家
+		var country = $("#selCountry option:selected").text();
+		var province = $("#selProvince option:selected").text();
+		var city = $("#selCity option:selected").text();
+		var area = $("#selArea option:selected").text();
+		var detail = $("#txtAddr").val();
+		var post = $("#txtPostcode").val();
+		var recivName = $("#recivName").val();
+		
+		var addrId = $("#addrId").val();
+		
+		var code_m = $("#code_m").val();
+		var recivMoblie = $("#recMobile").val();
+		
+		var code_tel = $("#code_tel").val();
+		//区号
+		var txtQh = $("#txtQh").val();
+		//号码
+		var txtTel = $("#txtTel").val();
+		//分机
+		var txtTelLf = $("#txtTelf").val();
+		
+		var ckTK = $("#ckTK").attr("checked");
+		var chTK = 0;
+		if(ckTK == "checked"){
+			chTK = 1;			
+		}
+		
+		if(country==""){
+			window.wxc.xcConfirm("请选择国家！", window.wxc.xcConfirm.typeEnum.warning);
+			$("#selCountry").trigger("click");
+		}
+		if(province==""){
+			window.wxc.xcConfirm("请选择省份！", window.wxc.xcConfirm.typeEnum.warning);
+			$("#selProvince").trigger("click");
+		}
+		if(city==""){
+			window.wxc.xcConfirm("请选择城市！", window.wxc.xcConfirm.typeEnum.warning);
+			$("#selCity").trigger("click");
+		}
+		if(area==""){
+			window.wxc.xcConfirm("请选择区域！", window.wxc.xcConfirm.typeEnum.warning);
+			$("#selArea").trigger("click");
+		}
+		if(detail==""){
+			window.wxc.xcConfirm("请填写详细地址！", window.wxc.xcConfirm.typeEnum.warning);
+			return;
+		}
+		if(post==""){
+			window.wxc.xcConfirm("请填写邮政编码！", window.wxc.xcConfirm.typeEnum.warning);
+			return;
+		}
+		if(recivName==""){
+			window.wxc.xcConfirm("请填写收货人姓名！", window.wxc.xcConfirm.typeEnum.warning);
+			return;
+		}
+		if(code_tel == "+" || code_tel=="" || txtQh=="" || txtTel=="" || txtTelLf==""){
+			//固定电话填写不正确，验证移动电话
+			if(code_m=="" || code_m=="+"){
+				window.wxc.xcConfirm("国家代码，中国大陆是：+86", window.wxc.xcConfirm.typeEnum.warning);
+				return;
+			}
+			if(recivMoblie==""){
+				window.wxc.xcConfirm("请填写手机号码！", window.wxc.xcConfirm.typeEnum.warning);
+				return;
+			}
+		}
+		else
+		{
+			//未填写手机号码 ,则验证固定电话
+			if(code_tel=="" || code_tel=="+"){
+				window.wxc.xcConfirm("国家代码，中国大陆是：+86", window.wxc.xcConfirm.typeEnum.warning);
+				return;
+			}
+			if(txtQh==""){
+				window.wxc.xcConfirm("请填写区号！", window.wxc.xcConfirm.typeEnum.warning);
+				return;
+			}
+			if(txtTel==""){
+				window.wxc.xcConfirm("请填写固定电话号码！", window.wxc.xcConfirm.typeEnum.warning);
+				return;
+			}
+			if(txtTelLf==""){
+				window.wxc.xcConfirm("请填写分机号码！", window.wxc.xcConfirm.typeEnum.warning);
+				return;
+			}
+		}
+		
+		if(addrId > 0){
+			//更新
+			$.post("/addressManage/updateAddress.jspx",{"addrId":addrId,"country":country,"province":province,"city":
+				city,"area":area,"detail":detail,"postCode":post,"recivName":recivName,"codeM":code_m,"mobilePhone":recivMoblie,
+				"codeTel":code_tel,"telQH":txtQh,"telNumber":txtTel,"telFj":txtTelLf,"idDefault":chTK},
+			function(data){
+				if(data=="ok"){
+					window.wxc.xcConfirm("更新成功！", window.wxc.xcConfirm.typeEnum.info,{onOk:function(){
+						window.location.href="/addressManage/toAddressPage.jhtml";
+					}});
+				}else if(data == "unlogin"){
+					window.wxc.xcConfirm("请先登录再更新收货地址！", window.wxc.xcConfirm.typeEnum.warning);
+				}
+				else{
+					window.wxc.xcConfirm("更新失败！", window.wxc.xcConfirm.typeEnum.error);
+				}
+			});
+		}else{
+			$.post("/addressManage/addAddress.jspx",{"country":country,"province":province,"city":
+			city,"area":area,"detail":detail,"postCode":post,"recivName":recivName,"mobilePhone":
+			recivMoblie,"codeM":code_m,"codeTel":code_tel,"telQH":txtQh,"telNumber":txtTel,"telFj":
+			txtTelLf,"idDefault":chTK},
+			function(data){
+				if(data=="ok"){
+					window.wxc.xcConfirm("添加成功！", window.wxc.xcConfirm.typeEnum.info,{onOk:function(){
+						window.location.href="/addressManage/toAddressPage.jhtml";
+					}});
+				}else if(data == "unlogin"){
+					window.wxc.xcConfirm("请先登录再添加收货地址！", window.wxc.xcConfirm.typeEnum.warning);
+				}
+				else{
+					window.wxc.xcConfirm("添加失败！", window.wxc.xcConfirm.typeEnum.error);
+				}
+			});
+		}
+	}
+</script>
+</html>

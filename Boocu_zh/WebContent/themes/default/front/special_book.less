@@ -1,0 +1,117 @@
+@import 'main.less';
+
+@body-background-color:#f5f5f5;
+@body-content-background-color:#ffffff;
+@special-img-height:300px;
+@special-img-width:700px;
+.container-special{
+  padding: 30px 0;
+  background: @body-background-color;
+  &  .container{
+    background: @body-content-background-color;
+  }
+
+}
+
+.special-breadcrumb{
+  border-bottom: 1px solid #e5e5e5;
+  .breadcrumb{
+    background: @body-content-background-color;
+    margin-bottom: 0px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #5b5b5d;
+    & a{
+      color: #5b5b5d;
+    }
+    & > li + li::before{
+      content: "> ";
+      color: #5b5b5d;
+    }
+    & > .active{
+      color: #5b5b5d;
+    }
+  }
+}
+.clear{
+  clear: both;
+}
+.special-container{
+    padding:40px 20px;
+    & .special-img{
+      width: @special-img-width;
+      height: @special-img-height;
+      & img{
+        width: @special-img-width;
+        height: @special-img-height;
+        display: block;
+      }
+    }
+    & .special-info{
+      width: 460px;
+      height: @special-img-height;
+      background: #F5F5F5;
+      padding: 30px 50px;
+      & .title{
+        font-size: 14px;
+        margin: 20px 0;
+        height: 30px;
+        line-height: 30px;
+      }
+      & .desc{
+        font-size: 12px;
+        height: 180px;
+        line-height: 20px;
+        overflow: hidden;
+      }
+    }
+
+}
+
+.special-book-container {
+  padding: 0 20px;
+
+  .special-list{
+    .index-book-block3-m(1160px, 90px, 360px, 150px, 3);
+  }
+}
+
+
+.active{
+  background: #0476d9;
+  color: #FFFFFF;
+}
+
+
+.foot-bar{
+  background: #FFFFFF;
+}
+
+.pager {
+  margin-right: 20px;
+//  margin-bottom: 20px;
+//  & .pager-btn{
+//    border-radius: 0;
+//    background-color: transparent;
+//    &.active{
+//      background-color: #0476d9;
+//      color: #f4f7fd;
+//    }
+//  }
+//  font-size: 14pt;
+//  margin-left: 60px;
+//  & .pager-btn-group{
+//    color: #313133;
+//    margin-left: 5px;
+//    & > *{
+//      margin-right: 5px;
+//    }
+//  }
+//  & .pager-btn-prev, & .pager-btn-next{
+//    background-color: #959595;
+//    color: #f2f2f2;
+//    &:disabled{
+//      //color: darken(#f2f2f2, 10%);
+//    }
+//  }
+}

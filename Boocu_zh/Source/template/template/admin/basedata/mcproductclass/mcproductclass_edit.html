@@ -1,0 +1,165 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="editForm" method="post" class="validate">
+			<table>
+				<tr style="display:none">
+					<th>id</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="id" data-options="required:true" value="${item.id}" ></input>
+					</td>
+				</tr>
+				  <tr>
+					<th>所属产品</th>
+					<td>
+					<select style="width: 308px; height: 36px;"
+										class="easyui-combobox"
+										url="/admin/mcMajor/get_major_names_two.jspx"  data-options="valueField:'id',textField:'text',editable:false,value:${item.mc_major}"
+										id="mc_major" name="mc_major" required="required"/> </select></td>
+					<td><span class="rr_model" style="color: red"></span></td>
+				</tr>  
+				<tr>
+					<th>名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="name" value="${item.name}" required="required"></input>
+					</td>
+				</tr>	<!-- <tr>
+					<th>英文名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="nameEn" value="${item.nameEn}"  required="required"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>上级仪器名称</th>
+					<td ><select style="width:309px;height:30px;" class="easyui-combotree" url="/admin/basedata/mcproductclass/combotreeData.json" name="parentid" id="parentid" />
+					</td>
+				</tr> -->
+				<tr>
+					<th>排序</th>
+					<td><input class="input_text easyui-numberbox" type="text"  
+						name="sort" value="${item.sort}"  required="required"></input>
+					</td>
+				</tr>
+				<tr>
+					<th>备注</th>
+					<td><input class="input_text easyui-validatebox" type="text"  
+						name="remark" value="${item.remark}" ></input>
+					</td>
+				</tr>
+			   <!--  <tr>
+					<th>创建人</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="createuser" value="${item.createuser}" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>修改人</th>
+					<td><input class="input_text easyui-validatebox" type="text"
+						name="updateuser" value="${item.updateuser}"/>
+				</tr> -->
+			</table>
+			 <input type="button"   class="input_text2 easyui-validatebox"   value="添加主营产品"  onclick="appendmcmajor()" style="left: 430px;top: 58px;position: absolute;"/> 
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$("#parentid").combotree({
+		onLoadSuccess:function(){
+			$("#parentid").combotree('setValue', "${parentid}");
+		}
+	});
+});
+
+
+		/*
+		新增主营产品
+		*/
+		function submitFormmcmajor(map) {
+			
+		var data = {};
+		//data.mc_industryclass=$("#mc_industryclass").combobox('getValue'); 
+		data.name=$("#mma_name").val();
+		data.sort=$("#mma_sort").val();
+		data.remark=$("#mma_remark").val();
+		//var formflag = $(map["formId"]).form().form('validate');
+		if (data.name != '' && data.sort != '') {
+			$.Loading.show(map["loadshow"]);
+			var options = {
+				url : map["url"],
+				type : "POST",
+				dataType : 'json',
+				data:data,
+				success : function(result) {
+					if (result.result == 1) {
+						$.Loading.show(result.message);
+						$(map["divDialog"]).dialog('close');
+						//$(map["gridreload"]).datagrid('reload');
+						$('#mc_major').combobox('reload');//新增后，刷新树
+					}
+					if (result.result == 0) {
+						$.Loading.error(result.message);
+					}
+					$.Loading.hide();
+				},
+				error : function(e) {
+					alert("出现错误 ，请重试");
+				}
+			};
+			console.log(data);
+			$.ajax(options);
+		}
+		}
+		
+		
+		function appendmcmajor(id) {
+			var map = {}; // Map map = new HashMap();
+			if (!id) {
+				map["href"] = "/admin/mcMajor/add_mcMajor.jspx";
+				map["formId"] = "#addForm";
+				map["url"] = "/admin/mcMajor/doAdd_memberGrade.jspx?ajax=yes";
+				map["title"] = "添加信息";
+				map["loadshow"] = "正在添加......";
+			} else {
+				map["href"] = "/admin/mcMajor/edit_memberGrade.jspx?id=" + id;
+				map["formId"] = "#editForm";
+				map["url"] = "/admin/mcMajor/doEdit_memberGrade.jspx?ajax=yes";
+				map["title"] = "修改信息";
+				map["loadshow"] = "正修改......";
+			}
+			map["divDialog"] = "#divdia2";
+			map["gridreload"] = "#dataList";
+			addDialogmcmajor(map);
+		}
+		
+		function addDialogmcmajor(map) {
+		$(map["divDialog"]).show();
+		$(map["divDialog"]).dialog({
+			title : map["title"],
+			width : 600,
+			height : 300,
+			closed : false,
+			cache : false,
+			href : map["href"],
+			modal : true,
+			buttons : [ {
+				text : '保存',
+				iconCls : 'icon-ok',
+				handler : function() {
+					var savebtn = $(this);
+						var disabled=savebtn.hasClass("l-btn-disabled");
+						if(!disabled){
+						 submitFormmcmajor(map,savebtn);
+					}
+				}
+			}, {
+				text : '清空',
+				handler : function() {
+					clearForm(map);
+				}
+			} ]
+		});
+		}
+
+
+</script>

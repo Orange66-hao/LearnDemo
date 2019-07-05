@@ -1,0 +1,119 @@
+select{height:30px;padding-right:10px;}
+.openDialog{margin-top:10px;}
+
+.address{  
+	border: 2px solid #e6e6e6;  
+	margin-top:10px;
+	width:70%;
+}
+.address .del{
+	width:40px;
+	height:40px;
+	position:absolute;
+	right:10px;top:2px;
+}
+.trBar{
+	width:100%;
+	clear:both;
+	height:25px;line-height:25px;
+}
+.formtrBar{
+	width:100%;
+	clear:both;
+	height:26px;line-height:26px;
+	margin-top:20px;
+}
+.a_label{
+	clear:both;
+	float:left;
+	text-align:right;
+	width:70px;
+	color: #999;
+}
+.fl{
+	float:left;
+	margin-left:10px;
+	color: #666;
+}
+.address .opbar{
+	height:40px;
+	line-height:40px;
+	border-top:2px solid #e6e6e6;
+}
+.address .default{float:left;margin-left:20px;color:#FE6768;width:80px;background: url('/themes/default/front/images/yes.png') no-repeat left;background-size:20px 20px;text-align:right;}
+.address .setdefault{float:left;margin-left:20px;color:#666666;width:80px;background: url('/themes/default/front/images/radio.png') no-repeat left;background-size:20px 20px;text-align:right;}
+.address .edit{float:right;margin-right:30px;color:#999999;width:55px;background: url('/themes/default/front/images/edit.png') no-repeat left;background-size:20px 20px;text-align:right;cursor:pointer;}
+.address .delete{float:right;margin-right:10px;color:#999999;width:55px;background: url('/themes/default/front/images/delete.png') no-repeat left;background-size:20px 20px;text-align:right;cursor:pointer;}
+
+
+.thickdiv{width:200%;height:1488px;position: fixed;top:0;left:-200px;;z-index:10000001;background-color:#000000;opacity:.15;}
+.addressForm{left:30%;top:159.5px;width:40%;height:342px;position:fixed;border:4px solid #e6e6e6;background-color:#FFFFFF;z-index:10000002}
+.titleBar{height:24px;line-height:24px;width:100%;background:#F3F3F3;color:#333;}
+.formtitle{float:left;margin-left:10px;font-weight: 700;color:#333333;}
+
+.btn1{border:none;background: #0476d9;color:#FFFFFF;padding: 5px 45px;margin-left: 90px;}
+
+
+.addr{
+	margin-top:15px;
+	height:40px;
+	clear:both;
+}
+.addr_cont:hover{
+	background-color: #fff3f3;
+}
+.addr_cont:hover .op-btns{
+	display:block;
+	height:32px;
+  	line-height:32px;
+  	text-align:center;
+    float: right;
+}
+.addr_cont{
+	margin-left:10px;
+	height:32px;
+  	line-height:32px;
+}
+.consignee-item{
+  	height:32px;
+  	line-height:32px;
+  	text-align:center;
+  	width:110px;
+    float: left;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+}
+.consignee-item:hover{
+	border: 2px solid #e4393c;
+}
+.addr-detail{
+	height:32px;
+  	line-height:32px;
+  	text-align:center;
+    float: left;
+    cursor: pointer;
+}
+.op-btns{
+	display:none;
+	height:32px;
+  	line-height:32px;
+  	text-align:center;
+    float: right;
+}
+.item-selected {
+  border: 2px solid #e4393c;
+  background: url(/themes/default/front/images/selected-icon.png) no-repeat;
+  background-position:100% 100%;
+}
+a:hover {
+  color: #C81623;
+  text-decoration: none;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+.op-btns a{
+	color: #C81623;
+}

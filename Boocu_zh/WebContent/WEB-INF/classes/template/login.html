@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>晧辰仪联网</title>
+</head>
+<body>
+
+<form action="/add.jspx">
+	<table style="cellspecing:2px;border: 1px solid blue; width:800px">
+		<tr>
+			<td>用户：</td><td><input type="text" name="username"></td><td>---</td>
+		</tr>
+		<tr>
+			<td>---</td><td><input type="submit" value="ok"/></td><td>---</td>
+			
+		</tr>
+	</table>
+</form>
+
+
+
+
+ 
+<script type="text/javascript">
+var username=GetQueryString('username');
+var username2="${username}";
+ if(username2 != null && username2 != ''){
+	username=username2;
+} 
+//qq快速登录，如果用户上次已经登陆过，本次直接登录，不需注册
+ if(username != null && username != ''){//使用if else将qq快速登录与常规登录区分开，保证两者不同时执行，防止出现登录不跳转和登录后点击功能模块重新登录问题
+	$.ajax({
+		url:"/login/loginqq",
+		data:{
+			username: username
+		},
+		cache:false,
+		type:"post",
+		dataType:"json",
+		beforeSend:function(request,settings){
+			//request.setRequestHeader("token", $.cookie("token"));
+			//$nForm.find(".btn").val(" 登 录 中 ... ");
+		},
+		success:function(msg){
+			if(msg.type=="success"){
+				window.location = "/user/user";
+			}else{
+				alert(msg.cont);
+				$nBtn.val("登录");
+				$captchaImg.click();
+				$nBtn.prop("disabled", false);
+			}
+		},
+		error:function(){
+			alert("登录失败");
+		}
+	});
+} else {
+//切换登录方式
+$(".loginnav li").click(function(){
+	$(".loginnav li").removeClass("on");
+	$(this).addClass("on");
+	$(".logincontd").hide();
+	$(".logincontd").eq($(this).index()).fadeIn(200);
+});
+
+var $captchaImg = $("#captchaImg"), $captchaText =$("#txtPassword"),
+$nForm =$("#n_loginForm"), $nBtn = $nForm.find(":submit") ,
+rsaKey = new RSAKey();
+rsaKey.setPublic(b64tohex(modulus), b64tohex(exponent));
+$(function(){
+	$nBtn.prop("disabled", false);
+	//验证码
+	$captchaImg.click(function(){
+		$captchaImg.prop("src","/captcha?captchaId="+captchaId);
+	});
+	$captchaImg.click();
+
+	$nForm.validate({
+		rules:{
+			username:"required",
+			password:"required",
+			captcha:"required"
+		},
+		messages:{
+			username:"请输入您的用户名",
+			password:"请输入密码",
+			captcha:"请输入验证码"
+		},
+		errorPlacement:function(error,element){
+			element.closest("div.row").find(".annotate").text(error.text());
+		},
+		unhighlight: function(element){
+			$(element).closest("div.row").find(".annotate").text("");
+		},
+		submitHandler:function(form){
+			$nBtn.prop("disabled", true);
+			$.ajax({
+				url:"/login/login",
+				data:{
+					username: $nForm.find("#txtUsername").val(),
+					password: hex2b64(rsaKey.encrypt($nForm.find("#txtPassword").val())),
+					captcha: $nForm.find("#captcha").val(),
+					captchaId:captchaId
+				},
+				cache:false,
+				type:"post",
+				dataType:"json",
+				beforeSend:function(request,settings){
+					//request.setRequestHeader("token", $.cookie("token"));
+					$nForm.find(".btn").val(" 登 录 中 ... ");
+				},
+				success:function(msg){
+					$nForm.find("#txtPassword").val("");
+					if(msg.type=="success" && msg.cont !="0"){
+						window.location = "/user/user";
+					}
+					else if(msg.type=="success" && msg.cont=="0"){
+						window.location = "/user/userfirst";
+					} 
+					else{
+						alert(msg.cont);
+						$nBtn.val("登录");
+						$captchaImg.click();
+						$nBtn.prop("disabled", false);
+						window.location = "/login";
+					}
+				},
+				error:function(){
+					alert("登录失败");
+					window.location = "/login";
+				}
+			});
+			return;
+		}
+		
+	});
+	
+	
+	$("#sendText").on("click",function(){
+			var phone = $(this).closest("form").find("input[name='phonename']").val();
+			if(phone != null && phone != ''){
+				console.log(phone);
+				sendPhoneText(phone);
+			}else{
+				alert('请输入电话号码');
+			}
+	})
+	
+	
+})
+	
+}
+
+ function sendPhoneText(phone){
+ 	$.ajax({
+ 		url:"/text/sendLoginTwo",
+ 		data:{username:phone,validate:'login'},
+ 		dataType:"json",
+ 		type:"post",
+ 		success:function(){
+ 			//alert("发送成功!");
+ 		},
+ 		error:function(){
+ 			alert("网络异常,请重试!");
+ 		}
+ 	});
+ }
+
+function qqlogin()
+{
+   var path = 'https://graph.qq.com/oauth2.0/authorize?';
+   var queryParams = ['client_id=101400542',
+                      'redirect_uri=http://www.wl95.com',
+                      'scope=' + 'get_user_info,list_album,upload_pic,add_feeds,do_like','response_type=token'];
+
+   var query = queryParams.join('&');
+   var url = path + query;
+   window.location.href= url;
+}
+
+/**
+ * 手机号快捷登录
+ */
+function phonelogin()
+{
+	$.ajax({
+		url:"/login/loginphone",
+		data:{
+			username: $("#phonename").val(),
+			text: $("#yanzhengma").val()
+		},
+		cache:false,
+		type:"post",
+		dataType:"json",
+		beforeSend:function(request,settings){
+			//request.setRequestHeader("token", $.cookie("token"));
+			$nForm.find(".btn").val(" 登 录 中 ... ");
+		},
+		success:function(msg){
+			$nForm.find("#txtPassword").val("");
+			if(msg.type=="success"){
+				window.location = "/user/user";
+			}else{
+				alert(msg.cont);
+				$nBtn.val("登录");
+				$captchaImg.click();
+				$nBtn.prop("disabled", false);
+			}
+		},
+		error:function(){
+			alert("登录失败");
+		}
+	});
+}
+
+
+
+ //获取url参数
+function GetQueryString(name){
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  decodeURI(r[2]); return null;
+} 
+</script>
+</body>
+</html>

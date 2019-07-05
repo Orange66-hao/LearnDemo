@@ -1,0 +1,27 @@
+<div class="main" style="background-color: white;">
+	<div class="easyui-panel" style="border-style: none;">
+		<form id="addForm" method="post" class="validate">
+			<table>
+			   <tr>
+					<th>等级名称</th>
+					<td><input class="input_text easyui-validatebox" type="text" 
+						name="name" data-options="required:true" ></input>
+					</td>
+				</tr>
+				<tr>
+					<th>价格类型</th>
+					<td>
+					<select name="priceType" data-options="required:true">
+						<option style="display:none">=价格等级选择=</option>		
+						<option value="来宾">来宾</option>
+						<option value="客户">客户</option>
+						<option value="同行">同行</option>
+						<option value="VIP">VIP</option>				
+					</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+

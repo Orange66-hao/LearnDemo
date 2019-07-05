@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>订阅信息 - 晧辰仪联网</title> [#include
+'/template/front/include/csslist.html' /]
+</head>
+<body>
+	<!--top-->
+	[#include '/template/front/include/header.html' /]
+	<!--./top-->
+
+	<!--content-->
+
+	<div id="w1"></div>
+	<!-- <div id="w3" style="display: none;">
+		<div id="w" class="easyui-window" title="提  示"
+			data-options="closed:true,resizable:false,minimizable:false,maximizable:false,modal:true,"
+			style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'"
+					style="padding: 10px; background: #fff;">
+					您的账号信息不全或者账号正在审核，暂时不能发布信息，请完善资料后等待审核!
+					<p style="padding-top: 80px; margin-left: 110px;">
+						<a class="easyui-linkbutton" href="javascript:void(0)"
+							onclick="window_submit()" style="width: 80px">确 认</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div id="w2" class="easyui-window" title="提  示"
+			data-options="closed:true,resizable:false,minimizable:false,maximizable:false"
+			style="width: 320px; height: 220px; padding: 5px; background: #3a93d4;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'"
+					style="padding: 10px; background: #fff">
+					您的账号未激活，请先登录注册邮箱激活!
+					<p style="padding-top: 105px; margin-left: 110px;">
+						<a class="easyui-linkbutton" href="javascript:void(0)"
+							onclick="window_close()" style="width: 80px">确 认</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<div class="main userd">
+		<div class="umaintitd">
+			当前位置：首页 &gt; 会员中心 &gt; <span>产品信息管理</span>
+		</div>
+		<!--usernav-->
+		[#include '/template/front/include/usernav.html' /]
+		<!--./usernav-->
+
+		<!--umainr-->
+		<div class="umainr">
+			<!-- <div class="umainrtitd">
+				<span>订阅管理</span>
+			</div> -->
+
+			<!--usubd-->
+			<div class="usubd">
+				<div class="usubnavd">
+					<ul>
+						<li class="on"><a href="/subscribeInfo/toList.jspx">订阅信息</a></li>
+						<!-- <li><a href="/subscribeInfo/infoManage.jspx">订阅管理</a></li> -->
+					</ul>
+				</div>
+				<!--./upronavd-->
+
+				<!--usubcond-->
+				<div class="usubcond">
+					<!--usubdated-->
+					
+					[#if model.size()>0]
+					<div class="usubdated" style="position:relative; height:720px; overflow:auto">
+						<ul>
+							[#list model as data]
+							<li><a href="javascript:;">${data}</a></li> [/#list]
+
+						</ul>
+					</div>
+					<!--./usubdated-->
+
+					<!--usubtabd-->
+					<div class="usubtabd">[#include
+						'/template/front/include/dataLists/subscribeList.html' /]</div>
+					<!--./usubtabd-->
+					[#else]
+					<div align="center">暂无订阅信息</div>
+					[/#if]
+				</div>
+				<!--./usubcond-->
+
+			</div>
+			<!--./usubd-->
+		</div>
+		<!--./umainr-->
+	</div>
+	<!--./content-->
+
+	<!--foot-->
+	<!--底部链接-->
+	[#include '/template/front/include/footer.html' /]
+
+
+	<!--./foot-->
+	<script src="/statics/front/js/jquery.min.js"></script>
+	<script src="/statics/front/js/lazyload/jquery.lazyload.min.js"></script>
+	<script src="/statics/front/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script src="/statics/front/js/main.js"></script>
+	<script src="/statics/front/js/pro.js"></script>
+	<script>
+		$ (function ()
+        {
+	        $ (".usubdated li:first").addClass ('on');
+			$(".addprod").click(function(){
+		var userClass="${currentMember.userType}";
+		var enabled = "${currentMember.enabled}"
+		if(enabled == "1"){
+			$("#w3").show();
+			$("#w2").window('open');
+			$("#w1").show();
+		}else{
+			if(userClass =="buyer" || userClass =="" || enabled =="2"){
+				$("#w3").show();
+				$("#w").window('open');
+				$("#w1").show();
+			}else if(userClass =="seller" || userClass =="business"){
+				window.location.href="/user_pub_sale";
+			}
+		}
+	});
+        })
+
+        function dataList ()
+        {
+	        var txt = $ ("#txtPnum").val ();
+	        var a1 = ${page.totalPages};
+	        if (txt == null || txt == "")
+	        {
+		        txt = 1;
+	        }
+	        if (txt > a1 || txt < 1)
+	        {
+		        return;
+	        }
+	        $.ajax (
+	        {
+	            url : '/subscribeInfo/dataList.jspx',
+	            data :
+	            {
+	                "createdate" : $ ('.usubdated li.on').text (),
+	                "pageNum" : txt
+	            },
+	            type : 'POST',
+	            traditional : true,
+	            success : function (result)
+	            {
+		            $ ('.usubtabd').html (result);
+	            }
+	        });
+        }
+        $ (".usubdated li").find ("a").click (function ()
+        {
+	        $ (".usubdated li").removeClass ('on');
+	        $ (this).parent ().addClass ("on");
+	        dataList ();
+        })
+	</script>
+</body>
+</html>

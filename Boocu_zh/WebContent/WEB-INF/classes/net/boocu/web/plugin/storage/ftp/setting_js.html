@@ -1,0 +1,27 @@
+/*
+ * Copyright 2014-2015 bee-lending.com. All rights reserved.
+ * Support: http://www.bee-lending.com
+ *
+ * JavaScript - FtpStorage Setting
+ * Version: 1.0
+ */
+$().ready(function() {
+
+	[#-- 表单验证 --]
+	var $inputForm = $("#inputForm");
+	$inputForm.find(":submit").prop("disabled", false);
+	$inputForm.validate({
+		rules: {
+			storageName: "required",
+			host: "required",
+			port: {
+				required: true,
+				digits: true
+			},
+			username: "required",
+			urlPrefix: "required",
+			order: "digits"
+		}
+	});
+	
+});
